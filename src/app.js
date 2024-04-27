@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-//const routes = require('./routes/index')
+const routes = require('./routes')
 const http = require('http')
 const {Server} = require('socket.io')
 //const {User} = require('./db')
@@ -38,6 +38,6 @@ io.on('connection', async (socket)=>{
     });
 })
 
-//server.use('/',routes(io))
+server.use('/',routes(io))
 
 module.exports = app
