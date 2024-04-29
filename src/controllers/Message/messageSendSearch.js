@@ -1,15 +1,15 @@
-const {MsgSent} = require('../../db')
+const messageSendSearchHandler = require('../../handlers/Message/messageSendSearch')
 
-const messageSendSearch = async({BusinessId,ContactId}) =>{
-    if(!BusinessId && !ContactId) throw new Error("Missing Data")
-    
-    const messagesSend = await MsgSent.findAll({where:{
-        BusinessId:BusinessId,
-        ContactId:ContactId
-    }})
 
-    return messagesSend
+const messageSendSearchController = async (req,res)=>{
+    try {
+        const {BusinessId, ContactId} = req.query
+        const messageSend =  await messageSendSearchHandler({BusinessId,ContactId})
+        res.status(200).json(messageSend)    
+    } catch (error) {
+        res.status(404).json(error.message)
+    }
     
 }
 
-module.exports = messageSendSearch
+module.exports=messageSendSearchController

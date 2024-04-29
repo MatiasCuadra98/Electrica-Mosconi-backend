@@ -1,8 +1,8 @@
 const {Router} = require('express')
-const messageSendSearchHandler = require('../../handler/Message/messageSendSearch')
+const messageSendSearchController = require('../../controllers/Message/messageSendSearch')
 
 const messageSendSearch = Router()
 
-messageSendSearch.get('/messageSendSearch', messageSendSearchHandler)
+messageSendSearch.get('/messageSendSearch', messageSendSearchController)
 
 module.exports = messageSendSearch
