@@ -1,16 +1,23 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-//const routes = require('./routes/index')
+const routes = require('./routes/index')
 const http = require('http')
 const {Server} = require('socket.io')
-//const {User} = require('./db')
+const {User} = require('./db')
+const path = require('path');
+//const mime = require('mime');
+
+//mime.define({'application/javascript': ['js'], 'text/css': ['css']});
 
 const server = express();
 const app = http.createServer(server)
 const io = new Server(app,{
-    cors:{
-        origin: '*'
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+        credentials: true,
+        allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
     }
 })
 
@@ -25,19 +32,25 @@ server.use(cors({
 server.use(morgan('dev'));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
+//server.use(express.static(path.join(__dirname, '/assets'), {
+//   setHeaders: function (res, path) {
+//     res.type(mime.getType(path))
+//   }
+// }))
+//
 
 io.on('connection', async (socket)=>{
-    //const userId = socket.handshake.query.userId
+    const userId = socket.handshake.query.userId
     
-   // await User.update({socketId: socket.id},{where:{id:userId}})
+    await User.update({socketId: socket.id},{where:{id:userId}})
     console.log(`Cliente conectado ${socket.id}`);
-    console.log(userId);
+    console.log(userId)
     
     socket.on('disconnect', () => {
         console.log('Cliente desconectado');
     });
 })
 
-//server.use('/',routes(io))
+server.use('/',routes(io))
 
 module.exports = app
