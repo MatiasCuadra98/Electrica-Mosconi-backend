@@ -8,6 +8,10 @@ const createBusiness = require('./Business/BusinessPost')
 const businessSearch = require('./Business/BusinessSearch')
 const businessUpdate = require('./Business/BusinessUpdate')
 const businessDelete = require('./Business/BusinessDelete')
+const messageWebHook = require('./Message/messageWebHook')
+const messageSend = require('./Message/messageSend')
+const messageSendSearch = require('./Message/messageSendSearch')
+
 const {Router} = require('express')
 
 const routes = Router();
@@ -21,12 +25,12 @@ module.exports = (io)=>{
     routes.use("/", userSearch);
     routes.use("/", userUpdate);
     routes.use("/", userDelete);
-    // routes.use("/", messageWebHook(io));
-    // routes.use("/", messageSend(io)); 
+    routes.use("/", messageWebHook(io));
+    routes.use("/", messageSend(io)); 
+    routes.use("/", messageSendSearch)    
     // routes.use("/", ContactsSearch)
     // routes.use("/", msgFind)
     // routes.use("/", putNotification)
-    // routes.use("/", messageSendSearch)    
     // routes.use("/", login);
     // routes.use("/",validate)
 

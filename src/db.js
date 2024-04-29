@@ -2,7 +2,7 @@ require('dotenv').config()
 const { Sequelize } = require('sequelize')
 const {DB_USER, DB_PASSWORD, DB_HOST,DATABASE_URL, DB_PORT, DB_NAME} = process.env
 const UserModel = require('./models/User')
-const ContactModel = require('./models/Contact')
+const ContactsModel = require('./models/Contacts')
 const BusinessModel = require('./models/Business')
 const MsgReceivedModel = require('./models/MsgReceived')
 const MsgSentModel = require('./models/MsgSent')
@@ -18,17 +18,17 @@ const sequelize = new Sequelize(`postgres://mosconi:sPeXrQeTjv9b1cTvtFFPMZ06uVOH
 // const sequelize = new Sequelize(DATABASE_URL,{dialect:"postgres",logging:false})
 
 UserModel(sequelize)
-ContactModel(sequelize)
+ContactsModel(sequelize)
 BusinessModel(sequelize)
 MsgReceivedModel(sequelize)
 MsgSentModel(sequelize)
 
 //Associations
 
-const { User,Business,MsgReceived,MsgSent,Contact } = sequelize.models
+const { User,Business,MsgReceived,MsgSent,Contacts } = sequelize.models
 
-Contact.hasMany(User)
-User.hasMany(Contact)
+Contacts.hasMany(User)
+User.hasMany(Contacts)
 
 User.belongsTo(Business)
 Business.hasMany(User)
@@ -39,22 +39,23 @@ Business.hasMany(MsgReceived)
 MsgSent.belongsTo(Business)
 Business.hasMany(MsgSent)
 
-Contact.belongsTo(Business)
-Business.hasMany(Contact)
+Contacts.belongsTo(Business)
+Business.hasMany(Contacts)
 
-MsgReceived.belongsTo(Contact)
-Contact.hasMany(MsgReceived)
+MsgReceived.belongsTo(Contacts)
+Contacts.hasMany(MsgReceived)
 
-MsgSent.belongsTo(Contact)
-Contact.hasMany(MsgSent)
+MsgSent.belongsTo(Contacts)
+Contacts.hasMany(MsgSent)
 
 
 
 
 module.exports={
     User,
-    Contact,
+    Contacts,
     Business,
-    MsgSentModel,
+    MsgSent,
+    MsgReceived,
     conn: sequelize,
 }
