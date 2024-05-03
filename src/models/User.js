@@ -30,6 +30,17 @@ module.exports = (sequelize) =>{
         },
         socketId:{
             type:DataTypes.STRING
+        },
+        //**--ATRIBUTOS AGREGADOS--**
+        image:{
+            type: DataTypes.STRING,
+            allowNull: true 
+        },
+        login: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+
         }
     }, {timestamps: false});
 }
