@@ -2,8 +2,17 @@
 const { User } = require('../../db');
 
 const allUsers = async () => {
-  
-  const users = await User.findAll();
+//**--AGREGUE ORDEN POR NOMBRE Y DATOS DEL BUSINESS */  
+  const users = await User.findAll(
+    { order: [
+      ['name'],
+  ],
+include: {
+  model: Business,
+  attributes: ['id', 'name']
+}
+}
+  );
   return users;
 };
 
