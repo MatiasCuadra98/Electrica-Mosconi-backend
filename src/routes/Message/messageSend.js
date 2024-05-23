@@ -1,59 +1,70 @@
 const { Router } = require("express");
-const { MsgSent } = require("../../db");
-const { Business } = require("../../db");
-const axios = require("axios");
+const { MsgSent, MsgReceived, Business, Contacts } = require("../../db");
+const TelegramBot = require("node-telegram-bot-api");
+
+const bot = require("../../telegramBot/telegramBot");
 
 const messageSend = Router();
 
 module.exports = (io) => {
   messageSend.post("/messageSend", async (req, res) => {
-    const { textMessage, name, phone, BusinessId, ContactId } = req.body;
+    const { textMessage, chatId } = req.body;
 
     try {
       const date = new Date();
       const hours = date.getHours().toString();
       const minutes = date.getMinutes().toString();
       const seconds = date.getSeconds().toString();
-      const apiUrl = "";
-      const apiKey = "";
+
+      const receivedMsg = await MsgReceived.findOne({ where: { chatId } });
+      if (!receivedMsg) {
+        return res.status(404).json({ error: "Message not found" });
+      }
+      const { name, fromData, BusinessId, ContactId } = receivedMsg;
+      console.log('Received message details:', receivedMsg);
 
       const business = await Business.findByPk(BusinessId);
+      if (!business) {
+        console.error('Business not found for BusinessId:', BusinessId);
 
-      const data = {
-        channel: "whatsapp",
-        source: business.phone,
-        destination: phone,
-        message: JSON.stringify({
-          type: "text",
-          text: textMessage,
-        }),
-        "src.name": business.srcName,
-      };
-      const headers = {
-        "Content-Type": "application/x-www-form-urlencoded",
-        apikey: apiKey,
-      };
+        return res.status(404).json({ message: "Business not found" });
+      }
+      console.log('Business details:', business);
 
-      const response = await axios.post(apiUrl, data, { headers });
-      //   res.status(200).json(response.data)
+
+      const contact = await Contacts.findOne({ where: { phone: chatId } });
+      if (!contact) {
+        return res.status(404).json({ message: "Contact not found" });
+      }
+
+
+      await bot.sendMessage(chatId, textMessage);
 
       const msgCreated = await MsgSent.create({
         name: name,
-        phone: phone,
+        toData: { app: "telegram", value: chatId },
         message: textMessage,
-        BusinessId: BusinessId,
-        ContactId: ContactId,
+        chatId: chatId,
         timestamps: date,
+        BusinessId: BusinessId,
+        ContactId: ContactId
+
       });
+
       io.emit("message", {
-        from: phone,
+        from: chatId,
         text: textMessage,
         name: name,
         timestamp: `${hours}:${minutes}:${seconds}`,
         sent: true,
       });
+
+      await receivedMsg.update({ responded: true });
+
       res.status(201).json(msgCreated);
     } catch (error) {
+      console.error('Error while sending message:', error);
+
       res.status(400).json(error.message);
     }
 

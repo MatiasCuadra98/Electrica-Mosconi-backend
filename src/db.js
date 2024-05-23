@@ -13,12 +13,10 @@ const sequelize = new Sequelize(`postgres://mosconi:sPeXrQeTjv9b1cTvtFFPMZ06uVOH
     ssl: {
       require: true}},logging:false, native: false})
 
-//const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,{logging:false, native: false})
-// postgres://fl0user:FN3gLZ9Prvmq@ep-green-pine-55017894.us-east-2.aws.neon.tech:5432/whatacart-db?sslmode=require
-// const sequelize = new Sequelize(DATABASE_URL,{dialect:"postgres",logging:false})
+
 
 UserModel(sequelize)
-ContactsModel(sequelize)
+ContactsModel(sequelize)    
 BusinessModel(sequelize)
 MsgReceivedModel(sequelize)
 MsgSentModel(sequelize)
