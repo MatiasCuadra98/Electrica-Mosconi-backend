@@ -1,41 +1,48 @@
-const {DataTypes} = require('sequelize')
+const { DataTypes } = require('sequelize');
 
-module.exports = (sequelize)=>{
-    sequelize.define('MsgSent',{
-        id:{
-            type:DataTypes.UUID,
-            allowNull: false,
-            primaryKey: true,
-            defaultValue: DataTypes.UUIDV4
+module.exports = (sequelize) => {
+  sequelize.define('MsgSent', {
+    id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
+    },
+    name: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    toData: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {},
+      validate: {
+        isObject(value) {
+          if (typeof value !== 'object') {
+            throw new Error('toData must be an object');
+          }
         },
-        name:{
-            type: DataTypes.TEXT,
-            allowNull: false
+        hasAppAndValue(value) {
+          if (!value.app || !value.value) {
+            throw new Error('toData must have both app and value properties');
+          }
         },
-        toData: {
-            type: DataTypes.JSON,
-            allowNull: false,
-            defaultValue: {}, // Default value for the object if not specified
-            validate: {
-              isObject(value) {
-                if (typeof value !== 'object') {
-                  throw new Error('yourObjectName must be an object');
-                }
-              },
-              hasAppAndValue(value) {
-                if (!value.app || !value.value) {
-                  throw new Error('yourObjectName must have both app and value properties');
-                }
-              },
-            },
-          },
-        message:{
-            type:DataTypes.STRING,
-            allowNull:false
-        },
-        timestamps:{
-            type:DataTypes.DATE,
-            allowNull:true
-        }
-    }, {timestamps: false})
-} 
+      },
+    },
+    message: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    chatId: {
+      type: DataTypes.BIGINT,
+      allowNull: false
+    },
+    timestamps: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    BusinessId: {
+      type: DataTypes.INTEGER,
+    },
+  }, { timestamps: false });
+};
