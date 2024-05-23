@@ -4,16 +4,12 @@ const cors = require("cors");
 const routes = require("./routes");
 const http = require("http");
 const { Server } = require("socket.io");
-const { User, MsgReceived } = require("./db");
-const bot = require("./telegramBot/telegramBot")
-const path = require("path");
+const { User } = require("./db");
 
-//const mime = require('mime');
-
-//mime.define({'application/javascript': ['js'], 'text/css': ['css']});
 
 const server = express();
 const app = http.createServer(server);
+
 const io = new Server(app, {
   cors: {
     origin: "*",
@@ -36,12 +32,7 @@ server.use(
 server.use(morgan("dev"));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
-//server.use(express.static(path.join(__dirname, '/assets'), {
-//   setHeaders: function (res, path) {
-//     res.type(mime.getType(path))
-//   }
-// }))
-//
+
 
 io.on("connection", async (socket) => {
   const userId = socket.handshake.query.userId;
@@ -56,7 +47,9 @@ io.on("connection", async (socket) => {
 });
 
 
-
+// server.get('/', (req, res) => {
+//   res.send('¡probando ruta!');
+// });
 
 server.use("/", routes(io));
 

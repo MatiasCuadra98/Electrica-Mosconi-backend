@@ -1,5 +1,5 @@
 const {Router} = require('express')
-const messageSendSearchController = require('../../controllers/Message/messageSendSearch')
+const messageSendSearchController = require('../../handlers/Message/messageSendSearch')
 
 const messageSendSearch = Router()
 

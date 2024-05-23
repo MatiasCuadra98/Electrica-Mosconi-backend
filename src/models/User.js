@@ -31,7 +31,7 @@ module.exports = (sequelize) =>{
         socketId:{
             type:DataTypes.STRING
         },
-        //**--ATRIBUTOS AGREGADOS--**
+    
         image:{
             type: DataTypes.STRING,
             allowNull: true 
