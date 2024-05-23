@@ -1,7 +1,7 @@
 // const login = require('./Login/loginRoute')
 // const validate = require('./userValidation/userValidation')
 const createUser = require("./User/UserPost");
-const userSearch = require("./User/userSearch");
+const userSearch = require("./User/UserSearch");
 const userUpdate = require("./User/userUpdate");
 const userDelete = require("./User/userDelete");
 const userGetAll = require("./User/userGetAll");

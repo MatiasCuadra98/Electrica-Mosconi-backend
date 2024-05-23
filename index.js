@@ -1,8 +1,10 @@
 require("dotenv").config();
 const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
-const { PORT } = process.env;
 const bot = require("./src/telegramBot/telegramBot.js")
+
+const PORT = process.env.PORT || 3000;
+
 
 server.listen(PORT, async () => {
   await conn.sync({ force: false });
@@ -13,11 +15,11 @@ server.listen(PORT, async () => {
 
 const setTelegramWebhook = async () => {
 
-  const ngrokURL = "https://cc1b-24-232-81-122.ngrok-free.app/";
+  const url = "https://electrica-mosconi-backend-server.onrender.com/";
 
   try {
 
-    const webhookUrl = `${ngrokURL}/telegram/webhook`;
+    const webhookUrl = `${url}/telegram/webhook`;
     bot.setWebHook(webhookUrl);
     console.log("Webhook configurado correctamente")
   } catch (error) {
