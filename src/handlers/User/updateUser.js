@@ -1,4 +1,4 @@
-const { User, Rol } = require("../../db");
+const { User } = require("../../db");
 
 
 
