@@ -2,7 +2,7 @@
 // const validate = require('./userValidation/userValidation')
 const createUser = require("./User/UserPost");
 const userSearch = require("./User/UserSearch");
-const userUpdate = require("./User/userUpdate");
+//const userUpdate = require("./User/userUpdate");
 const userDelete = require("./User/userDelete");
 const userGetAll = require("./User/userGetAll");
 const userGetById = require("./User/userGetById");
@@ -35,7 +35,7 @@ module.exports = (io) => {
   routes.use("/", userSearch);
   routes.use("/", userGetAll);
   routes.use("/", userGetById);
-  routes.use("/", userUpdate);
+ // routes.use("/", userUpdate);
   routes.use("/", userDelete);
   routes.use("/", messageWebHook(io));
   routes.use("/", messageSend(io));
