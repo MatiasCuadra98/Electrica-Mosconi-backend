@@ -47,7 +47,17 @@ MsgSent.belongsTo(Contacts)
 Contacts.hasMany(MsgSent)
 
 
-
+const syncDatabase = async () => {
+     // Rellenar la columna 'chatId' con un valor predeterminado si es NULL antes de sincronizar
+  await MsgReceived.update(
+    { chatId: 0 },  // Proporcionar un valor predeterminado significativo para chatId
+    { where: { chatId: null } }
+  );
+    await sequelize.sync({ alter: true });  // Sincronizar base de datos con el modelo alterado
+  
+    // Rellenar la columna 'text' con un valor predeterminado si es NULL
+    await MsgReceived.updateDefaultText();
+  };
 
 module.exports={
     User,
@@ -56,4 +66,5 @@ module.exports={
     MsgSent,
     MsgReceived,
     conn: sequelize,
+    syncDatabase  
 }

@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
       },
       text: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       name: {
         type: DataTypes.TEXT,
@@ -54,6 +54,14 @@ module.exports = (sequelize) => {
     },
     { timestamps: false }
   );
+
+  MsgReceived.updateDefaultText = async function () {
+    await this.update(
+      { text: 'default text' },  // Proporcionar un valor predeterminado significativo
+      { where: { text: null } }
+    );
+  };
+
   return MsgReceived;
 
 };
