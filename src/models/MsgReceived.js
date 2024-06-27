@@ -50,6 +50,7 @@ module.exports = (sequelize) => {
       },
       BusinessId: {
         type: DataTypes.UUID,
+        allowNull: true,
       },
     },
     { timestamps: false }

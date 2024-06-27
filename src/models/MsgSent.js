@@ -37,12 +37,15 @@ module.exports = (sequelize) => {
       type: DataTypes.BIGINT,
       allowNull: false
     },
-    timestamps: {
+    timestamp: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false,
+      defaultValue: DataTypes.NOW
     },
     BusinessId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      allowNull: true, // Permite valores nulos
     },
   }, { timestamps: false });
+
 };
