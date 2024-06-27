@@ -5,6 +5,8 @@ const routes = require("./routes");
 const http = require("http");
 const { Server } = require("socket.io");
 const { User } = require("./db");
+const { enviarRespuestaManual } = require('./telegramBot/telegramBot'); // Asegúrate de importar la función
+
 
 
 const server = express();
@@ -46,9 +48,23 @@ io.on("connection", async (socket) => {
   });
 });
 
+server.post('/telegram/sendMessage', async (req, res) => {
+  const { chatId, message } = req.body;
+  try {
+    const response = await enviarRespuestaManual(chatId, message);
+    if (response.success) {
+      res.status(200).send(response.message);
+    } else {
+      res.status(500).send(response.message);
+    }
+  } catch (error) {
+    res.status(500).send('Error al enviar el mensaje: ' + error.message);
+  }
+});
+
 
 // server.get('/', (req, res) => {
-//   res.send('¡probando ruta!');
+//   res.send('¡Servidor funcionando correctamente!');
 // });
 
 server.use("/", routes(io));

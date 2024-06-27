@@ -45,22 +45,20 @@ bot.on("message", async (msg) => {
     );
   }
 
-  //Responder al mensaje recibido
-  bot.sendMessage(chatId, "Hola, ¿cómo estás? ¡Gracias por tu mensaje!");
+  //Respuesta automatica
+  //bot.sendMessage(chatId, "Hola, ¿cómo estás? ¡Gracias por tu mensaje!");
 });
+//funcion para responder manualmente
+async function enviarRespuestaManual(chatId, mensaje) {
+  try {
+    await bot.sendMessage(chatId, mensaje);
+    console.log('Respuesta manual enviada correctamente.');
+    return { success: true, message: 'Respuesta enviada correctamente' };
+  } catch (error) {
+    console.error('Error al enviar la respuesta manual:', error);
+    return { success: false, message: 'Error al enviar la respuesta manual' };
+  }
+}
 
-//async function enviarRespuestaManual(chatId, mensaje) {
-//  try {
-//    await bot.sendMessage(chatId, mensaje);
-//    console.log('Respuesta manual enviada correctamente.');
-//  } catch (error) {
-//    console.error('Error al enviar la respuesta manual:', error);
-//  }
-// }
-
-module.exports = bot;
-
-// //module.exports = {
-//   bot: bot,
-//   enviarRespuestaManual: enviarRespuestaManual
-// };
+//module.exports = bot;
+module.exports = { bot, enviarRespuestaManual };

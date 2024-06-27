@@ -1,7 +1,7 @@
 require("dotenv").config();
 const server = require("./src/app.js");
-const { conn, syncDatabase } = require("./src/db.js");
-const bot = require("./src/telegramBot/telegramBot.js")
+const { syncDatabase } = require("./src/db.js");
+const {bot} = require("./src/telegramBot/telegramBot.js")
 
 const PORT = process.env.PORT || 3000;
 
