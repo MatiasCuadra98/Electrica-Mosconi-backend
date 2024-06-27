@@ -4,7 +4,7 @@ module.exports = (sequelize) =>{
     sequelize.define('Business',{
         id:{
             type:DataTypes.UUID,
-            allowNull: false,
+            allowNull: true,
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
         },

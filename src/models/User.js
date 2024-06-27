@@ -1,5 +1,6 @@
-const { DataTypes } = require('sequelize');
+    const { DataTypes } = require('sequelize');
 
+<<<<<<< HEAD
 module.exports = (sequelize) =>{
     sequelize.define('User',{
         id:{
@@ -53,7 +54,49 @@ module.exports = (sequelize) =>{
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
+=======
+    module.exports = (sequelize) =>{
+        sequelize.define('User',{
+            id:{
+                type:DataTypes.UUID,
+                allowNull: false,
+                primaryKey: true,
+                defaultValue: DataTypes.UUIDV4
+            },
+            name:{
+                type: DataTypes.TEXT,
+                allowNull: false,
+            },
+            email:{
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            password:{
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            phone:{
+                type: DataTypes.BIGINT,
+                allowNull:false
+            },
+            privilege:{
+                type: DataTypes.ENUM('Admin','Member'),
+                allowNull: false,
+            },
+            socketId:{
+                type:DataTypes.STRING
+            },
+        
+            image:{
+                type: DataTypes.STRING,
+                allowNull: true 
+            },
+            login: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
+>>>>>>> 86dea8127573e21948d82705be873153ce487cc4
 
-        }
-    }, {timestamps: false});
-}
+            }
+        }, {timestamps: false});
+    }

@@ -13,12 +13,10 @@ const sequelize = new Sequelize(`postgres://mosconi:sPeXrQeTjv9b1cTvtFFPMZ06uVOH
     ssl: {
       require: true}},logging:false, native: false})
 
-//const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,{logging:false, native: false})
-// postgres://fl0user:FN3gLZ9Prvmq@ep-green-pine-55017894.us-east-2.aws.neon.tech:5432/whatacart-db?sslmode=require
-// const sequelize = new Sequelize(DATABASE_URL,{dialect:"postgres",logging:false})
+
 
 UserModel(sequelize)
-ContactsModel(sequelize)
+ContactsModel(sequelize)    
 BusinessModel(sequelize)
 MsgReceivedModel(sequelize)
 MsgSentModel(sequelize)
@@ -69,8 +67,42 @@ MsgSent.belongsTo(User, { timestamps: false });
 SocialMedia.belongsToMany(SocialMediaActive, { through: 'socialMedia_socialMediaActive', timestamps: false });
 SocialMediaActive.belongsToMany(SocialMedia, { through: 'socialMedia_socialMediaActive', timestamps: false });
 
+// const { User,Business,MsgReceived,MsgSent,Contacts } = sequelize.models
+
+// Contacts.hasMany(User)
+// User.hasMany(Contacts)
+
+// User.belongsTo(Business)
+// Business.hasMany(User)
+
+// MsgReceived.belongsTo(Business)
+// Business.hasMany(MsgReceived)
+
+// MsgSent.belongsTo(Business)
+// Business.hasMany(MsgSent)
+
 // Contacts.belongsTo(Business)
 // Business.hasMany(Contacts)
+
+// MsgReceived.belongsTo(Contacts)
+// Contacts.hasMany(MsgReceived)
+
+// MsgSent.belongsTo(Contacts)
+// Contacts.hasMany(MsgSent)
+
+
+const syncDatabase = async () => {
+     // Rellenar la columna 'chatId' con un valor predeterminado si es NULL antes de sincronizar
+  await MsgReceived.update(
+    { chatId: 0 },  // Proporcionar un valor predeterminado significativo para chatId
+    { where: { chatId: null } }
+  );
+    await sequelize.sync({ alter: true });  // Sincronizar base de datos con el modelo alterado
+  
+    // Rellenar la columna 'text' con un valor predeterminado si es NULL
+    await MsgReceived.updateDefaultText();
+  };
+
 
 module.exports={
     User,
@@ -81,4 +113,5 @@ module.exports={
     SocialMedia,
     SocialMediaActive,
     conn: sequelize,
+    syncDatabase  
 }
