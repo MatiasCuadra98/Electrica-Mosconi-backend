@@ -1,5 +1,5 @@
 // const { Op } = require('sequelize')
-const { User } = require('../../db');
+const { User, Business } = require('../../db');
 
 const allUsers = async () => {
 //**--AGREGUE ORDEN POR NOMBRE Y DATOS DEL BUSINESS */  

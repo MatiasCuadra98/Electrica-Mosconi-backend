@@ -46,6 +46,12 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: true, // Permite valores nulos
     },
+            //ESTO ES NUEVO:
+            received: {
+              type: DataTypes.BOOLEAN,
+              allowNull: false,
+              defaultValue: false
+            },
     
   }, { timestamps: false });
 
