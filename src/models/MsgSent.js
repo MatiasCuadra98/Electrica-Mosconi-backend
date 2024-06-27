@@ -8,6 +8,7 @@ module.exports = (sequelize)=>{
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
         },
+        //PARA QUE ES NAME? NAME DE QUIEN CREA EL MENSAJE O DE EL RECEPTOR?
         name:{
             type: DataTypes.TEXT,
             allowNull: false
@@ -36,6 +37,12 @@ module.exports = (sequelize)=>{
         timestamps:{
             type:DataTypes.DATE,
             allowNull:true
+        },
+        //ESTO ES NUEVO:
+        received: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+          defaultValue: false
         }
     }, {timestamps: false})
 } 

@@ -36,6 +36,26 @@ module.exports = (sequelize)=>{
         timestamp:{
             type: DataTypes.BIGINT,
             allowNull: false
+        },
+        //ESTO ES NUEVO
+        active: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+          defaultValue: false
+        },
+        state: {
+          type: DataTypes.ENUM,
+          //hay que cambiar el front para usar los values en Ingles
+          values: ['No Leidos', 'Leidos', 'Respondidos', 'Archivados'],
+          defaultValue: "No Leidos",
+          // values: ['New', 'Read', 'Answered', 'Archived'],
+          // defaultValue: "New",
+          allowNull: false,
+        },
+        received: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+          defaultValue: true
         }
     }, {timestamps: false})
 }

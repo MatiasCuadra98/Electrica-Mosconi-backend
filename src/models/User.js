@@ -8,9 +8,22 @@ module.exports = (sequelize) =>{
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
         },
+        // name:{
+        //     type: DataTypes.TEXT,
+        //     allowNull: false,
+        // },
         name:{
-            type: DataTypes.TEXT,
+            type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                notEmpty: {
+                  msg: 'El nombre del usuario no puede estar vacío.'
+                },
+                len: {
+                  args: [3, 100],
+                  msg: 'El nombre del usuario debe tener entre 3 y 100 caracteres.'
+                }
+              }
         },
         email:{
             type: DataTypes.STRING,
