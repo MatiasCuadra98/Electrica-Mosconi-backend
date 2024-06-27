@@ -4,6 +4,7 @@ module.exports = (sequelize) => {
   const MsgReceived = sequelize.define(
     "MsgReceived",
     {
+
       id: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -32,27 +33,46 @@ module.exports = (sequelize) => {
               throw new Error("yourObjectName must be an object");
             }
           },
-          
-        },
+        }  
       },
       payload: {
         type: DataTypes.JSON,
-        allowNull: false,
+          allowNull: false,
+        },
+        timestamp: {
+          type: DataTypes.BIGINT,
+          allowNull: false,
+        },
+        responded: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+          defaultValue: false,
+        },
+        BusinessId: {
+          type: DataTypes.UUID,
+          allowNull: true,
+        },
+        //ESTO ES NUEVO
+        active: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+          defaultValue: false
+        },
+        state: {
+          type: DataTypes.ENUM,
+          //hay que cambiar el front para usar los values en Ingles
+          values: ['No Leidos', 'Leidos', 'Respondidos', 'Archivados'],
+          defaultValue: "No Leidos",
+          // values: ['New', 'Read', 'Answered', 'Archived'],
+          // defaultValue: "New",
+          allowNull: false,
+        },
+        received: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+          defaultValue: true
+        },
       },
-      timestamp: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-      },
-      responded: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      BusinessId: {
-        type: DataTypes.UUID,
-        allowNull: true,
-      },
-    },
     { timestamps: false }
   );
 
