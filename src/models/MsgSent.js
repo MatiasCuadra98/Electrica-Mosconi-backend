@@ -46,6 +46,7 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: true, // Permite valores nulos
     },
+    
   }, { timestamps: false });
 
 };
