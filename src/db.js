@@ -6,8 +6,8 @@ const ContactsModel = require('./models/Contacts')
 const BusinessModel = require('./models/Business')
 const MsgReceivedModel = require('./models/MsgReceived')
 const MsgSentModel = require('./models/MsgSent')
-const SocialMedia = require('./models/SocialMedia')
-const SocialMediaActive = require('./models/SocialMediaActive')
+const SocialMediaModel = require('./models/SocialMedia')
+const SocialMediaActiveModel = require('./models/SocialMediaActive')
 
 const sequelize = new Sequelize(`postgres://mosconi:sPeXrQeTjv9b1cTvtFFPMZ06uVOHhhnC@dpg-cod8qp0l6cac73bf5nug-a.oregon-postgres.render.com/mosconi`, {dialectOptions: {
     ssl: {
@@ -20,12 +20,12 @@ ContactsModel(sequelize)
 BusinessModel(sequelize)
 MsgReceivedModel(sequelize)
 MsgSentModel(sequelize)
-SocialMedia(sequelize)
-SocialMediaActive(sequelize)
+SocialMediaModel(sequelize)
+SocialMediaActiveModel(sequelize)
 
 //Associations
 
-const { User,Business,MsgReceived,MsgSent,Contacts, SocialMedia, SocialMediaActive } = sequelize.models
+const { User,Business,MsgReceived,MsgSent,Contacts,SocialMedia,SocialMediaActive } = sequelize.models
 //1:N => Business y User
 Business.hasMany(User, { timestamps: false })
 User.belongsTo(Business, { timestamps: false })
