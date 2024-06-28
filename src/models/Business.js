@@ -77,13 +77,15 @@ module.exports = (sequelize) =>{
               }
             }
         },
-        apiKey:{
-            type:DataTypes.STRING,
-            allowNull:false
-        },
-        srcName:{
-            type:DataTypes.STRING,
-            allowNull:false
-        }
+        // apiKey:{
+        //     type:DataTypes.STRING,
+        //     allowNull:false
+        // },
+        // srcName:{
+        //     type:DataTypes.STRING,
+        //     allowNull:false
+        // }
     }, {timestamps: false});
 }
+
+// businesId:"0215436f-c2ba-4e8a-997b-a804932805c7"

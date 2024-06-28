@@ -1,7 +1,7 @@
 const {Business} = require('../../db');
 
-    const createBusiness = async (name, password, address, city, country, email, phone, apiKey, userId, contactId, socialMediaActiveId) => {
-
+    // const createBusiness = async (name, password, address, city, country, email, phone, apiKey, srcName, userId, contactId, socialMediaActiveId) => {
+        const createBusiness = async (name, password, address, city, country, email, phone, userId, contactId, socialMediaActiveId) => {
             const [newBusiness, created] = await Business.findOrCreate({
                 where: {
                     name,
@@ -11,7 +11,8 @@ const {Business} = require('../../db');
                     country, 
                     email,
                     phone,
-                    apiKey,
+                    // apiKey,
+                    // srcName,
                 },
             })
             

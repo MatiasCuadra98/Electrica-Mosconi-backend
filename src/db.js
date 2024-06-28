@@ -9,11 +9,14 @@ const MsgSentModel = require('./models/MsgSent')
 const SocialMediaModel = require('./models/SocialMedia')
 const SocialMediaActiveModel = require('./models/SocialMediaActive')
 
-const sequelize = new Sequelize(`postgres://mosconi:sPeXrQeTjv9b1cTvtFFPMZ06uVOHhhnC@dpg-cod8qp0l6cac73bf5nug-a.oregon-postgres.render.com/mosconi`, {dialectOptions: {
-    ssl: {
-      require: true}},logging:false, native: false})
+// const sequelize = new Sequelize(`postgres://mosconi:sPeXrQeTjv9b1cTvtFFPMZ06uVOHhhnC@dpg-cod8qp0l6cac73bf5nug-a.oregon-postgres.render.com/mosconi`, {dialectOptions: {
+//     ssl: {
+//       require: true}},logging:false, native: false})
 
-
+      const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
+        logging: false, 
+        native: false, 
+      }); 
 
 UserModel(sequelize)
 ContactsModel(sequelize)    
@@ -93,16 +96,15 @@ SocialMediaActive.belongsToMany(SocialMedia, { through: 'socialMedia_socialMedia
 
 const syncDatabase = async () => {
      // Rellenar la columna 'chatId' con un valor predeterminado si es NULL antes de sincronizar
-  await MsgReceived.update(
-    { chatId: 0 },  // Proporcionar un valor predeterminado significativo para chatId
-    { where: { chatId: null } }
-  );
+  // await MsgReceived.update(
+  //   { chatId: 0 },  // Proporcionar un valor predeterminado significativo para chatId
+  //   { where: { chatId: null } }
+  // );
     await sequelize.sync({ alter: true });  // Sincronizar base de datos con el modelo alterado
   
     // Rellenar la columna 'text' con un valor predeterminado si es NULL
     await MsgReceived.updateDefaultText();
   };
-
 
 module.exports={
     User,

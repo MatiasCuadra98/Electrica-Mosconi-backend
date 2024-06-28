@@ -1,7 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const routes = require("./routes");
+// const routes = require("./routes");
+const routes = require("./newRoutes");
 const http = require("http");
 const { Server } = require("socket.io");
 const { User } = require("./db");
