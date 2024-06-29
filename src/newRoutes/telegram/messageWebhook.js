@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 const { Router } = require('express')
 const {Business,User,MsgReceived, Contacts, SocialMedia} = require('../../db')
+=======
+// const { Router } = require('express')
+// const {Business,User,MsgReceived, Contacts} = require('../../db')
+>>>>>>> a9c0b476b772e8b79aa3395dab6da424edbca46d
 
-const messageWebhook = Router()
+// const messageWebhook = Router()
 
 module.exports = (io)=>{
     //ruta para recibir mensajes
@@ -65,8 +70,8 @@ module.exports = (io)=>{
             }
         }
         
-        res.status(200).end()
-    })
+//         res.status(200).end()
+//     })
 
-    return messageWebhook;
-}
+//     return messageWebhook;
+// }

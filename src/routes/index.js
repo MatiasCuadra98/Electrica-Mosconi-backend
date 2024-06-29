@@ -2,10 +2,10 @@
 // const validate = require('./userValidation/userValidation')
 const createUser = require("./User/UserPost");
 const userSearch = require("./User/UserSearch");
-//const userUpdate = require("./User/userUpdate");
-const userDelete = require("./User/userDelete");
-const userGetAll = require("./User/userGetAll");
-const userGetById = require("./User/userGetById");
+//const userUpdate = require("./User/UserUpdate");
+const userDelete = require("./User/UserDelete");
+const userGetAll = require("./User/UserGetAll");
+const userGetById = require("./User/UserGetById");
 const createBusiness = require("./Business/BusinessPost");
 const businessSearch = require("./Business/BusinessSearch");
 const businessGetAll = require("./Business/BusinessGetAll");

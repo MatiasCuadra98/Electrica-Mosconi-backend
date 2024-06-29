@@ -80,14 +80,14 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
     // Envía el mensaje
     await bot.sendMessage(chatId, mensaje);
 
-    const botUsername = bot.options.username || 'Matias'; 
+    const botUsername = bot.options.username || "Matias";
     //sin el businessId el mensaje no se guarda en la base de datos
     const businessId = 'f67900af-f742-4556-9eb1-5643368e0735'; // Reemplaza con el BusinessId recibido al crear el negocio
 
     // Guarda el mensaje enviado en la base de datos
     await MsgSent.create({
       name: botUsername, // Nombre del bot
-      toData: { app: 'Telegram', value: chatId }, // Información de destino (ejemplo)
+      toData: { app: "Telegram", value: chatId }, // Información de destino (ejemplo)
       message: mensaje,
       chatId: chatId,
       timestamp: Date.now(), // Usamos el timestamp actual
@@ -104,8 +104,11 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
     console.log('Respuesta manual enviada y guardada correctamente.');
     return { success: true, message: 'Respuesta enviada correctamente' };
   } catch (error) {
-    console.error('Error al enviar y guardar la respuesta manual:', error);
-    return { success: false, message: 'Error al enviar y guardar la respuesta manual' };
+    console.error("Error al enviar y guardar la respuesta manual:", error);
+    return {
+      success: false,
+      message: "Error al enviar y guardar la respuesta manual",
+    };
   }
 }
 //module.exports = bot;
