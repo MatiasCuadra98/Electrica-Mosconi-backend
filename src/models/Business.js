@@ -88,4 +88,4 @@ module.exports = (sequelize) =>{
     }, {timestamps: false});
 }
 
-// businesId:"0215436f-c2ba-4e8a-997b-a804932805c7"
+// businesId: 0215436f-c2ba-4e8a-997b-a804932805c7
