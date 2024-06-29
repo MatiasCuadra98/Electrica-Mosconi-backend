@@ -36,7 +36,7 @@ bot.on("message", async (msg) => {
       fromData: msg.from,
       payload: msg, // Almacenamos todo el objeto de mensaje
       timestamp: Date.now(), // Usamos el timestamp actual
-      BusinessId: null, //este es el ID de la empresa
+      BusinessId: "feb81eaa-5e32-4ec0-bb91-a396ab1b854f", //este es el ID de la empresa
     });
 
     console.log("Mensaje recibido guardado en la base de datos");
@@ -70,26 +70,28 @@ async function enviarRespuestaManual(chatId, mensaje) {
     // Envía el mensaje
     await bot.sendMessage(chatId, mensaje);
 
-    const botUsername = bot.options.username || 'Matias'; 
+    const botUsername = bot.options.username || "Matias";
     //sin el businessId el mensaje no se guarda en la base de datos
-    const businessId = 'f67900af-f742-4556-9eb1-5643368e0735'; // Reemplaza con el BusinessId recibido al crear el negocio
-
+    const businessId = "feb81eaa-5e32-4ec0-bb91-a396ab1b854f"; // Reemplaza con el BusinessId recibido al crear el negocio
 
     // Guarda el mensaje enviado en la base de datos
     await MsgSent.create({
       name: botUsername, // Nombre del bot
-      toData: { app: 'Telegram', value: chatId }, // Información de destino (ejemplo)
+      toData: { app: "Telegram", value: chatId }, // Información de destino (ejemplo)
       message: mensaje,
       chatId: chatId,
       timestamp: Date.now(), // Usamos el timestamp actual
       BusinessId: businessId, // Reemplaza con el ID de tu negocio si es necesario
     });
 
-    console.log('Respuesta manual enviada y guardada correctamente.');
-    return { success: true, message: 'Respuesta enviada correctamente' };
+    console.log("Respuesta manual enviada y guardada correctamente.");
+    return { success: true, message: "Respuesta enviada correctamente" };
   } catch (error) {
-    console.error('Error al enviar y guardar la respuesta manual:', error);
-    return { success: false, message: 'Error al enviar y guardar la respuesta manual' };
+    console.error("Error al enviar y guardar la respuesta manual:", error);
+    return {
+      success: false,
+      message: "Error al enviar y guardar la respuesta manual",
+    };
   }
 }
 //module.exports = bot;
