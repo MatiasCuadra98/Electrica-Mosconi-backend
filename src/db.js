@@ -118,7 +118,7 @@ const syncDatabase = async () => {
   //   { chatId: 0 },  // Proporcionar un valor predeterminado significativo para chatId
   //   { where: { chatId: null } }
   // );
-  await sequelize.sync({ force: true }); // Sincronizar base de datos con el modelo alterado
+  await sequelize.sync({ alter: true }); // Sincronizar base de datos con el modelo alterado
 
   // Rellenar la columna 'text' con un valor predeterminado si es NULL
   await MsgReceived.updateDefaultText();
