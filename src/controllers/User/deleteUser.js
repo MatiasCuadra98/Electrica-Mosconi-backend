@@ -1,8 +1,7 @@
 const {User} = require('../../db');
-// const numberIdValidation = require('../../utils/numberIdvalidation')
+
 const deleteUser = async(id) =>{
-    // const userId = numberIdValidation(id);
-    // const userToDelete = await User.findByPk(userId)
+
     if(!id) throw new Error('Missing ID')
     const userToDelete = await User.findByPk(id)
     
