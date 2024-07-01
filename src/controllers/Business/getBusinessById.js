@@ -1,9 +1,6 @@
 const {Business, User, SocialMedia, SocialMediaActive, Contacts, MsgReceived, MsgSent} = require('../../db')
-// const numberIdValidation = require('../../utils/numberIdvalidation')
 
 const getBusinessById = async (id) => {
-    // const businessId = await numberIdValidation(id)
-    // const business = await Business.findByPk(businessId, {
     if(!id) throw new Error('Missing ID');
     const business = await Business.findByPk(id,
          {
