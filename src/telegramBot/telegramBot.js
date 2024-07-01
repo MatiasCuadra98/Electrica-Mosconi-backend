@@ -1,12 +1,14 @@
 const TelegramBot = require("node-telegram-bot-api");
-const { MsgReceived, MsgSent, Contacts } = require("../db"); // Importamos los modelos MsgReceived y Contacts
+const { MsgReceived, MsgSent, Contacts, Business } = require("../db"); // Importamos los modelos MsgReceived y Contacts
 
 const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94"; // Reemplaza con el token de tu bot
 // Inicializar el bot de Telegram
 // const bot = new TelegramBot(botToken, { polling: true });
 //const bot = new TelegramBot(botToken);
-const bot = new TelegramBot(botToken, { polling: true });
 
+const bot = new TelegramBot(botToken);
+
+const businessId = '297d05bb-3f1c-4952-b2ec-0f6130b4e304'; // Reemplaza con el BusinessId recibido al crear el negocio
 
 // Exportar el bot para que pueda ser utilizado desde otros módulos
 bot.on("message", async (msg) => {
@@ -29,10 +31,11 @@ bot.on("message", async (msg) => {
     const [newContact, created] = await Contacts.findOrCreate({
       where:{phone: senderPhone }, 
       defaults:{
-        name:sender.name, 
+        name:senderName, 
         notification:true}
     })
-    await newContact.addBusiness(business);
+    
+    await newContact.addBusiness(businessId);
     await newContact.setSocialMedia(msg.from) 
     // Guardamos el mensaje recibido en la base de datos
     await MsgReceived.create({
@@ -47,7 +50,7 @@ bot.on("message", async (msg) => {
       state: "No Leidos",
       received: true
     });
-    await MsgReceived.setBusiness(business);
+    await MsgReceived.setBusiness(businessId);
     await MsgReceived.setContact(newContact);
     await MsgReceived.setSocialMedia({where: {name: msg.from}})
     await newContact.setMsgReceived(MsgReceived);
@@ -88,7 +91,6 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
 
     const botUsername = bot.options.username || "Matias";
     //sin el businessId el mensaje no se guarda en la base de datos
-    const businessId = 'f67900af-f742-4556-9eb1-5643368e0735'; // Reemplaza con el BusinessId recibido al crear el negocio
 
     // Guarda el mensaje enviado en la base de datos
     await MsgSent.create({
