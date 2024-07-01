@@ -17,12 +17,11 @@ server.listen(PORT, async () => {
 
 const setTelegramWebhook = async () => {
 
-  const url = "https://electrica-mosconi-backend-server.onrender.com/";
-
+  const url = "https://electrica-mosconi-server.onrender.com";
   try {
 
-    const webhookUrl = `${url}/telegram/webhook`;
-    bot.setWebHook(webhookUrl);
+    const webhookUrl = `${url}/bot${bot.token}`;
+    await bot.setWebHook(webhookUrl);
     console.log("Webhook configurado correctamente")
   } catch (error) {
     console.error("Error al configurar el webhook de Telegram:", error.message);
