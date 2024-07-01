@@ -11,4 +11,4 @@ businessRoute.post('/', createBusinessHandler)
 businessRoute.put('/:id', updateBusinessHandler);
 // //businessRoute.delete('/delete/:id', deleteBusinessHandler);
 
-module.exports= {businessRoute};
+module.exports= businessRoute;
