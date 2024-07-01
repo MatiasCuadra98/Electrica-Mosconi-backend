@@ -3,12 +3,10 @@ const { MsgReceived, MsgSent, Contacts, Business } = require("../db"); // Import
 
 const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94"; // Reemplaza con el token de tu bot
 // Inicializar el bot de Telegram
-// const bot = new TelegramBot(botToken, { polling: true });
+const bot = new TelegramBot(botToken, { polling: true });
 //const bot = new TelegramBot(botToken);
 
-const bot = new TelegramBot(botToken);
-
-const businessId = '297d05bb-3f1c-4952-b2ec-0f6130b4e304'; // Reemplaza con el BusinessId recibido al crear el negocio
+const businessId = "297d05bb-3f1c-4952-b2ec-0f6130b4e304"; // Reemplaza con el BusinessId recibido al crear el negocio
 
 // Exportar el bot para que pueda ser utilizado desde otros módulos
 bot.on("message", async (msg) => {
@@ -29,14 +27,15 @@ bot.on("message", async (msg) => {
     //   });
     // }
     const [newContact, created] = await Contacts.findOrCreate({
-      where:{phone: senderPhone }, 
-      defaults:{
-        name:senderName, 
-        notification:true}
-    })
-    
+      where: { phone: senderPhone },
+      defaults: {
+        name: senderName,
+        notification: true,
+      },
+    });
+
     await newContact.addBusiness(businessId);
-    await newContact.setSocialMedia(msg.from) 
+    await newContact.setSocialMedia(msg.from);
     // Guardamos el mensaje recibido en la base de datos
     await MsgReceived.create({
       name: senderName,
@@ -48,11 +47,11 @@ bot.on("message", async (msg) => {
       BusinessId: null, //este es el ID de la empresa
       active: false,
       state: "No Leidos",
-      received: true
+      received: true,
     });
     await MsgReceived.setBusiness(businessId);
     await MsgReceived.setContact(newContact);
-    await MsgReceived.setSocialMedia({where: {name: msg.from}})
+    await MsgReceived.setSocialMedia({ where: { name: msg.from } });
     await newContact.setMsgReceived(MsgReceived);
 
     console.log("Mensaje recibido guardado en la base de datos");
@@ -63,11 +62,8 @@ bot.on("message", async (msg) => {
     );
   }
 
-  
-
   //Respuesta automatica
   bot.sendMessage(chatId, "Hola, ¿cómo estás? ¡Gracias por tu mensaje!");
-
 });
 
 //funcion para responder manualmente
@@ -100,17 +96,17 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
       chatId: chatId,
       timestamp: Date.now(), // Usamos el timestamp actual
       BusinessId: businessId, // Reemplaza con el ID de tu negocio si es necesario
-      received: false
+      received: false,
     });
 
-    await msgCreated.setBusiness(businessId)
-    const messageR = MsgReceived.findAll({where: { chatId}})
-    await msgCreated.addMsgReceived(messageR)
-    await msgCreated.setContacts(messageR.Contacts.Id)
-    userId && msgCreated.setUser(userId)
-    
-    console.log('Respuesta manual enviada y guardada correctamente.');
-    return { success: true, message: 'Respuesta enviada correctamente' };
+    await msgCreated.setBusiness(businessId);
+    const messageR = MsgReceived.findAll({ where: { chatId } });
+    await msgCreated.addMsgReceived(messageR);
+    await msgCreated.setContacts(messageR.Contacts.Id);
+    userId && msgCreated.setUser(userId);
+
+    console.log("Respuesta manual enviada y guardada correctamente.");
+    return { success: true, message: "Respuesta enviada correctamente" };
   } catch (error) {
     console.error("Error al enviar y guardar la respuesta manual:", error);
     return {
