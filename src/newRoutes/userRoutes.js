@@ -9,8 +9,8 @@ const userRoute = Router();
 
 userRoute.get('/', getAllUsersHandler);
 userRoute.get('/:id', getUserByIdHandler);
-userRoute.post('/', createUserHandler);
-userRoute.put('/:id', updateUserHandler);
+userRoute.post('create', createUserHandler);
+userRoute.put('update/:id', updateUserHandler);
 userRoute.delete('/delete/:id', deleteUserHandler);
 
 module.exports = {userRoute};

@@ -8,7 +8,7 @@ const contactRoute = Router();
 
 // contactRoute.get('/', getAllContactHandler);
 contactRoute.get('/:id', getContactByIdHandler);
-// contactRoute.post('/', createContactHandler);
-// contactRoute.put('/:id', updateContactHandler);
+// contactRoute.post('/create/', createContactHandler);
+// contactRoute.put('/update/:id', updateContactHandler);
 
 module.exports = {contactRoute};

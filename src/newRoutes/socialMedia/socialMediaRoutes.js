@@ -6,7 +6,7 @@ const {addSocialMediaHandler} = require('../../handlers/SocialMedia/AllSocialMed
 const socialMediaRoute = Router();
 
 socialMediaRoute.get('/', getAllSocialMediaHandler);
-socialMediaRoute.post('/', addSocialMediaHandler);
+socialMediaRoute.post('/add/', addSocialMediaHandler);
 socialMediaRoute.use('/active', socialMediaActiveRoute);
 
 module.exports = {socialMediaRoute};
