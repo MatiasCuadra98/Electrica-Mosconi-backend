@@ -5,7 +5,7 @@ const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94"; // Reemplaza 
 
 // Inicializar el bot de Telegram
 // const bot = new TelegramBot(botToken, { polling: true });
-const bot = new TelegramBot(botToken, { polling: true });
+const bot = new TelegramBot(botToken);
 
 // Exportar el bot para que pueda ser utilizado desde otros módulos
 
