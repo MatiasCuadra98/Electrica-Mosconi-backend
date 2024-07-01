@@ -6,7 +6,16 @@ const handlerBusinessPost = async(req,res) =>{
     try {
         if(!name || !password || !country || !phone || !email || !apiKey || !srcName) return res.status(404).json({error:'required data not found'})
         // const newBusiness = await createBusiness(name,phone,email,SuperuserId)
-        const newBusiness = await createBusiness({name,password, address, city, country, phone, email,apiKey,srcName})
+        const newBusiness = await createBusiness({
+            name,
+            password,
+             address,
+              city, 
+              country, 
+              phone, 
+              email,
+              apiKey,
+              srcName})
         if(!newBusiness) return res.status(404).json({error:'Business not found'})
         return res.status(200).json(newBusiness)
     } catch (error) {

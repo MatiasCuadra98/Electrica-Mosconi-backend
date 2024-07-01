@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const {Business,User,MsgReceived, Contacts} = require('../../db')
+const {Business,User,MsgReceived, Contacts, SocialMedia} = require('../../db')
 
 const messageWebhook = Router()
 
@@ -8,13 +8,16 @@ module.exports = (io)=>{
     //ruta para recibir mensajes
     messageWebhook.post('/messageWebHook/', async (req, res) =>{
         //declaramos variables para recibir los mensajes en tiempo real con new Date y timestamp
-        const {type, payload, timestamp,app} = req.body
+        // const {type, payload, timestamp,app} = req.body
+        const { type, payload, timestamp, app } = req.body;  //esta linea reemplaza a la linea superior
         const date = new Date(timestamp)
         const hours = date.getHours().toString()
         const minutes = date.getMinutes().toString()
         const seconds = date.getSeconds().toString()
         if (type === 'message') {    
             const business = await Business.findOne({where: {srcName: app}})
+            // const socialMedia = await SocialMedia.findOne({where: {name: payload.source}}) a chequear desde donde puedo sacar el dato de la red social
+            //ver en las proximas lineas de codigo para que sirven? ya que se trae al modelo User => y este modelo es de los empleados... 
             if (business) {
                 const users = await User.findAll({where:{BusinessId:business.id}})
                 if (users.length > 0) {
@@ -41,7 +44,27 @@ module.exports = (io)=>{
                     return color;
                 }
                 const [newContact, created] = await Contacts.findOrCreate({where:{phone:payload.source, BusinessId:business.id}, defaults:{name:payload.sender.name, notification:true, color:generarColorAleatorio()}})
-                await MsgReceived.create({name: payload.sender.name, phone:payload.source, payload: payload,timestamp:timestamp, BusinessId: business.id, ContactId: newContact.id})
+                await newContact.addBusiness(business);
+                // await newContact.setSocialMedia(socialMedia) 
+
+                const newMsgReceived = await MsgReceived.create({
+                    chatId: payload.payload.id,
+                    text: payload.payload.text,
+                    name: payload.sender.name,
+                    fromData: payload.sender,
+                    payload: payload,
+                    timestamp: timestamp,
+                    active: true,
+                    state: 'No Leidos',
+                    received: true
+                });
+                // Asignar relaciones para MsgReceived
+                await newMsgReceived.setBusiness(business);
+                await newMsgReceived.setContact(newContact);
+                // await newMsgReceived.setSocialMedia(socialMedia)
+                // Asignar relaciones para Contacts
+                await newContact.setMsgReceived(newMsgReceived);
+                
             }
         }
         

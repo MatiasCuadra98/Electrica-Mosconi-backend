@@ -6,7 +6,7 @@ const createBusiness = async({name,password, address, city, country, phone, emai
             where:{
                 name,
                 password, 
-                address, 
+                address,
                 city, 
                 country, 
                 phone, 
