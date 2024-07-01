@@ -4,8 +4,8 @@ const { MsgReceived, MsgSent, Contacts } = require("../db"); // Importamos los m
 const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94"; // Reemplaza con el token de tu bot
 
 // Inicializar el bot de Telegram
- const bot = new TelegramBot(botToken);
-//const bot = new TelegramBot(botToken);
+ //const bot = new TelegramBot(botToken);
+const bot = new TelegramBot(botToken, { polling: true });
 
 // Exportar el bot para que pueda ser utilizado desde otros módulos
 
