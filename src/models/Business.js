@@ -8,10 +8,7 @@ module.exports = (sequelize) =>{
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
         },
-        // name:{
-        //     type: DataTypes.TEXT,
-        //     allowNull: false,
-        // },
+
         name:{
             type: DataTypes.STRING,
             allowNull: false,
@@ -55,18 +52,12 @@ module.exports = (sequelize) =>{
                 },
               }
         },
-        // phone:{
-        //     type: DataTypes.BIGINT,
-        //     allowNull:false
-        // },
+
         phone:{
             type: DataTypes.INTEGER,
             allowNull: true,
         },
-        // email:{
-        //     type: DataTypes.STRING,
-        //     allowNull: false
-        // },
+
         email: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -88,4 +79,3 @@ module.exports = (sequelize) =>{
     }, {timestamps: false});
 }
 
-// businesId: 0215436f-c2ba-4e8a-997b-a804932805c7
