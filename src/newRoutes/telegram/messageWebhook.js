@@ -8,12 +8,14 @@ module.exports = (io)=>{
     messageWebhook.post('/messageWebHook/', async (req, res) =>{
         //declaramos variables para recibir los mensajes en tiempo real con new Date y timestamp
         const { type, payload, timestamp, app } = req.body;
+        console.log('payload', payload);
         const date = new Date(timestamp)
         const hours = date.getHours().toString()
         const minutes = date.getMinutes().toString()
         const seconds = date.getSeconds().toString()
         if (type === 'message') {    
             const business = await Business.findOne({where: {srcName: app}})
+            console.log(business.Contacts);
             // const socialMedia = await SocialMedia.findOne({where: {name: payload.source}}) a chequear desde donde puedo sacar el dato de la red social
             //ver en las proximas lineas de codigo para que sirven? ya que se trae al modelo User => y este modelo es de los empleados... 
             if (business) {
@@ -40,7 +42,8 @@ module.exports = (io)=>{
                     return color;
                 }
                 
-                const [newContact, created] = await Contacts.findOrCreate({where:{phone:payload.source, BusinessId:business.id}, defaults:{name:payload.sender.name, notification:true, color:generarColorAleatorio()}})
+                const [newContact, created] = await Contacts.findOrCreate({where:{phone:payload.source}, defaults:{name:payload.sender.name, notification:true, chatId:payload.payload.id, color:generarColorAleatorio()}})
+               // const [newContact, created] = await Contacts.findOrCreate({where:{phone:payload.source}, defaults:{name:payload.sender.name, notification:true, color:generarColorAleatorio()}})
                 await newContact.addBusiness(business);
                 // await newContact.setSocialMedia(socialMedia) 
 
@@ -55,13 +58,13 @@ module.exports = (io)=>{
                     state: 'No Leidos',
                     received: true
                 });
+                console.log('llego un nuevo mensaje');
                 // Asignar relaciones para MsgReceived
                 await newMsgReceived.setBusiness(business);
                 await newMsgReceived.setContact(newContact);
                 // await newMsgReceived.setSocialMedia(socialMedia)
                 // Asignar relaciones para Contacts
                 await newContact.setMsgReceived(newMsgReceived);
-                
             }
         }
         
