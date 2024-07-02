@@ -1,134 +1,3 @@
-// const TelegramBot = require("node-telegram-bot-api");
-// const { MsgReceived, MsgSent, Contacts, Business, SocialMedia } = require("../db"); // Importamos los modelos MsgReceived y Contacts
-
-// const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94"; // Reemplaza con el token de tu bot
-// // Inicializar el bot de Telegram
-// const bot = new TelegramBot(botToken, { polling: true });
-// // const bot = new TelegramBot(botToken);
-
-// const businessId = "e96fbc97-b34f-4174-ab59-29c6585b75eb"; // Reemplaza con el BusinessId recibido al crear el negocio
-// const socialMediaId = 3
-// // Exportar el bot para que pueda ser utilizado desde otros módulos
-// bot.on("message", async (msg) => {
-//   const chatId = msg.chat.id;
-//   const message = msg.text;
-//   const senderName = msg.from.first_name;
-//   const senderPhone = msg.from.id; // Usamos el ID del remitente como el número de teléfono en este caso
-//   // Guardar el mensaje recibido en la base de datos
-//   console.log('msg: ', msg);
-//   try {
-//     const [newContact, created] = await Contacts.findOrCreate({
-//       where: { phone: senderPhone },
-//       defaults: {
-//         name: senderName,
-//         notification: true,
-//         SocialMediumId: socialMediaId
-//       },
-//     });
-//     if (created && businessId) {
-//       const business = await Business.findByPk(businessId);
-//       if (!business) throw new Error(`Business with id ${businessId} not found`);
-//       await newContact.addBusiness(business);
-//     }
-//     if (created && socialMediaId) {
-//       const socialMedia = await SocialMedia.findByPk(socialMediaId);
-//       if (!socialMedia) throw new Error(`Social Media with id ${socialMediaId} not found`);
-//       await newContact.setSocialMedia(socialMedia);
-//     }
-//     const contact = newContact ? newContact : Contacts.findOne({where: {phone: senderPhone}})
-//     // Guardamos el mensaje recibido en la base de datos
-//    const msgReceived = await MsgReceived.create({
-//       name: senderName,
-//       chatId: chatId,
-//       text: message,
-//       fromData: msg.from,
-//       payload: msg, // Almacenamos todo el objeto de mensaje
-//       timestamp: Date.now(), // Usamos el timestamp actual
-//       BusinessId: null, //este es el ID de la empresa
-//       active: false,
-//       state: "No Leidos",
-//       received: true,
-//     });
-//     if (businessId) {
-//       const business = await Business.findByPk(businessId);
-//       if (!business) throw new Error(`Business with id ${businessId} not found`);
-//       await msgReceived.setBusiness(business);
-//     };
-//     if (contact) {
-//       await msgReceived.setContact(contact);
-//     } else {
-//       throw new Error(`Contact not found`);
-//     };
-
-//     if (socialMediaId) {
-//       const socialMedia = await SocialMedia.findByPk(socialMediaId);
-//       if (!socialMedia) throw new Error(`Business with id ${socialMediaId} not found`);
-//       await msgReceived.setSocialMedia(socialMedia);
-//     }
-
-//     if (msgReceived) {
-//       await contact.setMsgReceived(msgReceived);
-//     } else {
-//       throw new Error(`Message Received not found`);
-//     };
-   
-// //msgReceived: e3e2ecc1-85dc-4a48-89e0-5f5c66773082 
-//     console.log("Mensaje recibido guardado en la base de datos:");
-//     console.log('mensaje recibido', msgReceived);
-    
-//   } catch (error) {
-//     console.error(
-//       "Error al guardar el mensaje recibido en la base de datos:",
-//       error
-//     );
-//   }
-
-//   //Respuesta automatica
-//   bot.sendMessage(chatId, "Hola, ¿cómo estás? ¡Gracias por tu mensaje!");
-// });
-
-
-// // Función para enviar respuestas manuales y guardar en la base de datos
-// async function enviarRespuestaManual(chatId, mensaje, userId) {
-//   try {
-//     // Envía el mensaje
-//     await bot.sendMessage(chatId, mensaje);
-
-//     const botUsername = bot.options.username || "Matias";
-//     //sin el businessId el mensaje no se guarda en la base de datos
-
-//     // Guarda el mensaje enviado en la base de datos
-//     await MsgSent.create({
-//       name: botUsername, // Nombre del bot
-//       toData: { app: "Telegram", value: chatId }, // Información de destino (ejemplo)
-//       message: mensaje,
-//       chatId: chatId,
-//       timestamp: Date.now(), // Usamos el timestamp actual
-//       BusinessId: businessId, // Reemplaza con el ID de tu negocio si es necesario
-//       received: false,
-//     });
-
-//     // await msgCreated.setBusiness(businessId);
-//     // const messageR = MsgReceived.findAll({ where: { chatId } });
-//     // await msgCreated.addMsgReceived(messageR);
-//     // await msgCreated.setContacts(messageR.Contacts.Id);
-//     // userId && msgCreated.setUser(userId);
-
-//     console.log("Respuesta manual enviada y guardada correctamente.");
-//     return { success: true, message: "Respuesta enviada correctamente" };
-//   } catch (error) {
-//     console.error("Error al enviar y guardar la respuesta manual:", error);
-//     return {
-//       success: false,
-//       message: "Error al enviar y guardar la respuesta manual",
-//     };
-//   }
-// }
-// //module.exports = bot;
-// module.exports = { bot, enviarRespuestaManual };
-
-
-
 const TelegramBot = require("node-telegram-bot-api");
 const { MsgReceived, MsgSent, Contacts, Business, SocialMedia, User } = require("../db");
 
@@ -147,11 +16,7 @@ bot.on("message", async (msg) => {
   console.log('msg: ', msg);
 
   try {
-<<<<<<< HEAD
     // Buscar o crear el contacto
-=======
-    console.log(msg.from);
->>>>>>> bc0d9b9e784b57e1012f9412428933f0f2aa5812
     const [newContact, created] = await Contacts.findOrCreate({
       where: { phone: senderPhone },
       defaults: {
@@ -219,10 +84,6 @@ bot.on("message", async (msg) => {
   bot.sendMessage(chatId, "Hola, ¿cómo estás? ¡Gracias por tu mensaje!");
 });
 
-<<<<<<< HEAD
-=======
-
->>>>>>> bc0d9b9e784b57e1012f9412428933f0f2aa5812
 // Función para enviar respuestas manuales y guardar en la base de datos
 async function enviarRespuestaManual(chatId, mensaje, userId) {
   try {
@@ -272,10 +133,5 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
     };
   }
 }
-<<<<<<< HEAD
 
 module.exports = { bot, enviarRespuestaManual };
-=======
-//module.exports = bot;
-module.exports = { bot, enviarRespuestaManual };
->>>>>>> bc0d9b9e784b57e1012f9412428933f0f2aa5812
