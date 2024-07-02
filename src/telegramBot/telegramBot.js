@@ -109,7 +109,7 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
       await msgSent.setBusiness(business);
     }
 
-    const messageR = MsgReceived.findAll({ where: { chatId } });
+    const messageR = await MsgReceived.findAll({ where: { chatId } });
     if(!messageR) throw new Error(`msgSent-msgReceived: Message Received with Chatid ${chatId} not found`);
     await msgSent.addMsgReceived(messageR);
 
