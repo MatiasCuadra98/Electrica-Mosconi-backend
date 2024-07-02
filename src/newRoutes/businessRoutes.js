@@ -7,8 +7,8 @@ const businessRoute = Router();
 
 // //businessRoute.get('/', getAllBusinessHandler);
 businessRoute.get('/:id', getBusinessByIdHandler);
-businessRoute.post('/', createBusinessHandler)
-businessRoute.put('/:id', updateBusinessHandler);
+businessRoute.post('/create', createBusinessHandler)
+businessRoute.put('/update/:id', updateBusinessHandler);
 // //businessRoute.delete('/delete/:id', deleteBusinessHandler);
 
 module.exports= businessRoute;

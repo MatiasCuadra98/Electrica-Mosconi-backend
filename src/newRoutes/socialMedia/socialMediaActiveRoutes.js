@@ -9,8 +9,8 @@ const socialMediaActiveRoute = Router();
 
 socialMediaActiveRoute.get('/', getAllSocialMediaActiveHandler);
 // socialMediaActiveRoute.get('/:id', getSocialMediaActiveByIdHandler);
-socialMediaActiveRoute.post('/', addSocialMediaActiveHandler);
-// socialMediaActiveRoute.put('/:id', updateSocialMediaActiveHandler);
+socialMediaActiveRoute.post('/add/', addSocialMediaActiveHandler);
+// socialMediaActiveRoute.put('/update/:id', updateSocialMediaActiveHandler);
 // socialMediaActiveRoute.delete('/delete/:id', deleteSocialMediaActiveHandler);
 
 module.exports = {socialMediaActiveRoute};

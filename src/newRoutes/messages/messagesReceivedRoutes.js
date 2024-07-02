@@ -10,7 +10,7 @@ const {getMessageReceivedByIdHandler} = require('../../handlers/Message/messages
 const messagesReceivedRoute = Router();
 
 messagesReceivedRoute.get('/', getAllMessagesReceivedHandler);
-// messagesReceivedRoute.get('contact/:id', getAllMessagesReceivedByContactHandler);
+// messagesReceivedRoute.get('byContact/:id', getAllMessagesReceivedByContactHandler);
 messagesReceivedRoute.get('/:id', getMessageReceivedByIdHandler);
 // messagesReceivedRoute.put('/state/:id', updateStateMessageReceivedHandler);
 // messagesReceivedRoute.put('/file/:id', updateFileMessageReceivedHandler);

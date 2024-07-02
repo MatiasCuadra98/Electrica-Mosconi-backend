@@ -10,11 +10,11 @@
 // const messagesSentRoute = Router();
 
 // messagesSentRoute.get('/', getAllMessagesSentHandler);
-// messagesSentRoute.get('/contact/:id', getAllMessagesSentByContactHandler);
-// messagesSentRoute.get('/user/:id', getAllMessagesSentByUserHandler);
+// messagesSentRoute.get('/byContact/:id', getAllMessagesSentByContactHandler);
+// messagesSentRoute.get('/byUser/:id', getAllMessagesSentByUserHandler);
 // messagesSentRoute.get('/:id', getMessageSentByIdHandler);
-// messagesSentRoute.post('/', createMessageSentHandler);
-// messagesSentRoute.put('/:id', updateMessageSentHandler);
+// messagesSentRoute.post('/create/', createMessageSentHandler);
+// messagesSentRoute.put('/update/:id', updateMessageSentHandler);
 // messagesSentRoute.delete('/delete/:id', deleteMessageSentHandler);
 
 // module.exports = {messagesSentRoute};
