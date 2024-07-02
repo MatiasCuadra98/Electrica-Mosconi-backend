@@ -1,4 +1,4 @@
-const {createUser} = require('../../controllers/user/createUser')
+const {createUser} = require('../../controllers/User/createUser')
 
 const createUserHandler = async (req, res) => {
     const{name, email, password, phone, privilege, socketId, image, login, businessId} = req.body;
