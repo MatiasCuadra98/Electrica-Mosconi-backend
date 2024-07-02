@@ -3,6 +3,10 @@ const { MsgReceived, MsgSent, Contacts, Business } = require("../db"); // Import
 
 const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94"; // Reemplaza con el token de tu bot
 const bot = new TelegramBot(botToken, { polling: true });
+// const bot = new TelegramBot(botToken);
+
+const businessId = "e96fbc97-b34f-4174-ab59-29c6585b75eb"; // Reemplaza con el BusinessId recibido al crear el negocio
+
 
 const businessId = "3b68faab-8e9b-4bb9-adf1-e8aa6579acd9"; // Reemplaza con el BusinessId recibido al crear el negocio
 
