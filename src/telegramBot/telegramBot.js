@@ -17,15 +17,6 @@ bot.on("message", async (msg) => {
   // Guardar el mensaje recibido en la base de datos
   try {
     console.log(msg.from);
-    // const contact = await Contacts.findOne({ where: { phone: senderPhone } });
-    // if (!contact) {
-    //   // Si el contacto no existe, lo creamos
-    //    await Contacts.create({
-    //     name: senderName,
-    //     phone: senderPhone,
-    //     notification: true, // Establecemos la notificación en verdadero por defecto
-    //   });
-    // }
     const [newContact, created] = await Contacts.findOrCreate({
       where: { phone: senderPhone },
       defaults: {
@@ -66,18 +57,6 @@ bot.on("message", async (msg) => {
   bot.sendMessage(chatId, "Hola, ¿cómo estás? ¡Gracias por tu mensaje!");
 });
 
-//funcion para responder manualmente
-
-// async function enviarRespuestaManual(chatId, mensaje) {
-//   try {
-//     await bot.sendMessage(chatId, mensaje);
-//     console.log('Respuesta manual enviada correctamente.');
-//     return { success: true, message: 'Respuesta enviada correctamente' };
-//   } catch (error) {
-//     console.error('Error al enviar la respuesta manual:', error);
-//     return { success: false, message: 'Error al enviar la respuesta manual' };
-//   }
-//}
 
 // Función para enviar respuestas manuales y guardar en la base de datos
 async function enviarRespuestaManual(chatId, mensaje, userId) {
