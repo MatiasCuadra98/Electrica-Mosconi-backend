@@ -147,7 +147,11 @@ bot.on("message", async (msg) => {
   console.log('msg: ', msg);
 
   try {
+<<<<<<< HEAD
     // Buscar o crear el contacto
+=======
+    console.log(msg.from);
+>>>>>>> bc0d9b9e784b57e1012f9412428933f0f2aa5812
     const [newContact, created] = await Contacts.findOrCreate({
       where: { phone: senderPhone },
       defaults: {
@@ -215,6 +219,10 @@ bot.on("message", async (msg) => {
   bot.sendMessage(chatId, "Hola, ¿cómo estás? ¡Gracias por tu mensaje!");
 });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> bc0d9b9e784b57e1012f9412428933f0f2aa5812
 // Función para enviar respuestas manuales y guardar en la base de datos
 async function enviarRespuestaManual(chatId, mensaje, userId) {
   try {
@@ -264,5 +272,10 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
     };
   }
 }
+<<<<<<< HEAD
 
 module.exports = { bot, enviarRespuestaManual };
+=======
+//module.exports = bot;
+module.exports = { bot, enviarRespuestaManual };
+>>>>>>> bc0d9b9e784b57e1012f9412428933f0f2aa5812

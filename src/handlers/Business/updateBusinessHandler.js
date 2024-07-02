@@ -1,4 +1,4 @@
-const {updateBusiness }= require('../../controllers/business/updateBusiness');
+const {updateBusiness }= require('../../controllers/Business/updateBusiness');
 
 const updateBusinessHandler = async (req, res) => {
     const{ name, password, address, city, country, email, phone} = req.body;

@@ -1,5 +1,5 @@
 const {Router} = require('express');
-const {businessRoute} = require('./businessRoutes');
+const businessRoute = require('./businessRoutes');
 const {userRoute} = require('./userRoutes');
 const {contactRoute} = require('./contactRoutes');
 const {socialMediaRoute} = require('./socialMedia/socialMediaRoutes');
