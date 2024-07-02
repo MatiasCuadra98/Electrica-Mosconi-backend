@@ -4,9 +4,9 @@ const { MsgReceived, MsgSent, Contacts, Business } = require("../db"); // Import
 const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94"; // Reemplaza con el token de tu bot
 // Inicializar el bot de Telegram
 const bot = new TelegramBot(botToken, { polling: true });
-//const bot = new TelegramBot(botToken);
+// const bot = new TelegramBot(botToken);
 
-const businessId = "297d05bb-3f1c-4952-b2ec-0f6130b4e304"; // Reemplaza con el BusinessId recibido al crear el negocio
+const businessId = "e96fbc97-b34f-4174-ab59-29c6585b75eb"; // Reemplaza con el BusinessId recibido al crear el negocio
 
 // Exportar el bot para que pueda ser utilizado desde otros módulos
 bot.on("message", async (msg) => {
