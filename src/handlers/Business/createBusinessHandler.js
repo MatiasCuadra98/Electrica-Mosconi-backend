@@ -1,16 +1,8 @@
-const { createBusiness } = require("../../controllers/business/createBusiness");
+const { createBusiness } = require("../../controllers/Business/createBusiness");
 
 const createBusinessHandler = async (req, res) => {
-  const {
-    name,
-    password,
-    address,
-    city,
-    country,
-    email,
-    phone,
-    srcName,
-  } = req.body;
+  const { name, password, address, city, country, email, phone, srcName } =
+    req.body;
   //const{name, password, address, city, country, email, phone} = req.body;
 
   try {
