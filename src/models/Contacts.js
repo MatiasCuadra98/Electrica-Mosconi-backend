@@ -20,6 +20,10 @@ module.exports = (sequelize)=>{
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
+        chatId: {
+            type: DataTypes.BIGINT,
+            allowNull: false,
+          },
         
     },{timestamps:false})
 }
