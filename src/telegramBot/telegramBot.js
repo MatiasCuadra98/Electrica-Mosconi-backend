@@ -1,11 +1,12 @@
 const TelegramBot = require("node-telegram-bot-api");
 const { MsgReceived, MsgSent, Contacts, Business, SocialMedia, User } = require("../db");
 
-const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94"; // Reemplaza con el token de tu bot
+const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94"; 
 const bot = new TelegramBot(botToken, { polling: true });
+//const bot = new TelegramBot(botToken);
 
-const businessId = "6b3d981b-2d34-4636-90eb-5b3437a37315"; //34c65bf0-05ea-4329-84b9-90f462bbc177 // Reemplaza con el BusinessId recibido al crear el negocio
-const socialMediaId = 3; //este es el id de telegram
+const businessId = "dcb75f4c-5c96-40c5-befc-3179c96535c2"; 
+const socialMediaId = 1; //este es el id de telegram
 
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;

@@ -1,12 +1,11 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-// const routes = require("./routes");
 const routes = require("./newRoutes");
 const http = require("http");
 const { Server } = require("socket.io");
 const { User } = require("./db");
-const { enviarRespuestaManual } = require('./telegramBot/telegramBot'); // Asegúrate de importar la función
+const { enviarRespuestaManual } = require('./telegramBot/telegramBot'); 
 
 
 
@@ -50,9 +49,9 @@ io.on("connection", async (socket) => {
 });
 
 server.post('/telegram/sendMessage', async (req, res) => {
-  const { chatId, message } = req.body;
+  const { chatId, message, userId } = req.body;
   try {
-    const response = await enviarRespuestaManual(chatId, message);
+    const response = await enviarRespuestaManual(chatId, message, userId);
     if (response.success) {
       res.status(200).send(response.message);
     } else {
@@ -64,9 +63,6 @@ server.post('/telegram/sendMessage', async (req, res) => {
 });
 
 
-// server.get('/', (req, res) => {
-//   res.send('¡Servidor funcionando correctamente!');
-// });
 
 server.use("/", routes(io));
 

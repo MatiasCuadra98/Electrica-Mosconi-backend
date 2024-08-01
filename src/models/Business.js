@@ -67,10 +67,7 @@ module.exports = (sequelize) =>{
                 msg: 'El correo electrónico debe tener un formato válido.'
               }
             }
-        // },
-        // apiKey:{
-        //     type:DataTypes.STRING,
-        //     allowNull:false
+      
         },
         srcName:{
             type:DataTypes.STRING,
