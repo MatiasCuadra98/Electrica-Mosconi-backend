@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const enviarRespuestaManual  = require('../../telegramBot/telegramBot'); // Ajusta la ruta según tu estructura de archivos
+const enviarRespuestaManual  = require('../../telegramBot/telegramBot'); 
 const manualResponse = Router();
 
 // Ruta para enviar respuesta manual

@@ -1,6 +1,5 @@
 const { Router } = require("express");
-const { MsgSent, MsgReceived, Business, Contacts, User } = require("../../db");
-//const TelegramBot = require("node-telegram-bot-api");
+const { MsgSent, MsgReceived, Business, Contacts } = require("../../db");
 const bot = require("../../telegramBot/telegramBot");
 
 const messageSend = Router();
@@ -34,7 +33,6 @@ module.exports = (io) => {
         message: textMessage,
         chatId: chatId,
         timestamp: date,
-        // BusinessId: BusinessId,
         received : false
       });
 

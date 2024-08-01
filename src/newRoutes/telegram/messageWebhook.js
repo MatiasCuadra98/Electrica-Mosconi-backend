@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const {Business,User,MsgReceived, Contacts, SocialMedia} = require('../../db')
+const {Business,User,MsgReceived, Contacts} = require('../../db')
 
  const messageWebhook = Router()
 
@@ -16,8 +16,7 @@ module.exports = (io)=>{
         if (type === 'message') {    
             const business = await Business.findOne({where: {srcName: app}})
             console.log(business.Contacts);
-            // const socialMedia = await SocialMedia.findOne({where: {name: payload.source}}) a chequear desde donde puedo sacar el dato de la red social
-            //ver en las proximas lineas de codigo para que sirven? ya que se trae al modelo User => y este modelo es de los empleados... 
+            
             if (business) {
                 const users = await User.findAll({where:{BusinessId:business.id}})
                 if (users.length > 0) {
@@ -43,7 +42,6 @@ module.exports = (io)=>{
                 }
                 
                 const [newContact, created] = await Contacts.findOrCreate({where:{phone:payload.source}, defaults:{name:payload.sender.name, notification:true, chatId:payload.payload.id, color:generarColorAleatorio()}})
-               // const [newContact, created] = await Contacts.findOrCreate({where:{phone:payload.source}, defaults:{name:payload.sender.name, notification:true, color:generarColorAleatorio()}})
                 await newContact.addBusiness(business);
                 // await newContact.setSocialMedia(socialMedia) 
 

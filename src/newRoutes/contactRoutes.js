@@ -1,14 +1,10 @@
-const {Router} = require('express');
-// const {getAllContactHandler} = require('../handlers/contact/getAllContactHandler');
-const {getContactByIdHandler} = require('../handlers/Contacts/getContactByIdHandler');
-// const {createContactHandler} = require('../handlers/contact/createContactHandler');
-// const {updateContactHandler} = require('../handlers/contact/updateContactHandler');
+const { Router } = require("express");
+const {
+  getContactByIdHandler,
+} = require("../handlers/Contacts/getContactByIdHandler");
 
 const contactRoute = Router();
 
-// contactRoute.get('/', getAllContactHandler);
-contactRoute.get('/:id', getContactByIdHandler);
-// contactRoute.post('/create/', createContactHandler);
-// contactRoute.put('/update/:id', updateContactHandler);
+contactRoute.get("/:id", getContactByIdHandler);
 
-module.exports = {contactRoute};
+module.exports = contactRoute;

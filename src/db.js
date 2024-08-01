@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
-const { DB_USER, DB_PASSWORD, DB_HOST, DATABASE_URL, DB_PORT, DB_NAME } =
-  process.env;
+//const { DB_USER, DB_PASSWORD, DB_HOST, DATABASE_URL, DB_PORT, DB_NAME } =
+//  process.env;
 const UserModel = require("./models/User");
 const ContactsModel = require("./models/Contacts");
 const BusinessModel = require("./models/Business");
@@ -11,7 +11,7 @@ const SocialMediaModel = require("./models/SocialMedia");
 const SocialMediaActiveModel = require("./models/SocialMediaActive");
 
 const sequelize = new Sequelize(
-  `postgres://mosconi:sPeXrQeTjv9b1cTvtFFPMZ06uVOHhhnC@dpg-cod8qp0l6cac73bf5nug-a.oregon-postgres.render.com/mosconi`,
+  `postgresql://mosconiuser:DrdUSShUJXpvBUYCBtp2bpPdbYqBVhro@dpg-cql4s63qf0us73brvolg-a.oregon-postgres.render.com/mosconidb`,
   {
     dialectOptions: {
       ssl: {
@@ -113,14 +113,10 @@ SocialMediaActive.belongsToMany(SocialMedia, {
 });
 
 const syncDatabase = async () => {
-  // Rellenar la columna 'chatId' con un valor predeterminado si es NULL antes de sincronizar
-  // await MsgReceived.update(
-  //   { chatId: 0 },  // Proporcionar un valor predeterminado significativo para chatId
-  //   { where: { chatId: null } }
-  // );
+
+
   await sequelize.sync({ alter: true }); // Sincronizar base de datos con el modelo alterado
 
-  // Rellenar la columna 'text' con un valor predeterminado si es NULL
   await MsgReceived.updateDefaultText();
 };
 
