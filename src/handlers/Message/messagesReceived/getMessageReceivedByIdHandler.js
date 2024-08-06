@@ -1,8 +1,5 @@
 const { getMessageReceivedById } = require('../../../controllers/Message/messagesReceived/getMessageReceivedById');
-// C:\Users\HP\Desktop\APP\Mosconi\Api\Electrica-Mosconi-backend\src\controllers\Message\messagesReceived\getMessageReceivedById.js
-// Api\Electrica-Mosconi-backend\src\controllers\Message\messagesReceived\getMessageReceivedById.js
-//no se porque no me esta tomando esta ruta correcta
-// const { getMessageReceivedById } = require('../../../controllers/Message/messagesReceived/getMessageReceivedById');
+
 const getMessageReceivedByIdHandler = async(req, res) => {
     const {id} = req.params;
     try {
