@@ -1,4 +1,4 @@
-const { MsgReceived, Business, Contacts } = require('../../../db');
+const { MsgReceived, Business, Contacts, SocialMedia } = require('../../../db');
 
 const getAllMessagesReceived = async () => {
     const messages = await MsgReceived.findAll({
@@ -12,6 +12,10 @@ const getAllMessagesReceived = async () => {
           model: Contacts,
           attributes: ['id', 'name', 'phone', 'notification'],
         },
+        {
+          model: SocialMedia,
+          attributes: ['id', 'name']
+        }
       ],
     });
     if (!messages) throw new Error('Messages Received not found');

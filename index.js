@@ -27,6 +27,8 @@ const setTelegramWebhook = async () => {
     console.error("Error al configurar el webhook de Telegram:", error.message);
   }
 };
+
+
 //este webhook es para cuando se envie un mensaje al bot llegue al serivodr.
 setTelegramWebhook();
 
