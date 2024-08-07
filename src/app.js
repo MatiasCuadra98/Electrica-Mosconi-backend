@@ -70,27 +70,35 @@ server.post("/webhook", async (req, res) => {
     const business_phone_number_id =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
       //manda un mensaje de respuesta con "Echo"
-    await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-      headers: {
-        Authorization: `Bearer ${process.env.GRAPH_API_TOKEN.trim()}`, //trim para borrar espacios vacios en el token
-      },
-      data: {
-        messaging_product: "whatsapp",
-        to: message.from,
-        text: { body: "Echo: " + message.text.body },
-        context: {
-          message_id: message.id,
-        },
-      },
-    });
+      try {
+        await axios({
+          method: "POST",
+          url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+          headers: {
+            Authorization: `Bearer ${process.env.GRAPH_API_TOKEN.trim()}`, //trim para borrar espacios vacios en el token
+            'Content-Type': 'application/json'
+          },
+          data: {
+            messaging_product: "whatsapp",
+            to: message.from,
+            text: { body: "Echo: " + message.text.body },
+            context: {
+              message_id: message.id,
+            },
+          },
+        });
+      } catch (error) {
+        console.error("Error sending message:", error.response?.data || error.message);
+
+      }
+    
     //marca el mensaje entrante como leido
     await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
       headers: {
         Authorization: `Bearer ${process.env.GRAPH_API_TOKEN.trim()}`,
+        'Content-Type': 'application/json'
       },
       data: {
         messaging_product: "whatsapp",
