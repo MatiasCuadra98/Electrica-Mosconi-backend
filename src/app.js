@@ -63,17 +63,18 @@ server.post("/telegram/sendMessage", async (req, res) => {
 // Webhook for WhatsApp
 server.post("/webhook", async (req, res) => {
   console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
-
+//chequea si la request al webhook contiene un mensaje
   const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
-
+//chequea si el mensaje entrante contiene texto
   if (message?.type === "text") {
     const business_phone_number_id =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
+      //manda un mensaje de respuesta con "Echo"
     await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
       headers: {
-        Authorization: `Bearer ${process.env.GRAPH_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.GRAPH_API_TOKEN.trim()}`, //trim para borrar espacios vacios en el token
       },
       data: {
         messaging_product: "whatsapp",
@@ -84,12 +85,12 @@ server.post("/webhook", async (req, res) => {
         },
       },
     });
-
+    //marca el mensaje entrante como leido
     await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
       headers: {
-        Authorization: `Bearer ${process.env.GRAPH_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.GRAPH_API_TOKEN.trim()}`,
       },
       data: {
         messaging_product: "whatsapp",
