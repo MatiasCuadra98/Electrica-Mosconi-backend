@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, async () => {
   try {
-    await syncDatabase();  // Usar la función de sincronización personalizada
+    await syncDatabase();  
     console.log(`% listening at ${PORT}`);
   } catch (error) {
     console.error('Error synchronizing and backfilling database:', error);
