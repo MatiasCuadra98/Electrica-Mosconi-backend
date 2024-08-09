@@ -6,6 +6,8 @@ const { socialMediaRoute } = require("./socialMedia/socialMediaRoutes");
 const { allMessagesRoute } = require("./messages/allMessagesRoutes");
 const messageWebHook = require("./telegram/messageWebhook");
 const messageSend = require("./telegram/messageSend");
+const whatsappWebhook = require ("./whatsapp/wspMessageWebhook")
+const whatsappSendMessage = require("./whatsapp/enviarRespuestaManualWsp")
 
 const routes = Router();
 
@@ -17,5 +19,8 @@ module.exports = (io) => {
   routes.use("/message", allMessagesRoute); //ok => llega al handler => llega al controller
   routes.use("/", messageWebHook(io));
   routes.use("/", messageSend(io));
+  routes.use("/whatsapp", whatsappWebhook);
+  routes.use("/whatsapp", whatsappSendMessage)
+
   return routes;
 };
