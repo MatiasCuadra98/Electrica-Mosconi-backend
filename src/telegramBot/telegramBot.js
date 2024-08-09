@@ -88,6 +88,8 @@ bot.on("message", async (msg) => {
 
 // Función para enviar respuestas manuales y guardar en la base de datos
 async function enviarRespuestaManual(chatId, mensaje, userId) {
+  console.log('en telegramBot', userId);
+  
   try {
     // Envía el mensaje
     await bot.sendMessage(chatId, mensaje);
@@ -120,6 +122,7 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
     await msgSent.setContact(contactCreated);
 
     if (userId) {
+      
       const user = await User.findByPk(userId);
       if (!user) throw new Error(`msgSent-user: User with id ${userId} not found`);
       await msgSent.setUser(user);
