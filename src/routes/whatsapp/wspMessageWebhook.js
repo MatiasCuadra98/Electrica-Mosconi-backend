@@ -3,7 +3,7 @@ const { handleMessage } = require('../../whatsappApi/whatsapp');
 const wspMessageWebhook = Router();
 
 
-wspMessageWebhook.get('/whatsapp/wspMessageWebhook', (req, res) => {
+wspMessageWebhook.get('/whatsappGet', (req, res) => {
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
   const challenge = req.query['hub.challenge'];
