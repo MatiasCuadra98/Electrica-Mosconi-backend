@@ -6,6 +6,8 @@ const http = require("http");
 const { Server } = require("socket.io");
 const { User } = require("./db");
 const { enviarRespuestaManual } = require("./telegramBot/telegramBot");
+const whatsappWebhook = require('./routes/whatsapp/wspMessageWebhook');
+const whatsappSendMessage = require('./routes/whatsapp/enviarRespuestaManualWsp');
 require("dotenv").config();
 
 
@@ -60,6 +62,9 @@ server.post("/telegram/sendMessage", async (req, res) => {
     res.status(500).send("Error al enviar el mensaje: " + error.message);
   }
 });
+
+server.use(whatsappWebhook);
+server.use(whatsappSendMessage);
 server.use("/", routes(io));
 
 module.exports = app;
