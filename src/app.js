@@ -9,6 +9,7 @@ const { enviarRespuestaManual } = require("./telegramBot/telegramBot");
 
 require("dotenv").config();
 
+
 const server = express();
 const app = http.createServer(server);
 
@@ -60,7 +61,6 @@ server.post("/telegram/sendMessage", async (req, res) => {
     res.status(500).send("Error al enviar el mensaje: " + error.message);
   }
 });
-
 server.use("/", routes(io));
 
 module.exports = app;
