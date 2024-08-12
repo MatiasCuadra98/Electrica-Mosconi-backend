@@ -49,9 +49,14 @@ io.on("connection", async (socket) => {
 });
 
 server.post("/telegram/sendMessage", async (req, res) => {
-  const { chatId, message, userId } = req.body;
+  console.log('body:',  req.body);
+  
+  const { chatId, message, UserId } = req.body;
+  console.log('en app', UserId);
+  
+  
   try {
-    const response = await enviarRespuestaManual(chatId, message, userId);
+    const response = await enviarRespuestaManual(chatId, message, UserId);
     if (response.success) {
       res.status(200).send(response.message);
     } else {
