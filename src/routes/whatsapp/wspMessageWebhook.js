@@ -2,7 +2,6 @@ const { Router } = require('express');
 const { handleMessage } = require('../../whatsappApi/whatsapp');
 const wspMessageWebhook = Router();
 
-
 wspMessageWebhook.get('/', (req, res) => {
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
@@ -21,12 +20,16 @@ wspMessageWebhook.post('/', async (req, res) => {
   const { entry } = req.body;
 
   try {
-    for (let change of entry[0].changes) {
-      const message = change.value.messages[0];
+    if (entry && entry[0] && entry[0].changes && entry[0].changes[0] && entry[0].changes[0].value.messages) {
+      const message = entry[0].changes[0].value.messages[0];
       if (message) {
-        console.log('Procesando mensaje de whatsapp:', message)
+        console.log('Procesando mensaje de whatsapp:', message);
         await handleMessage(message);
+      } else {
+        console.log('No se encontró mensaje en la estructura recibida.');
       }
+    } else {
+      console.log('Estructura de entrada no tiene el formato esperado:', JSON.stringify(req.body, null, 2));
     }
     res.status(200).end();
   } catch (error) {
@@ -34,6 +37,5 @@ wspMessageWebhook.post('/', async (req, res) => {
     res.status(500).json({ success: false, message: 'Error procesando el mensaje de whatsapp' });
   }
 });
-
 
 module.exports = wspMessageWebhook;
