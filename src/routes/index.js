@@ -19,7 +19,7 @@ module.exports = (io) => {
   routes.use("/message", allMessagesRoute); //ok => llega al handler => llega al controller
   routes.use("/", messageWebHook(io));
   routes.use("/", messageSend(io));
-  routes.use("/whatsapp", whatsappWebhook);
+  routes.use("/whatsapp", whatsappWebhook);  
   routes.use("/whatsapp", whatsappSendMessage)
 
   return routes;
