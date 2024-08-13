@@ -2,6 +2,8 @@ const { getMessageReceivedById } = require('../../../controllers/Message/message
 
 const getMessageReceivedByIdHandler = async(req, res) => {
     const {id} = req.params;
+    console.log('BACK:messageId', id);
+    
     try {
         if(!id) throw new Error('Missing ID');
         const message = await getMessageReceivedById(id);

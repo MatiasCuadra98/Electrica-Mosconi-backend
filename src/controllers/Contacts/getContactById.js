@@ -1,4 +1,6 @@
 const { Contacts, User, Business, MsgReceived, MsgSent, SocialMedia } = require('../../db');
+//const { Contacts, Business, MsgReceived, MsgSent} = require('../../db');
+
 
 const getContactById = async (id) => {
 
@@ -8,9 +10,9 @@ const getContactById = async (id) => {
             model: Business,
             attributes: ['id', 'name']
         },
-        // {model: SocialMedia,
-        //     attributes: ['id', 'name', 'icon']
-        //   },
+        {model: SocialMedia,
+            attributes: ['id', 'name', 'icon']
+          },
         {
             model: MsgReceived,
             attributes: ['id', 'chatId', 'text', 'name', 'fromData', 'payload', 'timestamp', 'active', 'state', 'received'],
@@ -18,11 +20,6 @@ const getContactById = async (id) => {
         {
                 model: MsgSent,
                 attribute: ['id', 'toData', 'message', 'timestamp', 'received'],
-                // attribute: ['id', 'toData', 'message', 'timestamp', 'received', 'userId'],
-                // include: {
-                //     model: User,
-                //     attribute: ['id', 'name', 'privilege']
-                // }
             }
        ] })
   
