@@ -83,7 +83,7 @@ const handleMessage = async (msg) => {
 // Función para enviar mensajes de WhatsApp
 const sendMessage = async (to, message) => {
   try {
-    const response = await axios.post(`https://graph.facebook.com/v14.0/${BUSINESS_PHONE_NUMBER_ID}/messages`, {
+    const response = await axios.post(`https://graph.facebook.com/v20.0/${BUSINESS_PHONE_NUMBER_ID}/messages`, {
       messaging_product: "whatsapp",
       to: to,
       text: { body: message }
