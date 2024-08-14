@@ -85,7 +85,7 @@ const sendMessage = async (to, message) => {
   console.log("phone_number_id :", phone_number_id );
 
   try {
-    const response = await axios.post(`https://graph.facebook.com/v20.0/${phone_number_id }/messages`, {
+    const response = await axios.post(`https://graph.facebook.com/v20.0/${phone_number_id}/messages`, {
       messaging_product: "whatsapp",
       to: to,
       text: { body: message }
