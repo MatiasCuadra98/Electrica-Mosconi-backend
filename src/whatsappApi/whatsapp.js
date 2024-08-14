@@ -6,7 +6,7 @@ require("dotenv").config();
 const businessId = "dcb75f4c-5c96-40c5-befc-3179c96535c2"; 
 const socialMediaId = 2; // Este es el id de WhatsApp en SocialMedia
 const GRAPH_API_TOKEN = process.env.GRAPH_API_TOKEN; // Usa tu token de WhatsApp Business API
-const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID ;
+//const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID ;
 
 
 const handleMessage = async (msg) => {
@@ -82,10 +82,10 @@ const handleMessage = async (msg) => {
 
 // Función para enviar mensajes de WhatsApp
 const sendMessage = async (to, message) => {
-  console.log("BUSINESS_PHONE_NUMBER_ID :", BUSINESS_PHONE_NUMBER_ID );
+  //console.log("BUSINESS_PHONE_NUMBER_ID :", BUSINESS_PHONE_NUMBER_ID );
 
   try {
-    const response = await axios.post(`https://graph.facebook.com/v20.0/${BUSINESS_PHONE_NUMBER_ID}/messages`, {
+    const response = await axios.post(`https://graph.facebook.com/v20.0/372206589314811/messages`, {
       messaging_product: "whatsapp",
       to: to,
       text: { body: message }
