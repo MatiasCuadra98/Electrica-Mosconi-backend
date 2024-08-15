@@ -73,8 +73,7 @@ const handleMessage = async (msg) => {
 
     console.log("Mensaje de WhatsApp recibido guardado en la base de datos:", msgReceived);
 
-    // Respuesta automática
-    await sendMessage(chatId, "Hola, ¿cómo estás? ¡Gracias por tu mensaje!");
+
   } catch (error) {
     console.error("Error al guardar el mensaje de WhatsApp recibido en la base de datos:", error);
   }
