@@ -32,7 +32,7 @@ bot.on("message", async (msg) => {
         name: senderName,
         notification: true,
         chatId: chatId,
-        SocialMediumId: socialMediaId,
+        //SocialMediumId: socialMediaId,
       },
     });
 
@@ -53,7 +53,7 @@ bot.on("message", async (msg) => {
         throw new Error(
           `contact-socialMedia: Social Media with id ${socialMediaId} not found`
         );
-      await newContact.setSocialMedium(socialMedia);
+      await newContact.setSocialMedia(socialMedia);
     }
 
     const contact = await Contacts.findOne({ where: { phone: senderPhone } });
