@@ -6,7 +6,7 @@ require("dotenv").config();
 const businessId = "dcb75f4c-5c96-40c5-befc-3179c96535c2"; 
 const socialMediaId = 2; // Este es el id de WhatsApp en SocialMedia
 const GRAPH_API_TOKEN = process.env.GRAPH_API_TOKEN; // Usa tu token de WhatsApp Business API
-const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID || 372206589314811;
+const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID;
 
 
 const handleMessage = async (msg) => {
