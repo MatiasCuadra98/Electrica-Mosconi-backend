@@ -8,7 +8,7 @@ const updateActiveMessageReceived = async (id) => {
     } else {
         message.active = !message.active
         await message.save();
-        return(`Congratulation! The attribute active from Message Received with ID ${id} has been update`)
+        return(`Congratulation! The attribute active from Message Received with ID ${id} has been update to ${message.active}`)
     }   
 };
 
