@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { handleMessage } = require('../../whatsappApi/whatsapp');
 const wspMessageWebhook = Router();
+require("dotenv").config();
 
 wspMessageWebhook.get('/', (req, res) => {
   const mode = req.query['hub.mode'];
@@ -18,6 +19,7 @@ wspMessageWebhook.get('/', (req, res) => {
 
 wspMessageWebhook.post('/', async (req, res) => {
   const { entry } = req.body;
+  console.log('Contenido completo de req.body:', JSON.stringify(req.body, null, 2));
 
   try {
     if (entry && entry[0] && entry[0].changes && entry[0].changes[0]) {
