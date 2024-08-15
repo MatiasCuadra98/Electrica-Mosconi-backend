@@ -10,6 +10,7 @@ const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID || 372206
 
 
 const handleMessage = async (msg) => {
+  console.log('Mensaje recibido:', msg);
   const chatId = msg.from;
   const message = msg.text.body;
   const senderName = msg.from_name ? msg.from_name.toString() : "Usuario";
