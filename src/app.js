@@ -15,10 +15,10 @@ const app = http.createServer(server);
 
 const io = new Server(app, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT"],
     credentials: true,
-    allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
+    allowedHeaders: ["Content-Type", "Authorization"],
   },
 });
 
@@ -32,12 +32,22 @@ server.use(
     allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
   })
 );
+
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+server.use(cors(corsOptions));
 server.use(morgan("dev"));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
 io.on("connection", async (socket) => {
   const userId = socket.handshake.query.userId;
+  console.log(`UserId: ${userId}`); // Agregar este registro
+
 
   await User.update({ socketId: socket.id }, { where: { id: userId } });
   console.log(`Cliente conectado ${socket.id}`);
