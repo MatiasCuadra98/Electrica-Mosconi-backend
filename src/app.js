@@ -46,12 +46,19 @@ server.use(express.urlencoded({ extended: true }));
 
 io.on("connection", async (socket) => {
   const userId = socket.handshake.query.userId;
-  console.log(`UserId: ${userId}`); // Agregar este registro
+  console.log(`Received userId: ${userId}`); // Registro para depuración
 
+  if (!userId) {
+    console.error("userId is undefined or null");
+    return; // Salir si userId no está definido
+  }
 
-  await User.update({ socketId: socket.id }, { where: { id: userId } });
-  console.log(`Cliente conectado ${socket.id}`);
-  console.log(userId);
+    try {
+    await User.update({ socketId: socket.id }, { where: { id: userId } });
+    console.log(`Cliente conectado ${socket.id}`);
+  } catch (error) {
+    console.error("Error updating user:", error);
+  }
 
   socket.on("disconnect", () => {
     console.log("Cliente desconectado");
