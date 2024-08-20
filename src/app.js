@@ -75,7 +75,8 @@ server.post("/telegram/sendMessage", async (req, res) => {
   try {
     const response = await enviarRespuestaManual(chatId, message, UserId);
     if (response.success) {
-      io.emit('newMessage', { chatId, message, UserId });
+      io.emit('NEW_MESSAGE_SENT', { chatId, message, UserId });
+      console.log(`Evento 'NEW_MESSAGE_SENT' emitido con mensaje: ${message}`); // Log adicional para verificar la emisión
 
       res.status(200).send(response.message);
     } else {
