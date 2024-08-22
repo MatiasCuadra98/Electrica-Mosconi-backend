@@ -17,7 +17,7 @@ server.listen(PORT, async () => {
 
 const setTelegramWebhook = async () => {
 
-  const url = "https://electrica-mosconi-backend.vercel.app/";
+  const url = "https://electrica-mosconi-server.onrender.com/";
   try {
 
     const webhookUrl = `${url}/bot${bot.token}`;
