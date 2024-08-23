@@ -73,7 +73,40 @@ const handleMessage = async (msg) => {
     }
 
     console.log("Mensaje de WhatsApp recibido guardado en la base de datos:", msgReceived);
-
+   
+    const msgReceivedData = {
+      name: senderName,
+      chatId: chatId,
+      text: message,
+      fromData: msg.from,
+      payload: msg,
+      timestamp: Date.now(),
+      BusinessId: businessId,
+      Business: {
+        id: Business.id,
+        name: Business.name
+      },
+      active: false,
+      state: "No Leidos",
+      received: true,
+      ContactId: Contacts.id,
+      Contact: {
+        id: Contacts.id,
+        name: Contacts.name,
+        phone: Contacts.phone,
+        notification: Contacts.notification
+      },
+      SocialMediumId: socialMediaId,
+      SocialMedium: {
+        id: socialMediaId,
+        name: SocialMedia.name,
+        icon: SocialMedia.icon
+      }
+    };
+    console.log('mensaje enviado a app', msgReceivedData);
+    
+    await axios.post('http://localhost:3000/newMessageReceived', msgReceivedData);
+    console.log("Datos del mensaje enviados a app desde Wathsapp");
 
   } catch (error) {
     console.error("Error al guardar el mensaje de WhatsApp recibido en la base de datos:", error);
