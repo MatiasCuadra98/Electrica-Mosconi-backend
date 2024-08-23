@@ -15,10 +15,12 @@ app.listen(PORT, async () => {
     console.error('Error synchronizing and backfilling database:', error);
   }
 });
+//"url=https://electrica-mosconi-server.onrender.com/messageWebHook/" "https://api.telegram.org/bot7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94/setWebhook"
+//curl -X GET "https://api.telegram.org/bot7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94/getWebhookInfo"
 
 const setTelegramWebhook = async () => {
 
-  const url = "https://electrica-mosconi-server.onrender.com/";
+  const url = "https://electrica-mosconi-server.onrender.com/messageWebHook/";
   try {
 
     const webhookUrl = `${url}/bot${bot.token}`;
