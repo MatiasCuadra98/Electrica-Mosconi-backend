@@ -9,7 +9,6 @@ const { enviarRespuestaManual } = require("./telegramBot/telegramBot");
 
 require("dotenv").config();
 
-
 const server = express();
 const app = http.createServer(server);
 
@@ -46,10 +45,32 @@ server.use(express.urlencoded({ extended: true }));
 
 io.on("connection", async (socket) => {
   const userId = socket.handshake.query.userId;
-  console.log(`Received userId: ${userId}`); // Registro para depuración
+  console.log('me conecto a socket');
+  
+  //console.log(`Received userId: ${userId}`); // Registro para depuración
+
+  if(io) {
+    io.emit("SE_EMITEN_OTRAS_COSAS", "ok");
+   // message && io.emit("NEW_MESSAGE_RECEIVED", message)
+
+  }
+
+  server.post("/newMessageReceived", async (req, res) => {
+    const messageData = req.body;
+    try {
+      // Emitir el evento desde app con los datos recibidos
+      io.emit('NEW_MESSAGE_RECEIVED', messageData);
+      console.log(`Evento 'NEW_MESSAGE_RECEIVED' emitido con datos:`, messageData);
+      res.status(200).send("Evento emitido con éxito");
+    } catch (error) {
+      console.error("Error al emitir el evento desde app:", error);
+      res.status(500).send("Error al emitir el evento");
+    }
+  });
+
 
   if (!userId) {
-    console.error("userId is undefined or null");
+    //console.error("userId is undefined or null");
     return; // Salir si userId no está definido
   }
 
@@ -66,10 +87,10 @@ io.on("connection", async (socket) => {
 });
 
 server.post("/telegram/sendMessage", async (req, res) => {
-  console.log('body:',  req.body);
+  //console.log('body:',  req.body);
   
   const { chatId, message, UserId } = req.body;
-  console.log('en app', UserId);
+  //console.log('en app', UserId);
   
   
   try {
@@ -89,4 +110,4 @@ server.post("/telegram/sendMessage", async (req, res) => {
 });
 server.use("/", routes(io));
 
-module.exports = app;
+module.exports = {app, server};
