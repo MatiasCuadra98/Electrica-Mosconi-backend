@@ -21,10 +21,9 @@ const setTelegramWebhook = async () => {
   const url = "https://electrica-mosconi-server.onrender.com/messageWebHook";
   try {
 
-    const webhookUrl = `${url}/bot${bot.token}`;
     console.log("Configurando el webhook con URL:", webhookUrl);
 
-    await bot.setWebHook(webhookUrl);
+    await bot.setWebHook(url);
     console.log("Webhook configurado correctamente")
   } catch (error) {
     console.error("Error al configurar el webhook de Telegram:", error.message);
