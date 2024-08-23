@@ -131,7 +131,7 @@ bot.on("message", async (msg) => {
     console.log('mensaje enviado a app', msgReceivedData);
     
     await axios.post('http://localhost:3000/newMessageReceived', msgReceivedData);
-    console.log("Datos del mensaje enviados a app");
+    console.log("Datos del mensaje enviados a app desde TelegramBot");
 
   } catch (error) {
     console.error(

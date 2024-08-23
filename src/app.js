@@ -45,7 +45,7 @@ server.use(express.urlencoded({ extended: true }));
 
 io.on("connection", async (socket) => {
   const userId = socket.handshake.query.userId;
-  console.log('me conecto a socket');
+  console.log('CONEXION A SOCKET EXITOSA');
   
   //console.log(`Received userId: ${userId}`); // Registro para depuración
 
