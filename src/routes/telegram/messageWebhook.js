@@ -5,7 +5,7 @@ const {Business,User,MsgReceived, Contacts} = require('../../db')
 
 module.exports = (io)=>{
     //ruta para recibir mensajes
-    messageWebhook.post('/messageWebHook/', async (req, res) =>{
+    messageWebhook.post('/messageWebHook', async (req, res) =>{
         //declaramos variables para recibir los mensajes en tiempo real con new Date y timestamp
         const { type, payload, timestamp, app } = req.body;
         console.log('payload', payload);
