@@ -214,7 +214,8 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
     // console.log("Datos del mensaje enviados a app desde TelegramBot");
     return { 
       success: true, 
-      message: "Respuesta enviada correctamente"
+      message: "Respuesta enviada correctamente",
+      msgSent
      };
     
   } catch (error) {

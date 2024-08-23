@@ -94,7 +94,10 @@ server.post("/telegram/sendMessage", async (req, res) => {
     const response = await enviarRespuestaManual(chatId, message, UserId);
     if (response.success) {
       io.emit('NEW_MESSAGE_SENT', { chatId, message, UserId });
-      console.log(`Evento 'NEW_MESSAGE_SENT' emitido con mensaje: ${message}`); // Log adicional para verificar la emisión
+      console.log(`Evento 'NEW_MESSAGE_SENT' emitido con mensaje: ${message}`); 
+      const msgSentData = response.msgSent;
+      io.emit('ADD_NEW_MESSAGE_SENT', msgSentData);
+      console.log(`Evento 'ADD_NEW_MESSAGE_SENT' emitido con mensaje: ${msgSentData}`); 
       res.status(200).send(response.message);
     } else {
       res.status(500).send(response.message);
@@ -104,18 +107,18 @@ server.post("/telegram/sendMessage", async (req, res) => {
   }
 });
 
-server.post('/newMessageSent', async (req, res) => {
-  const msgSentData = req.body;    
-  try {
-  // Emitir el evento desde app con los datos recibidos
-  io.emit('ADD_NEW_MESSAGE_SENT', msgSentData);
-  console.log(`Evento 'ADD_NEW_MESSAGE_SENT' emitido con datos:`, messageData);
-  res.status(200).send("Evento emitido con éxito");
-} catch (error) {
-  console.error("Error al emitir el evento desde app:", error);
-  res.status(500).send("Error al emitir el evento");
-}
-})
+// server.post('/newMessageSent', async (req, res) => {
+//   const msgSentData = req.body;    
+//   try {
+//   // Emitir el evento desde app con los datos recibidos
+//   io.emit('ADD_NEW_MESSAGE_SENT', msgSentData);
+//   console.log(`Evento 'ADD_NEW_MESSAGE_SENT' emitido con datos:`, messageData);
+//   res.status(200).send("Evento emitido con éxito");
+// } catch (error) {
+//   console.error("Error al emitir el evento desde app:", error);
+//   res.status(500).send("Error al emitir el evento");
+// }
+// })
 
 server.use("/", routes(io));
 
