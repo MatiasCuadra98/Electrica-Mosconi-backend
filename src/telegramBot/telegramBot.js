@@ -7,7 +7,7 @@ const {
   SocialMedia,
   User,
 } = require("../db");
-
+const axios = require('axios');
 
 const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94"; 
 //const bot = new TelegramBot(botToken, {polling: true});
@@ -98,12 +98,49 @@ bot.on("message", async (msg) => {
     }
 
     console.log("Mensaje recibido guardado en la base de datos:", msgReceived);
+
+    const msgReceivedData = {
+      name: senderName,
+      chatId: chatId,
+      text: message,
+      fromData: msg.from,
+      payload: msg,
+      timestamp: Date.now(),
+      BusinessId: businessId,
+      Business: {
+        id: Business.id,
+        name: Business.name
+      },
+      active: false,
+      state: "No Leidos",
+      received: true,
+      ContactId: contact.id,
+      Contact: {
+        id: contact.id,
+        name: contact.name,
+        phone: contact.phone,
+        notification: contact.decrementnotification
+      },
+      SocialMediumId: socialMediaId,
+      SocialMedium: {
+        id: socialMediaId,
+        name: SocialMedia.name,
+        icon: SocialMedia.icon
+      }
+    };
+    console.log('mensaje enviado a app', msgReceivedData);
+    
+    await axios.post('http://localhost:3000/newMessageReceived', msgReceivedData);
+    console.log("Datos del mensaje enviados a app");
+
   } catch (error) {
     console.error(
       "Error al guardar el mensaje recibido en la base de datos:",
       error
     );
   }
+
+
 
   // Respuesta automática
   bot.sendMessage(chatId, "Hola, ¿cómo estás? ¡Gracias por tu mensaje!");
@@ -169,4 +206,4 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
   }
 }
 
-module.exports = { bot, enviarRespuestaManual };
+module.exports = { bot, enviarRespuestaManual};

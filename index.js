@@ -1,12 +1,13 @@
-const server = require("./src/app.js");
+const {app,server } = require("./src/app.js");
 const { syncDatabase } = require("./src/db.js");
 const {bot} = require("./src/telegramBot/telegramBot.js")
 require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
+//const PORT = 3000; 
 
-
-server.listen(PORT, async () => {
+app.listen(PORT, async () => {
+//server.listen(PORT, async () => {
   try {
     await syncDatabase();  
     console.log(`% listening at ${PORT}`);
