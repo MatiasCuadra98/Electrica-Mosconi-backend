@@ -35,7 +35,7 @@ module.exports = (io) => {
         console.log('App:', 'electrica_mosconi'); // Reemplaza esto con la lógica real si es necesario
 
         // Lógica de procesamiento del mensaje
-        const business = await Business.findOne({ where: { srcName: 'mosconi' } }); // Ajusta esto según sea necesario
+        const business = await Business.findOne({ where: { srcName: 'Mosconi' } }); // Ajusta esto según sea necesario
         if (business) {
             const users = await User.findAll({ where: { BusinessId: business.id } });
             if (users.length > 0) {
