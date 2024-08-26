@@ -13,7 +13,7 @@ module.exports = (sequelize)=>{
             type: DataTypes.STRING,
             allowNull:false
         },
-        conversationId:{
+        numberPhoneId:{
             type: DataTypes.BIGINT,
             allowNull: false
         }, 
@@ -50,30 +50,3 @@ module.exports = (sequelize)=>{
     {timestamps:false})
 }
 
-//CHEQUAR A FUTURO: NO TODAS LAS REDES SOCIALES DAN TODOS LOS DATOS!!!
-// id:{
-//     type: DataTypes.UUID,
-//     allowNull: false,
-//     primaryKey: true,
-//     defaultValue: DataTypes.UUIDV4
-// },
-// name:{
-//     type: DataTypes.STRING,
-//     allowNull: true,
-// },
-// email: {
-//     type: DataTypes.STRING,
-//     allowNull: true,
-//     unique: true,
-//   },
-// phone:{
-//     type: DataTypes.INTEGER,
-//     allowNull: true,
-// },
-// notification:{
-//     type: DataTypes.BOOLEAN,
-//     allowNull: false,
-//     defaultValue: false
-// },
-// }, {timestamps: false});
-// }
