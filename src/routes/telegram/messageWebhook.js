@@ -8,8 +8,24 @@ module.exports = (io)=>{
     messageWebhook.post('/messageWebHook', async (req, res) =>{
         //declaramos variables para recibir los mensajes en tiempo real con new Date y timestamp
         console.log('Request del body:', req.body); 
-        const { type, payload, timestamp, app } = req.body;
+        
+        const { message } = req.body;
+    
+    // Ajustamos la extracción de variables de acuerdo a la estructura real del cuerpo de la solicitud
+    if (message) {
+        const type = 'message'; // Asumimos que siempre es un mensaje si existe `message`
+        const payload = {
+            source: message.chat.id,
+            sender: {
+                name: message.from.first_name,
+            },
+            payload: {
+                text: message.text,
+                id: message.message_id,
+            },
+        };
         console.log('payload!', payload);
+        const timestamp = message.date * 1000;
         const date = new Date(timestamp)
         const hours = date.getHours().toString()
         const minutes = date.getMinutes().toString()
