@@ -125,7 +125,28 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
     }
 
     console.log("Respuesta manual enviada y guardada correctamente.");
-    return { success: true, message: "Respuesta enviada correctamente" };
+
+    // const msgSentData ={
+    //   name: botUsername,
+    //   toData: { app: "Telegram", value: chatId },
+    //   message: mensaje,
+    //   chatId: chatId,
+    //   timestamp: Date.now(),
+    //   BusinessId: businessId,
+    //   received: false,
+    //   UserId: userId, 
+    //   ContactId: Contacts.id
+    // }
+    // console.log('respuesta manual: mensaje enviado a app', msgSentData);
+    
+    // await axios.post('http://localhost:3000/newMessageSent', msgSentData);
+    // console.log("Datos del mensaje enviados a app desde TelegramBot");
+    return { 
+      success: true, 
+      message: "Respuesta enviada correctamente",
+      msgSent
+     };
+    
   } catch (error) {
     console.error("Error al enviar y guardar la respuesta manual:", error);
     return { success: false, message: "Error al enviar y guardar la respuesta manual" };
