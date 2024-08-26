@@ -130,7 +130,7 @@ bot.on("message", async (msg) => {
     };
     console.log('mensaje enviado a app', msgReceivedData);
     
-    await axios.post('https://electrica-mosconi-server.onrender.com/newMessageReceived', msgReceivedData);
+    await axios.post('https://electrica-mosconi-server.onrender.com/messageWebHook', msgReceivedData);
     console.log("Datos del mensaje enviados a app desde TelegramBot");
 
   } catch (error) {
