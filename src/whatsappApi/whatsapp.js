@@ -105,7 +105,7 @@ const handleMessage = async (msg) => {
     };
     console.log('mensaje enviado a app', msgReceivedData);
     
-    await axios.post('http://localhost:3000/messageWebHook', msgReceivedData);
+    await axios.post('http://localhost:3000/whatsapp', msgReceivedData);
     console.log("Datos del mensaje enviados a app desde Wathsapp");
 
   } catch (error) {
