@@ -1,3 +1,4 @@
+const { all } = require('axios')
 const {DataTypes} = require('sequelize')
 
 module.exports = (sequelize)=>{
@@ -12,10 +13,10 @@ module.exports = (sequelize)=>{
             type: DataTypes.STRING,
             allowNull:false
         },
-        phone:{
+        conversationId:{
             type: DataTypes.BIGINT,
             allowNull: false
-        },
+        }, 
         notification:{
             type: DataTypes.BOOLEAN,
             defaultValue: false
@@ -24,8 +25,29 @@ module.exports = (sequelize)=>{
             type: DataTypes.BIGINT,
             allowNull: false,
           },
-        
-    },{timestamps:false})
+        phoneNumber: {
+            type: DataTypes.BIGINT,
+            allowNull: true,
+            defaultValue: null
+        },
+        userName: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null,
+        },
+        Email: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null,
+            unique: true,
+            validate: {
+              isEmail: {
+                msg: 'El correo electrónico debe tener un formato válido.'
+              }
+            }
+        }
+    },     
+    {timestamps:false})
 }
 
 //CHEQUAR A FUTURO: NO TODAS LAS REDES SOCIALES DAN TODOS LOS DATOS!!!

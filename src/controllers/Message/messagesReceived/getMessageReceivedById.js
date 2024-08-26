@@ -9,7 +9,7 @@ const getMessageReceivedById = async (id) => {
         },
         {
           model: Contacts,
-          attributes: ['id', 'name', 'phone', 'notification'],
+          attributes: ['id', 'name', 'phoneNumber', 'userName', 'Email'],
         },
         {
           model: SocialMedia,

@@ -49,12 +49,11 @@ module.exports = (io)=>{
                     chatId: payload.payload.id,
                     text: payload.payload.text,
                     name: payload.sender.name,
-                    fromData: payload.sender,
-                    payload: payload,
+                    numberPhoneId: payload.sender.id,
                     timestamp: timestamp,
-                    active: true,
-                    state: 'No Leidos',
-                    received: true
+                    // active: true,
+                    // state: 'No Leidos',
+                    // received: true
                 });
                 console.log('llego un nuevo mensaje');
                 // Asignar relaciones para MsgReceived

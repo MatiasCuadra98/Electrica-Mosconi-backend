@@ -15,6 +15,11 @@ module.exports = (sequelize) => {
         type: DataTypes.BIGINT,
         allowNull: false,
       },
+      //chequear con Insta, face y Meli como registra el contacto
+      numberPhoneId: {
+        type: DataTypes.BIGINT,
+        allowNull: false
+      },
       text: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -23,31 +28,31 @@ module.exports = (sequelize) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      fromData: {
-        type: DataTypes.JSON,
-        allowNull: false,
-        defaultValue: {}, // Default value for the object if not specified
-        validate: {
-          isObject(value) {
-            if (typeof value !== "object") {
-              throw new Error("yourObjectName must be an object");
-            }
-          },
-        }  
-      },
-      payload: {
-        type: DataTypes.JSON,
-          allowNull: false,
-        },
         timestamp: {
           type: DataTypes.BIGINT,
           allowNull: false,
         },
-        responded: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false,
-          defaultValue: false,
-        },
+        phoneNumber: {
+          type: DataTypes.BIGINT,
+          allowNull: true,
+          defaultValue: null
+      },
+      userName: {
+          type: DataTypes.STRING,
+          allowNull: true,
+          defaultValue: null,
+      },
+      Email: {
+          type: DataTypes.STRING,
+          allowNull: true,
+          defaultValue: null,
+          unique: true,
+          validate: {
+            isEmail: {
+              msg: 'El correo electrónico debe tener un formato válido.'
+            }
+          }
+      },
         BusinessId: {
           type: DataTypes.UUID,
           allowNull: true,

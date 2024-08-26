@@ -13,17 +13,18 @@ const handleMessage = async (msg) => {
   console.log('Mensaje recibido:', msg);
   const chatId = msg.from;
   const message = msg.text.body;
-  const senderName = msg.from_name ? msg.from_name.toString() : "Usuario";
-
+  const senderPhoneNumber = msg.entry.changes.value.metadata.display_phone_number
+  const senderName = msg.from_name ? msg.from_name.toString() : senderPhoneNumber ? senderPhoneNumber : 'Usuario';
   try {
     // Buscar o crear el contacto
     const [newContact, created] = await Contacts.findOrCreate({
-      where: { phone: chatId },
+      where: { numberPhoneId: chatId },
       defaults: {
         name: senderName,
         notification: true,
         chatId: chatId,
-        SocialMediumId: socialMediaId,
+        phoneNumber: senderPhoneNumber
+       // SocialMediumId: socialMediaId,
       },
     });
 
@@ -46,13 +47,12 @@ const handleMessage = async (msg) => {
       name: senderName.toString(),
       chatId: chatId,
       text: message,
-      fromData: msg,
-      payload: msg,
+      numberPhoneId: msg.id,
       timestamp: Date.now(),
       BusinessId: businessId,
-      active: false,
-      state: "No Leidos",
-      received: true,
+      // active: false,
+      // state: "No Leidos",
+      // received: true,
     });
 
     // Asociar el mensaje recibido con el negocio
@@ -75,11 +75,10 @@ const handleMessage = async (msg) => {
     console.log("Mensaje de WhatsApp recibido guardado en la base de datos:", msgReceived);
    
     const msgReceivedData = {
-      name: senderName,
+      name: senderName.toString(),
       chatId: chatId,
       text: message,
-      fromData: msg.from,
-      payload: msg,
+      numberPhoneId: msg.id,
       timestamp: Date.now(),
       BusinessId: businessId,
       Business: {
@@ -94,7 +93,6 @@ const handleMessage = async (msg) => {
         id: Contacts.id,
         name: Contacts.name,
         phone: Contacts.phone,
-        notification: Contacts.notification
       },
       SocialMediumId: socialMediaId,
       SocialMedium: {

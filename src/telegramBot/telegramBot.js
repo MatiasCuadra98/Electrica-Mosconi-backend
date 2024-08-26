@@ -27,11 +27,12 @@ bot.on("message", async (msg) => {
   try {
     // Buscar o crear el contacto
     const [newContact, created] = await Contacts.findOrCreate({
-      where: { phone: senderPhone },
+      where: { numberPhoneId: senderPhone },
       defaults: {
         name: senderName,
         notification: true,
         chatId: chatId,
+        phoneNumber: senderPhone,
         //SocialMediumId: socialMediaId,
       },
     });
@@ -64,14 +65,14 @@ bot.on("message", async (msg) => {
       name: senderName,
       chatId: chatId,
       text: message,
-      fromData: msg.from,
-      payload: msg,
+      numberPhoneId: msg.from.id,
       timestamp: Date.now(),
+      phoneNumber: chatId,
       BusinessId: businessId,
       //BusinessId: null,
-      active: false,
-      state: "No Leidos",
-      received: true,
+      // active: false,
+      // state: "No Leidos",
+      // received: true,
     });
 
     // Asociar el mensaje recibido con el negocio
@@ -103,9 +104,9 @@ bot.on("message", async (msg) => {
       name: senderName,
       chatId: chatId,
       text: message,
-      fromData: msg.from,
-      payload: msg,
+      numberPhoneId: msg.from.id,
       timestamp: Date.now(),
+      phoneNumber: chatId,
       BusinessId: businessId,
       Business: {
         id: Business.id,
@@ -119,7 +120,6 @@ bot.on("message", async (msg) => {
         id: contact.id,
         name: contact.name,
         phone: contact.phone,
-        notification: contact.decrementnotification
       },
       SocialMediumId: socialMediaId,
       SocialMedium: {
