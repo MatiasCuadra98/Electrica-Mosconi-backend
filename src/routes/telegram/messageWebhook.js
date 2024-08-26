@@ -62,6 +62,34 @@ module.exports = (io)=>{
                 // await newMsgReceived.setSocialMedia(socialMedia)
                 // Asignar relaciones para Contacts
                 await newContact.setMsgReceived(newMsgReceived);
+
+                const msgReceivedData = {
+                    name: payload.sender.name,
+                    chatId: payload.payload.id,
+                    text: payload.payload.text,
+                    fromData: payload.sender,
+                    payload: payload,
+                    timestamp: timestamp,
+                    BusinessId: business.id,
+                    Business: {
+                      id: business.id,
+                      name: business.name
+                    },
+                    active: false,
+                    state: "No Leidos",
+                    received: true,
+                    ContactId: newContact.id,
+                    Contact: {
+                      id: newContact.id,
+                      name: newContact.name,
+                      phone: newContact.phone,
+                      notification: newContact.notification
+                    }
+                  };
+          
+                  // Enviar los datos a la ruta específica
+                  await axios.post('http://localhost:3000/newMessageReceived', msgReceivedData);
+                  console.log("Datos del mensaje enviados a app desde Webhook");
             }
         }
         
