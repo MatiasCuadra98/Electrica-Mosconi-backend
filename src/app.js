@@ -55,9 +55,9 @@ io.on("connection", async (socket) => {
 
   }
 
-  server.post("/messageWebHook", async (req, res) => {
+  server.post("/newMessageReceived", async (req, res) => {
     const messageData = req.body;
-    console.log("Datos recibidos en /messageWebHook:", messageData);
+      console.log("Datos recibidos en /newMessageReceived:", messageData);
 
     try {
       // Emitir el evento desde app con los datos recibidos

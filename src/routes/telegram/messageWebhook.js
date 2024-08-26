@@ -8,7 +8,7 @@ module.exports = (io)=>{
     messageWebhook.post('/messageWebHook', async (req, res) =>{
         //declaramos variables para recibir los mensajes en tiempo real con new Date y timestamp
         const { type, payload, timestamp, app } = req.body;
-        console.log('payload', payload);
+        console.log('payload!', payload);
         const date = new Date(timestamp)
         const hours = date.getHours().toString()
         const minutes = date.getMinutes().toString()
