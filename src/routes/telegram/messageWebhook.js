@@ -36,7 +36,7 @@ module.exports = (io) => {
             const minutes = date.getMinutes().toString();
             const seconds = date.getSeconds().toString();
 
-            const business = await Business.findOne({ where: { srcName: 'telegram' } }); // Asegúrate de usar el nombre correcto de la app
+            const business = await Business.findOne({ where: { srcName: 'Mosconi' } }); // Asegúrate de usar el nombre correcto de la app
             console.log('Business encontrado:', business);
 
             if (business) {
