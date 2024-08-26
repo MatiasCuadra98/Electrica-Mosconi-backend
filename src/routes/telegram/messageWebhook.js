@@ -7,6 +7,7 @@ module.exports = (io)=>{
     //ruta para recibir mensajes
     messageWebhook.post('/messageWebHook', async (req, res) =>{
         //declaramos variables para recibir los mensajes en tiempo real con new Date y timestamp
+        console.log('Request del body:', req.body); 
         const { type, payload, timestamp, app } = req.body;
         console.log('payload!', payload);
         const date = new Date(timestamp)
