@@ -28,7 +28,7 @@ module.exports = (io) => {
             timestamp = message.date * 1000; // Telegram envía la fecha en segundos, la convertimos a milisegundos
         }
 
-        console.log('payload', payload);
+        console.log('payload:', payload);
 
         if (type === 'message') {
             const date = new Date(timestamp);
@@ -37,10 +37,11 @@ module.exports = (io) => {
             const seconds = date.getSeconds().toString();
 
             const business = await Business.findOne({ where: { srcName: 'telegram' } }); // Asegúrate de usar el nombre correcto de la app
-            console.log(business?.Contacts);
+            console.log('Business encontrado:', business);
 
             if (business) {
                 const users = await User.findAll({ where: { BusinessId: business.id } });
+                console.log('Usuarios encontrados:', users);
                 if (users.length > 0) {
                     await Contacts.update({ notification: true }, { where: { phone: payload.source } });
                     users.forEach((user) => {
@@ -94,7 +95,11 @@ module.exports = (io) => {
 
                 // Asignar relaciones para Contacts
                 await newContact.setMsgReceived(newMsgReceived);
+            } else {
+                console.log('No se encontró ningún negocio con srcName: telegram');
             }
+        } else {
+            console.log('El mensaje no es del tipo esperado:', type);
         }
 
         res.status(200).end();
