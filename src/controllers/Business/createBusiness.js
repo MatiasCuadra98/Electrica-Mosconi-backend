@@ -11,7 +11,6 @@ const {Business} = require('../../db');
                     country, 
                     email,
                     phone,
-       
                     srcName,
                 },
             })

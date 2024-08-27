@@ -18,7 +18,7 @@ const handleMessage = async (msg) => {
   try {
     // Buscar o crear el contacto
     const [newContact, created] = await Contacts.findOrCreate({
-      where: { numberPhoneId: chatId },
+      where: { idUser: chatId },
       defaults: {
         name: senderName,
         notification: true,
@@ -47,7 +47,7 @@ const handleMessage = async (msg) => {
       name: senderName.toString(),
       chatId: chatId,
       text: message,
-      numberPhoneId: msg.id,
+      idUser: msg.id,
       timestamp: Date.now(),
       BusinessId: businessId,
       // active: false,
@@ -78,7 +78,7 @@ const handleMessage = async (msg) => {
       name: senderName.toString(),
       chatId: chatId,
       text: message,
-      numberPhoneId: msg.id,
+      idUser: msg.id,
       timestamp: Date.now(),
       BusinessId: businessId,
       Business: {

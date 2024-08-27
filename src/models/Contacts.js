@@ -13,7 +13,7 @@ module.exports = (sequelize)=>{
             type: DataTypes.STRING,
             allowNull:false
         },
-        numberPhoneId:{
+        idUser:{
             type: DataTypes.BIGINT,
             allowNull: false
         }, 

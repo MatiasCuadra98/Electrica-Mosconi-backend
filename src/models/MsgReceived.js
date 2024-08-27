@@ -15,8 +15,8 @@ module.exports = (sequelize) => {
         type: DataTypes.BIGINT,
         allowNull: false,
       },
-      //chequear con Insta, face y Meli como registra el contacto
-      numberPhoneId: {
+      //chequear con Insta, face y Meli como registran el contacto
+      idUser: {
         type: DataTypes.BIGINT,
         allowNull: false
       },
