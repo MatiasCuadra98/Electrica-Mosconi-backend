@@ -16,6 +16,14 @@ const handleMessage = async (msg) => {
   const senderPhoneNumber = msg.entry.changes.value.metadata.display_phone_number
   const senderName = msg.from_name ? msg.from_name.toString() : senderPhoneNumber ? senderPhoneNumber : 'Usuario';
   try {
+    const business = await Business.findByPk(businessId)
+    if (!business) {
+      return res.status(404).send('Business no encontrado');
+    };
+    const socialMedia = await SocialMedia.findByPk(socialMediaId);
+    if (!socialMedia) {
+      return res.status(404).send('Social Media no encontrado');
+    }
     // Buscar o crear el contacto
     const [newContact, created] = await Contacts.findOrCreate({
       where: { idUser: chatId },
@@ -29,16 +37,16 @@ const handleMessage = async (msg) => {
     });
 
     // Asociar el contacto con el negocio
-    if (created && businessId) {
-      const business = await Business.findByPk(businessId);
-      if (!business) throw new Error(`contact-business: Business with id ${businessId} not found`);
+    if (created && business) {
+      // const business = await Business.findByPk(businessId);
+      // if (!business) throw new Error(`contact-business: Business with id ${businessId} not found`);
       await newContact.addBusiness(business);
     }
 
     // Asociar el mensaje recibido con la red social
-    if (created && socialMediaId) {
-      const socialMedia = await SocialMedia.findByPk(socialMediaId);
-      if (!socialMedia) throw new Error(`contact-socialMedia: Social Media with id ${socialMediaId} not found`);
+    if (created && socialMedia) {
+      // const socialMedia = await SocialMedia.findByPk(socialMediaId);
+      // if (!socialMedia) throw new Error(`contact-socialMedia: Social Media with id ${socialMediaId} not found`);
       await newContact.setSocialMedium(socialMedia);
     }
 
@@ -56,9 +64,9 @@ const handleMessage = async (msg) => {
     });
 
     // Asociar el mensaje recibido con el negocio
-    if (businessId) {
-      const business = await Business.findByPk(businessId);
-      if (!business) throw new Error(`msgReceived-business: Business with id ${businessId} not found`);
+    if (business) {
+      // const business = await Business.findByPk(businessId);
+      // if (!business) throw new Error(`msgReceived-business: Business with id ${businessId} not found`);
       await msgReceived.setBusiness(business);
     }
 
@@ -66,9 +74,9 @@ const handleMessage = async (msg) => {
     await msgReceived.setContact(newContact);
 
     // Asociar el mensaje recibido con la red social
-    if (socialMediaId) {
-      const socialMedia = await SocialMedia.findByPk(socialMediaId);
-      if (!socialMedia) throw new Error(`msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`);
+    if (socialMedia) {
+      // const socialMedia = await SocialMedia.findByPk(socialMediaId);
+      // if (!socialMedia) throw new Error(`msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`);
       await msgReceived.setSocialMedium(socialMedia);
     }
 

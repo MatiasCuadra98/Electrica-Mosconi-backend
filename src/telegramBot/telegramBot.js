@@ -25,9 +25,17 @@ bot.on("message", async (msg) => {
   console.log("msg: ", msg);
 
   try {
+    const business = await Business.findByPk(businessId)
+    if (!business) {
+      return res.status(404).send('Business no encontrado');
+    };
+    const socialMedia = await SocialMedia.findByPk(socialMediaId);
+    if (!socialMedia) {
+      return res.status(404).send('Social Media no encontrado');
+    }
     // Buscar o crear el contacto
     const [newContact, created] = await Contacts.findOrCreate({
-      where: {idUser: senderPhone },
+      where: {idUser: senderIdUser },
       defaults: {
         name: senderName,
         notification: true,
@@ -38,26 +46,26 @@ bot.on("message", async (msg) => {
     });
 
     // Asociar el contacto con el negocio
-    if (created && businessId) {
-      const business = await Business.findByPk(businessId);
-      if (!business)
-        throw new Error(
-          `contact-business: Business with id ${businessId} not found`
-        );
+    if (created && business) {
+      // const business = await Business.findByPk(businessId);
+      // if (!business)
+      //   throw new Error(
+      //     `contact-business: Business with id ${businessId} not found`
+      //   );
       await newContact.addBusiness(business);
     }
 
     // Asociar el contacto con la red social
-    if (created && socialMediaId) {
+    if (created && socialMedia) {
       const socialMedia = await SocialMedia.findByPk(socialMediaId);
-      if (!socialMedia)
-        throw new Error(
-          `contact-socialMedia: Social Media with id ${socialMediaId} not found`
-        );
+      // if (!socialMedia)
+      //   throw new Error(
+      //     `contact-socialMedia: Social Media with id ${socialMediaId} not found`
+      //   );
       await newContact.setSocialMedia(socialMedia);
     }
 
-    const contact = await Contacts.findOne({ where: { phone: senderPhone } });
+    const contact = await Contacts.findOne({ where: { phone: senderIdUser } });
     if (!contact) throw new Error(`Contact not found`);
 
     // Crear el mensaje recibido
@@ -76,12 +84,12 @@ bot.on("message", async (msg) => {
     });
 
     // Asociar el mensaje recibido con el negocio
-    if (businessId) {
-      const business = await Business.findByPk(businessId);
-      if (!business)
-        throw new Error(
-          `msgReceived-business: Business with id ${businessId} not found`
-        );
+    if (business) {
+      // const business = await Business.findByPk(businessId);
+      // if (!business)
+      //   throw new Error(
+      //     `msgReceived-business: Business with id ${businessId} not found`
+      //   );
       await msgReceived.setBusiness(business);
     }
 
@@ -89,12 +97,12 @@ bot.on("message", async (msg) => {
     await msgReceived.setContact(contact);
 
     // Asociar el mensaje recibido con la red social
-    if (socialMediaId) {
-      const socialMedia = await SocialMedia.findByPk(socialMediaId);
-      if (!socialMedia)
-        throw new Error(
-          `msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`
-        );
+    if (socialMedia) {
+      // const socialMedia = await SocialMedia.findByPk(socialMediaId);
+      // if (!socialMedia)
+      //   throw new Error(
+      //     `msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`
+      //   );
       await msgReceived.setSocialMedium(socialMedia);
     }
 
@@ -130,8 +138,13 @@ bot.on("message", async (msg) => {
     };
     console.log('mensaje enviado a app', msgReceivedData);
     
-    await axios.post('http://localhost:3000/newMessageReceived', msgReceivedData);
-    console.log("Datos del mensaje enviados a app desde TelegramBot");
+    try {
+      //await axios.post('http://localhost:3000/newMessageReceived', msgReceivedData);
+      await axios.post('https://electrica-mosconi-server.onrender.com/newMessageReceived', msgReceivedData);
+      console.log("Datos del mensaje enviados a app desde TelegramBot");
+    } catch (error) {
+      console.error("Error al enviar datos del mensaje a la app desde TelegramBot:", error.message);
+    }
 
   } catch (error) {
     console.error(
