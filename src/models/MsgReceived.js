@@ -46,12 +46,6 @@ module.exports = (sequelize) => {
           type: DataTypes.STRING,
           allowNull: true,
           defaultValue: null,
-          unique: true,
-          validate: {
-            isEmail: {
-              msg: 'El correo electrónico debe tener un formato válido.'
-            }
-          }
       },
         BusinessId: {
           type: DataTypes.UUID,

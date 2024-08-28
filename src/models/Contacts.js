@@ -25,7 +25,7 @@ module.exports = (sequelize)=>{
             type: DataTypes.BIGINT,
             allowNull: false,
           },
-        phoneNumber: {
+        phone: {
             type: DataTypes.BIGINT,
             allowNull: true,
             defaultValue: null
@@ -39,12 +39,6 @@ module.exports = (sequelize)=>{
             type: DataTypes.STRING,
             allowNull: true,
             defaultValue: null,
-            unique: true,
-            validate: {
-              isEmail: {
-                msg: 'El correo electrónico debe tener un formato válido.'
-              }
-            }
         }
     },     
     {timestamps:false})

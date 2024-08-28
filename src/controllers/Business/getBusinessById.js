@@ -21,7 +21,8 @@ const getBusinessById = async (id) => {
             },
             {
             model: Contacts,
-            attributes: ['id', 'name',  'phoneNumber', 'userName', 'Email'],
+            attributes: ['id', 'name',  'phone', 'userName', 'Email'],
+            //attributes: ['id', 'name'],
                 include: [
                     {
                         model: MsgReceived,
