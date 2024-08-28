@@ -15,7 +15,7 @@ const getContactById = async (id) => {
           },
         {
             model: MsgReceived,
-            attributes: ['id', 'chatId', 'text', 'name', 'timestamp', 'active', 'state', 'received'],
+            attributes: ['id', 'chatId', 'text', 'name', 'timestamp', 'phoneNumber', 'userName', 'Email' ,'active', 'state', 'received'],
         },
         {
                 model: MsgSent,

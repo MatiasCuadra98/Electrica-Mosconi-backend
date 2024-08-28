@@ -31,7 +31,7 @@ const handleMessage = async (msg) => {
         name: senderName,
         notification: true,
         chatId: chatId,
-        phoneNumber: senderPhoneNumber
+        phone: senderPhoneNumber
        // SocialMediumId: socialMediaId,
       },
     });
@@ -52,11 +52,12 @@ const handleMessage = async (msg) => {
 
     // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
-      name: senderName.toString(),
       chatId: chatId,
-      text: message,
       idUser: msg.id,
+      text: message,
+      name: senderName.toString(),
       timestamp: Date.now(),
+      phoneNumber:senderPhoneNumber,
       BusinessId: businessId,
       // active: false,
       // state: "No Leidos",
@@ -83,11 +84,13 @@ const handleMessage = async (msg) => {
     console.log("Mensaje de WhatsApp recibido guardado en la base de datos:", msgReceived);
    
     const msgReceivedData = {
-      name: senderName.toString(),
-      chatId: chatId,
-      text: message,
-      idUser: msg.id,
-      timestamp: Date.now(),
+      id: msgReceived.id,
+      chatId: msgReceived.chatId,
+      idUser: msgReceived.idUser,
+      text: msgReceived.text,
+      name: msgReceived.name,
+      timestamp: msgReceived.timestamp,
+      phoneNumber: msgReceived.phoneNumber,
       BusinessId: businessId,
       Business: {
         id: Business.id,

@@ -40,7 +40,7 @@ bot.on("message", async (msg) => {
         name: senderName,
         notification: true,
         chatId: chatId,
-        phoneNumber: senderIdUser,
+        phone: senderIdUser,
         //SocialMediumId: socialMediaId,
       },
     });
@@ -70,14 +70,13 @@ bot.on("message", async (msg) => {
 
     // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
-      name: senderName,
       chatId: chatId,
-      text: message,
       idUser: msg.from.id,
+      text: message,
+      name: senderName,
       timestamp: Date.now(),
       phoneNumber: chatId,
       BusinessId: businessId,
-      //BusinessId: null,
       // active: false,
       // state: "No Leidos",
       // received: true,
@@ -109,12 +108,13 @@ bot.on("message", async (msg) => {
     console.log("Mensaje recibido guardado en la base de datos:", msgReceived);
 
     const msgReceivedData = {
-      name: senderName,
-      chatId: chatId,
-      text: message,
-      idUser: msg.from.id,
-      timestamp: Date.now(),
-      phoneNumber: chatId,
+      id: msgReceived.id,
+      chatId: msgReceived.chatId,
+      idUser: msgReceived.idUser,
+      text: msgReceived.text,
+      name: msgReceived.name,
+      timestamp: msgReceived.timestamp,
+      phoneNumber: msgReceived.phoneNumber,
       BusinessId: businessId,
       Business: {
         id: Business.id,
