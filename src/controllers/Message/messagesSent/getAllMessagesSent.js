@@ -1,4 +1,4 @@
-const {MsgSent, Business, Contacts, SocialMedia, User} = require('../../../db');
+const {MsgSent, Business, Contacts, User} = require('../../../db');
 
 const getAllMessagesSent = async () => {
     const messages = await MsgSent.findAll({
@@ -11,14 +11,10 @@ const getAllMessagesSent = async () => {
         {
           model: Contacts,
           attributes: ['id', 'name', 'phone', 'userName', 'Email'],
-        },
-        {
-          model: SocialMedia,
-          attributes: ['id', 'name', 'icon']
         }, 
         {
-            model: User,
-            attributes: ['id', 'name']
+          model: User,
+          attributes: ['id', 'name']
         }, 
       ],
     })
@@ -26,4 +22,4 @@ const getAllMessagesSent = async () => {
     return messages;
 };
 
-module.export = {getAllMessagesSent};
+module.exports = {getAllMessagesSent};
