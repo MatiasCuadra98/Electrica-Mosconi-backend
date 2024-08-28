@@ -49,11 +49,11 @@ io.on("connection", async (socket) => {
   
   //console.log(`Received userId: ${userId}`); // Registro para depuración
 
-  // if(io) {
-  //   io.emit("SE_EMITEN_OTRAS_COSAS", "ok");
-  //  // message && io.emit("NEW_MESSAGE_RECEIVED", message)
+  if(io) {
+     io.emit("SE_EMITEN_OTRAS_COSAS", "ok");
+   // message && io.emit("NEW_MESSAGE_RECEIVED", message)
 
-  // }
+  }
 
   server.post("/newMessageReceived", async (req, res) => {
     const messageData = req.body;

@@ -12,8 +12,8 @@ const { SocialMediaActive, Business, SocialMedia} = require('../../../db');
         const business = await Business.findByPk(businessId);
         const socialMedia = await SocialMedia.findByPk(socialMediaId);
     
-        await newSocialMediaActive.addBusiness(business);
-        await newSocialMediaActive.addSocialMedia(socialMedia);
+        business && await newSocialMediaActive.addBusiness(business);
+        socialMedia && await newSocialMediaActive.addSocialMedia(socialMedia);
     //    businessId && await newSocialMediaActive.addBusiness(businessId);
     // // if (businessId) {
     // //     const business = await Business.findByPk(businessId);
