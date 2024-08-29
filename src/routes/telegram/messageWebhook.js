@@ -9,8 +9,10 @@ module.exports = (io)=>{
       const businessId = "5e31d0fb-87b5-4ccf-b150-e730872c7a0e"; 
       const socialMediaId = 1; //id de telegram
       const {msg} = req.body
+      console.log('mensaje recibido:', msg);
       
-      const chatId = msg.chat.id;
+      
+      const chatId = msg;
       const message = msg.text;
       const senderName = msg.from.first_name;
       const senderIdUser = msg.from.id;
@@ -28,22 +30,22 @@ module.exports = (io)=>{
         if (!socialMedia) {
           return res.status(404).send('Social Media no encontrado');
         }
-        if(business) {
-          const users = await User.findAll({where: {BusinessId: businessId}})
-          if(users.length) {
-            users.forEach((user) => {
-              io.to(user.socketId).emit('message', {
-                text:message,
-                from: senderIdUser,
-                name:senderName,
-                timestamp: Date.now(),
-                //timestamp: `${hours}:${minutes}:${seconds}`,
-                sent:false,
-                key:chatId
-              });
-            }) 
-          }
-      };
+      //   if(business) {
+      //     const users = await User.findAll({where: {BusinessId: businessId}})
+      //     if(users.length) {
+      //       users.forEach((user) => {
+      //         io.to(user.socketId).emit('message', {
+      //           text:message,
+      //           from: senderIdUser,
+      //           name:senderName,
+      //           timestamp: Date.now(),
+      //           //timestamp: `${hours}:${minutes}:${seconds}`,
+      //           sent:false,
+      //           key:chatId
+      //         });
+      //       }) 
+      //     }
+      // };
       const [newContact, created] = await Contacts.findOrCreate({
         where: {idUser: senderIdUser },
         defaults: {
@@ -53,8 +55,25 @@ module.exports = (io)=>{
           phone: senderIdUser
         }
         });
-        if(created && business) {await newContact.addBusiness(business);}
-        if (created && socialMedia) {await newContact.setSocialMedia(socialMedia);}
+    // Asociar el contacto con el negocio
+    if (created && business) {
+      const business = await Business.findByPk(businessId);
+      if (!business)
+        throw new Error(
+          `contact-business: Business with id ${businessId} not found`
+        );
+      await newContact.addBusiness(business);
+    }
+
+    // Asociar el contacto con la red social
+    if (created && socialMedia) {
+      const socialMedia = await SocialMedia.findByPk(socialMediaId);
+      if (!socialMedia)
+        throw new Error(
+          `contact-socialMedia: Social Media with id ${socialMediaId} not found`
+        );
+      await newContact.setSocialMedia(socialMedia);
+    }
         
         const contact = await Contacts.findOne({ where: { phone: senderIdUser } });
         if (!contact) throw new Error(`Contact not found`);
@@ -68,13 +87,32 @@ module.exports = (io)=>{
       timestamp: Date.now(),
       phoneNumber: chatId,
       BusinessId: businessId,
-      // active: false,
-      // state: "No Leidos",
-      // received: true,
+      active: false,
+      state: "No Leidos",
+      received: true,
     });
-    if(business) {await msgReceived.setBusiness(business);}
-    if(contact) {await msgReceived.setContact(contact);}
-    if (socialMedia) {await msgReceived.setSocialMedium(socialMedia);}
+  // Asociar el mensaje recibido con el negocio
+  if (business) {
+    const business = await Business.findByPk(businessId);
+    if (!business)
+      throw new Error(
+        `msgReceived-business: Business with id ${businessId} not found`
+      );
+    await msgReceived.setBusiness(business);
+  }
+
+  // Asociar el mensaje recibido con el contacto
+  await msgReceived.setContact(contact);
+
+  // Asociar el mensaje recibido con la red social
+  if (socialMedia) {
+    const socialMedia = await SocialMedia.findByPk(socialMediaId);
+    if (!socialMedia)
+      throw new Error(
+        `msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`
+      );
+    await msgReceived.setSocialMedium(socialMedia);
+  }
     
     console.log("Mensaje recibido y guardado en la base de datos desde WEBHOOK:", msgReceived);
     const msgReceivedData = {
