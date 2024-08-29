@@ -9,8 +9,7 @@ module.exports = (io)=>{
       const businessId = "5e31d0fb-87b5-4ccf-b150-e730872c7a0e"; 
       const socialMediaId = 1; //id de telegram
       const {msg} = req.body
-      console.log('mensaje recibido:', msg);
-      
+      console.log('mensaje recibido:', req.body);
       
       const chatId = msg;
       const message = msg;
