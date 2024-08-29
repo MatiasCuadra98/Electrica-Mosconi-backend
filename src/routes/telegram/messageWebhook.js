@@ -5,10 +5,12 @@ const {Business,User,MsgReceived, Contacts, SocialMedia} = require('../../db')
 
 module.exports = (io)=>{
     //ruta para recibir mensajes
-    messageWebhook.post('/messageWebHook', async (req, res) =>{
+    messageWebhook.post('/telegram/messageWebHook', async (req, res) =>{
+      console.log('webhook alcanzado al recibir un mensaje');
       console.log('mensaje recibido:', req.body);
       const businessId = "5e31d0fb-87b5-4ccf-b150-e730872c7a0e"; 
       const socialMediaId = 1; //id de telegram
+      
       const {msg} = req.body
       if (!msg) {
         console.error('No se recibió un msg en el body');
