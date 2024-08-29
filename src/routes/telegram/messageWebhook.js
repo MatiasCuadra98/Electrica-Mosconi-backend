@@ -10,7 +10,11 @@ module.exports = (io)=>{
       const businessId = "5e31d0fb-87b5-4ccf-b150-e730872c7a0e"; 
       const socialMediaId = 1; //id de telegram
       const {msg} = req.body
-      
+      if (!msg) {
+        console.error('No se recibió un msg en el body');
+        return res.status(400).send('Bad Request: No msg in body');
+      }
+
       const chatId = msg;
       const message = msg;
       const senderName = msg;
