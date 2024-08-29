@@ -17,8 +17,8 @@ module.exports = (io) => {
   routes.use("/contact", contactRoute); //ok => llega al handler => llega al controller
   routes.use("/socialMedia", socialMediaRoute); //ok =>llega al handler => llega al controller
   routes.use("/message", allMessagesRoute); //ok => llega al handler => llega al controller
-  routes.use("/telegram", messageWebHook(io));
-  routes.use("/telegram", messageSend(io));
+  routes.use("/", messageWebHook(io));
+  routes.use("/", messageSend(io));
   routes.use("/whatsapp", whatsappWebhook);  
   routes.use("/whatsapp", whatsappSendMessage)
 
