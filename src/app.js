@@ -107,6 +107,11 @@ server.post("/telegram/sendMessage", async (req, res) => {
   }
 });
 
+
+server.use("/", routes(io));
+
+module.exports = {app, server};
+//ESTABA JUSTO ARRIBA DE SERVER.USE, ROUTES(IO)
 // server.post('/newMessageSent', async (req, res) => {
 //   const msgSentData = req.body;    
 //   try {
@@ -119,7 +124,3 @@ server.post("/telegram/sendMessage", async (req, res) => {
 //   res.status(500).send("Error al emitir el evento");
 // }
 // })
-
-server.use("/", routes(io));
-
-module.exports = {app, server};

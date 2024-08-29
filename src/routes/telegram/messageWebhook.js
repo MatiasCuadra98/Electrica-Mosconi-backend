@@ -1,11 +1,11 @@
 const { Router } = require('express')
 const {Business,User,MsgReceived, Contacts, SocialMedia} = require('../../db')
 
- const messageWebhook = Router()
+ const messageWebHook = Router()
 
 module.exports = (io)=>{
     //ruta para recibir mensajes
-    messageWebhook.post('/telegram/messageWebHook', async (req, res) =>{
+    messageWebHook.post('/messageWebHook', async (req, res) =>{
       console.log('webhook alcanzado al recibir un mensaje');
       console.log('mensaje recibido:', req.body);
       const businessId = "5e31d0fb-87b5-4ccf-b150-e730872c7a0e"; 
@@ -166,7 +166,7 @@ module.exports = (io)=>{
   }
 });
 
-return messageWebhook;
+return messageWebHook;
 }
  
       //declaramos variables para recibir los mensajes en tiempo real con new Date y timestamp
