@@ -13,9 +13,9 @@ module.exports = (io)=>{
       
       
       const chatId = msg;
-      const message = msg.text;
-      const senderName = msg.from.first_name;
-      const senderIdUser = msg.from.id;
+      const message = msg;
+      const senderName = msg;
+      const senderIdUser = msg;
 
       // const date = new Date(timestamp)
       // const hours = date.getHours().toString()
