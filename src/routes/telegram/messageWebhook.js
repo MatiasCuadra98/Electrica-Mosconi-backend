@@ -7,20 +7,20 @@ module.exports = (io)=>{
     //ruta para recibir mensajes
     messageWebHook.post('/messageWebHook', async (req, res) =>{
       console.log('webhook alcanzado al recibir un mensaje');
-      console.log('mensaje recibido:', req.body);
+      //console.log('mensaje recibido:', req.body);
       const businessId = "5e31d0fb-87b5-4ccf-b150-e730872c7a0e"; 
       const socialMediaId = 1; //id de telegram
       
-      const {msg} = req.body
-      if (!msg) {
+      const { message } = req.body
+      if (!message) {
         console.error('No se recibió un msg en el body');
         return res.status(400).send('Bad Request: No msg in body');
       }
 
-      const chatId = msg;
-      const message = msg;
-      const senderName = msg;
-      const senderIdUser = msg;
+      const chatId = message.chat.id;
+      const messageReceived = message.text;
+      const senderName = message.from.first_name;
+      const senderIdUser = message.from.id;
 
       // const date = new Date(timestamp)
       // const hours = date.getHours().toString()
@@ -86,8 +86,8 @@ module.exports = (io)=>{
          // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
       chatId: chatId,
-      idUser: msg.from.id,
-      text: message,
+      idUser: senderIdUser,
+      text: messageReceived,
       name: senderName,
       timestamp: Date.now(),
       phoneNumber: chatId,
