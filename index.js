@@ -39,7 +39,7 @@ const setTelegramWebhook = async (url, retries = 5, delay = 3000) => {
     }
   };
   
-  const URL = "https://electrica-mosconi-server.onrender.com/messageWebHook";
+  const URL = "https://electrica-mosconi-server.onrender.com/telegram/messageWebHook";
 setTelegramWebhook(URL);
 
 
