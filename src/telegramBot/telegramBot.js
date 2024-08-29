@@ -47,21 +47,21 @@ bot.on("message", async (msg) => {
 
     // Asociar el contacto con el negocio
     if (created && business) {
-      // const business = await Business.findByPk(businessId);
-      // if (!business)
-      //   throw new Error(
-      //     `contact-business: Business with id ${businessId} not found`
-      //   );
+      const business = await Business.findByPk(businessId);
+      if (!business)
+        throw new Error(
+          `contact-business: Business with id ${businessId} not found`
+        );
       await newContact.addBusiness(business);
     }
 
     // Asociar el contacto con la red social
     if (created && socialMedia) {
       const socialMedia = await SocialMedia.findByPk(socialMediaId);
-      // if (!socialMedia)
-      //   throw new Error(
-      //     `contact-socialMedia: Social Media with id ${socialMediaId} not found`
-      //   );
+      if (!socialMedia)
+        throw new Error(
+          `contact-socialMedia: Social Media with id ${socialMediaId} not found`
+        );
       await newContact.setSocialMedia(socialMedia);
     }
 
@@ -77,18 +77,18 @@ bot.on("message", async (msg) => {
       timestamp: Date.now(),
       phoneNumber: chatId,
       BusinessId: businessId,
-      // active: false,
-      // state: "No Leidos",
-      // received: true,
+      active: false,
+      state: "No Leidos",
+      received: true,
     });
 
     // Asociar el mensaje recibido con el negocio
     if (business) {
-      // const business = await Business.findByPk(businessId);
-      // if (!business)
-      //   throw new Error(
-      //     `msgReceived-business: Business with id ${businessId} not found`
-      //   );
+      const business = await Business.findByPk(businessId);
+      if (!business)
+        throw new Error(
+          `msgReceived-business: Business with id ${businessId} not found`
+        );
       await msgReceived.setBusiness(business);
     }
 
@@ -97,11 +97,11 @@ bot.on("message", async (msg) => {
 
     // Asociar el mensaje recibido con la red social
     if (socialMedia) {
-      // const socialMedia = await SocialMedia.findByPk(socialMediaId);
-      // if (!socialMedia)
-      //   throw new Error(
-      //     `msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`
-      //   );
+      const socialMedia = await SocialMedia.findByPk(socialMediaId);
+      if (!socialMedia)
+        throw new Error(
+          `msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`
+        );
       await msgReceived.setSocialMedium(socialMedia);
     }
 
