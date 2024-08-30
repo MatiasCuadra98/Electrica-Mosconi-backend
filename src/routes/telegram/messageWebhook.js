@@ -12,6 +12,7 @@ module.exports = (io)=>{
       const socialMediaId = 1; //id de telegram
       
       const { message } = req.body
+      console.log('mensaje recibido:', message)
       if (!message) {
         console.error('No se recibió un msg en el body');
         return res.status(400).send('Bad Request: No msg in body');
@@ -51,38 +52,48 @@ module.exports = (io)=>{
       //       }) 
       //     }
       // };
-      const [newContact, created] = await Contacts.findOrCreate({
-        where: {idUser: senderIdUser },
-        defaults: {
-          name: senderName,
-          notification: true,
-          chatId: chatId,
-          phone: senderIdUser
-        }
+      
+        const [newContact, created] = await Contacts.findOrCreate({
+          where: {idUser: senderIdUser },
+          defaults: {
+            name: senderName,
+            notification: true,
+            chatId: chatId,
+            phone: senderIdUser
+          }
         });
-    // Asociar el contacto con el negocio
-    if (created && business) {
-      const business = await Business.findByPk(businessId);
-      if (!business)
-        throw new Error(
-          `contact-business: Business with id ${businessId} not found`
-        );
-      await newContact.addBusiness(business);
-    }
+        console.log('contacto creado sin asociaciones:', newContact);
+          // Asociar el contacto con el negocio
+          if (created && business) {
+            const business = await Business.findByPk(businessId);
+            if (!business)
+              throw new Error(
+            `contact-business: Business with id ${businessId} not found`
+          );
+          await newContact.addBusiness(business);
+        }
+        
+        // Asociar el contacto con la red social
+        if (created && socialMedia) {
+          const socialMedia = await SocialMedia.findByPk(socialMediaId);
+          if (!socialMedia)
+            throw new Error(
+                `contact-socialMedia: Social Media with id ${socialMediaId} not found`
+              );
+            await newContact.setSocialMedia(socialMedia);
+          }
 
-    // Asociar el contacto con la red social
-    if (created && socialMedia) {
-      const socialMedia = await SocialMedia.findByPk(socialMediaId);
-      if (!socialMedia)
-        throw new Error(
-          `contact-socialMedia: Social Media with id ${socialMediaId} not found`
-        );
-      await newContact.setSocialMedia(socialMedia);
-    }
+        console.log('contacto creado con asociaciones:', newContact);
+        if(!newContact) {
+        console.log('el contacto no fue creado ni encontrado', error.message);
+        
+      }
         
         const contact = await Contacts.findOne({ where: { phone: senderIdUser } });
         if (!contact) throw new Error(`Contact not found`);
 
+        console.log('contacto encontrado', contact);
+        
          // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
       chatId: chatId,
@@ -96,6 +107,9 @@ module.exports = (io)=>{
       state: "No Leidos",
       received: true,
     });
+
+    console.log('mensaje recibido y creado sin asociaciones:', msgReceived);
+    
   // Asociar el mensaje recibido con el negocio
   if (business) {
     const business = await Business.findByPk(businessId);
@@ -120,6 +134,7 @@ module.exports = (io)=>{
   }
     
     console.log("Mensaje recibido y guardado en la base de datos desde WEBHOOK:", msgReceived);
+    
     const msgReceivedData = {
       id: msgReceived.id,
       chatId: msgReceived.chatId,
