@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const {Business,User,MsgReceived, Contacts, SocialMedia} = require('../../db')
+const axios = require('axios')
 
  const messageWebHook = Router()
 
@@ -76,6 +77,7 @@ module.exports = (io)=>{
         // Asociar el contacto con la red social
         if (created && socialMedia) {
           const socialMedia = await SocialMedia.findByPk(socialMediaId);
+          console.log('redSocial', socialMedia );
           if (!socialMedia)
             throw new Error(
                 `contact-socialMedia: Social Media with id ${socialMediaId} not found`
@@ -84,6 +86,7 @@ module.exports = (io)=>{
           }
 
         console.log('contacto creado con asociaciones:', newContact);
+
         if(!newContact) {
         console.log('el contacto no fue creado ni encontrado', error.message);
         
@@ -134,7 +137,7 @@ module.exports = (io)=>{
   }
     
     console.log("Mensaje recibido y guardado en la base de datos desde WEBHOOK:", msgReceived);
-    
+
     const msgReceivedData = {
       id: msgReceived.id,
       chatId: msgReceived.chatId,
