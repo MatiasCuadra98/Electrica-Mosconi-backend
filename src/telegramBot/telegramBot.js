@@ -138,6 +138,8 @@ bot.on("message", async (msg) => {
     };
     console.log('mensaje enviado a app', msgReceivedData);
     
+
+
     try {
       //await axios.post('http://localhost:3000/newMessageReceived', msgReceivedData);
       await axios.post('https://electrica-mosconi-server.onrender.com/newMessageReceived', msgReceivedData);
@@ -145,6 +147,7 @@ bot.on("message", async (msg) => {
     } catch (error) {
       console.error("Error al enviar datos del mensaje a la app desde TelegramBot:", error.message);
     }
+
 
   } catch (error) {
     console.error(

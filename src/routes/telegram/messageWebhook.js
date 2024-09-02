@@ -288,11 +288,12 @@ return messageWebHook;
         //             received: true,
         //           };
           
-        //           // Enviar los datos a la ruta específica
-        //           await axios.post('http://localhost:3000/newMessageReceived', msgReceivedData);
-        //           console.log("Datos del mensaje enviados a app desde Webhook");
-        //     }
-        // }
+                  // Enviar los datos a la ruta específica
+                  await axios.post('https://electrica-mosconi-server.onrender.com/newMessageReceived', msgReceivedData);
+                  console.log("Datos del mensaje enviados a app desde Webhook");
+            }
+        }
+
         
 //         res.status(200).end()
 //     })
