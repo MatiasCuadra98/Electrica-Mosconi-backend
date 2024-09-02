@@ -3,7 +3,7 @@ const axios = require('axios');
 require("dotenv").config();
 
 
-const businessId = "dcb75f4c-5c96-40c5-befc-3179c96535c2"; 
+const businessId = "5e31d0fb-87b5-4ccf-b150-e730872c7a0e"; 
 const socialMediaId = 2; // Este es el id de WhatsApp en SocialMedia
 const GRAPH_API_TOKEN = process.env.GRAPH_API_TOKEN; // Usa tu token de WhatsApp Business API
 const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID || 372206589314811;
@@ -13,52 +13,61 @@ const handleMessage = async (msg) => {
   console.log('Mensaje recibido:', msg);
   const chatId = msg.from;
   const message = msg.text.body;
-  const senderName = msg.from_name ? msg.from_name.toString() : "Usuario";
-
+  const senderPhoneNumber = msg.entry.changes.value.metadata.display_phone_number
+  const senderName = msg.from_name ? msg.from_name.toString() : senderPhoneNumber ? senderPhoneNumber : 'Usuario';
   try {
+    const business = await Business.findByPk(businessId)
+    if (!business) {
+      return res.status(404).send('Business no encontrado');
+    };
+    const socialMedia = await SocialMedia.findByPk(socialMediaId);
+    if (!socialMedia) {
+      return res.status(404).send('Social Media no encontrado');
+    }
     // Buscar o crear el contacto
     const [newContact, created] = await Contacts.findOrCreate({
-      where: { phone: chatId },
+      where: { idUser: chatId },
       defaults: {
         name: senderName,
         notification: true,
         chatId: chatId,
-        SocialMediumId: socialMediaId,
+        phone: senderPhoneNumber
+       // SocialMediumId: socialMediaId,
       },
     });
 
     // Asociar el contacto con el negocio
-    if (created && businessId) {
-      const business = await Business.findByPk(businessId);
-      if (!business) throw new Error(`contact-business: Business with id ${businessId} not found`);
+    if (created && business) {
+      // const business = await Business.findByPk(businessId);
+      // if (!business) throw new Error(`contact-business: Business with id ${businessId} not found`);
       await newContact.addBusiness(business);
     }
 
     // Asociar el mensaje recibido con la red social
-    if (created && socialMediaId) {
-      const socialMedia = await SocialMedia.findByPk(socialMediaId);
-      if (!socialMedia) throw new Error(`contact-socialMedia: Social Media with id ${socialMediaId} not found`);
+    if (created && socialMedia) {
+      // const socialMedia = await SocialMedia.findByPk(socialMediaId);
+      // if (!socialMedia) throw new Error(`contact-socialMedia: Social Media with id ${socialMediaId} not found`);
       await newContact.setSocialMedium(socialMedia);
     }
 
     // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
-      name: senderName.toString(),
       chatId: chatId,
+      idUser: msg.id,
       text: message,
-      fromData: msg,
-      payload: msg,
+      name: senderName.toString(),
       timestamp: Date.now(),
+      phoneNumber:senderPhoneNumber,
       BusinessId: businessId,
-      active: false,
-      state: "No Leidos",
-      received: true,
+      // active: false,
+      // state: "No Leidos",
+      // received: true,
     });
 
     // Asociar el mensaje recibido con el negocio
-    if (businessId) {
-      const business = await Business.findByPk(businessId);
-      if (!business) throw new Error(`msgReceived-business: Business with id ${businessId} not found`);
+    if (business) {
+      // const business = await Business.findByPk(businessId);
+      // if (!business) throw new Error(`msgReceived-business: Business with id ${businessId} not found`);
       await msgReceived.setBusiness(business);
     }
 
@@ -66,21 +75,22 @@ const handleMessage = async (msg) => {
     await msgReceived.setContact(newContact);
 
     // Asociar el mensaje recibido con la red social
-    if (socialMediaId) {
-      const socialMedia = await SocialMedia.findByPk(socialMediaId);
-      if (!socialMedia) throw new Error(`msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`);
+    if (socialMedia) {
+      // const socialMedia = await SocialMedia.findByPk(socialMediaId);
+      // if (!socialMedia) throw new Error(`msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`);
       await msgReceived.setSocialMedium(socialMedia);
     }
 
     console.log("Mensaje de WhatsApp recibido guardado en la base de datos:", msgReceived);
    
     const msgReceivedData = {
-      name: senderName,
-      chatId: chatId,
-      text: message,
-      fromData: msg.from,
-      payload: msg,
-      timestamp: Date.now(),
+      id: msgReceived.id,
+      chatId: msgReceived.chatId,
+      idUser: msgReceived.idUser,
+      text: msgReceived.text,
+      name: msgReceived.name,
+      timestamp: msgReceived.timestamp,
+      phoneNumber: msgReceived.phoneNumber,
       BusinessId: businessId,
       Business: {
         id: Business.id,
@@ -94,7 +104,6 @@ const handleMessage = async (msg) => {
         id: Contacts.id,
         name: Contacts.name,
         phone: Contacts.phone,
-        notification: Contacts.notification
       },
       SocialMediumId: socialMediaId,
       SocialMedium: {
@@ -105,6 +114,7 @@ const handleMessage = async (msg) => {
     };
     console.log('mensaje enviado a app', msgReceivedData);
     
+
     await axios.post('https://electrica-mosconi-server.onrender.com/newMessageReceived', msgReceivedData);
     console.log("Datos del mensaje enviados a app desde Wathsapp");
 

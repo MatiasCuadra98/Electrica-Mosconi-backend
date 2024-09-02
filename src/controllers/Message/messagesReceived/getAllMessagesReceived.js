@@ -10,7 +10,7 @@ const getAllMessagesReceived = async () => {
         },
         {
           model: Contacts,
-          attributes: ['id', 'name', 'phone', 'notification'],
+          attributes: ['id', 'name', 'phone', 'userName', 'Email'],
         },
         {
           model: SocialMedia,

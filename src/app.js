@@ -43,7 +43,7 @@ io.on("connection", async (socket) => {
   //console.log(`Received userId: ${userId}`); // Registro para depuración
 
   if(io) {
-    io.emit("SE_EMITEN_OTRAS_COSAS", "ok");
+     io.emit("SE_EMITEN_OTRAS_COSAS", "ok");
    // message && io.emit("NEW_MESSAGE_RECEIVED", message)
 
   }
@@ -81,18 +81,16 @@ io.on("connection", async (socket) => {
 
 server.post("/telegram/sendMessage", async (req, res) => {
   //console.log('body:',  req.body);
-  
   const { chatId, message, UserId } = req.body;
   //console.log('en app', UserId);
-  
-  
   try {
     const response = await enviarRespuestaManual(chatId, message, UserId);
     if (response.success) {
-      //io.emit('newMessage', { chatId, message, UserId });
       io.emit('NEW_MESSAGE_SENT', { chatId, message, UserId });
-      console.log(`Evento 'NEW_MESSAGE_SENT' emitido con mensaje: ${message}`); // Log adicional para verificar la emisión
-
+      console.log(`Evento 'NEW_MESSAGE_SENT' emitido con mensaje: ${message}`); 
+      const msgSentData = response.msgSent;
+      io.emit('ADD_NEW_MESSAGE_SENT', msgSentData);
+      console.log(`Evento 'ADD_NEW_MESSAGE_SENT' emitido con mensaje: ${msgSentData}`); 
       res.status(200).send(response.message);
     } else {
       res.status(500).send(response.message);
@@ -101,6 +99,21 @@ server.post("/telegram/sendMessage", async (req, res) => {
     res.status(500).send("Error al enviar el mensaje: " + error.message);
   }
 });
+
+
 server.use("/", routes(io));
 
 module.exports = {app, server};
+//ESTABA JUSTO ARRIBA DE SERVER.USE, ROUTES(IO)
+// server.post('/newMessageSent', async (req, res) => {
+//   const msgSentData = req.body;    
+//   try {
+//   // Emitir el evento desde app con los datos recibidos
+//   io.emit('ADD_NEW_MESSAGE_SENT', msgSentData);
+//   console.log(`Evento 'ADD_NEW_MESSAGE_SENT' emitido con datos:`, messageData);
+//   res.status(200).send("Evento emitido con éxito");
+// } catch (error) {
+//   console.error("Error al emitir el evento desde app:", error);
+//   res.status(500).send("Error al emitir el evento");
+// }
+// })

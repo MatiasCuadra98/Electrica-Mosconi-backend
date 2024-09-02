@@ -13,11 +13,6 @@ include:[
     {
         model: MsgSent,
         attributes: ['id', 'toData', 'message', 'timestamp', 'received'],
-        // attributes: ['id', 'toData', 'message', 'timestamp', 'received', 'contactId'],
-        // include: {
-        //     model: Contact,
-        //     attribute: ['id', 'name', 'email', 'phone']
-        // }
     }
 ]});
   if(!users)  throw new Error ('Users not found');

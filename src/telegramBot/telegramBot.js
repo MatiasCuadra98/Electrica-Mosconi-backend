@@ -13,31 +13,40 @@ const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94";
 //const bot = new TelegramBot(botToken, {polling: true});
 const bot = new TelegramBot(botToken);
 
-const businessId = "dcb75f4c-5c96-40c5-befc-3179c96535c2"; 
+const businessId = "5e31d0fb-87b5-4ccf-b150-e730872c7a0e"; 
 const socialMediaId = 1; //este es el id de telegram
 
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
   const message = msg.text;
   const senderName = msg.from.first_name;
-  const senderPhone = msg.from.id;
+  const senderIdUser = msg.from.id;
 
   console.log("msg: ", msg);
 
   try {
+    const business = await Business.findByPk(businessId)
+    if (!business) {
+      return res.status(404).send('Business no encontrado');
+    };
+    const socialMedia = await SocialMedia.findByPk(socialMediaId);
+    if (!socialMedia) {
+      return res.status(404).send('Social Media no encontrado');
+    }
     // Buscar o crear el contacto
     const [newContact, created] = await Contacts.findOrCreate({
-      where: { phone: senderPhone },
+      where: {idUser: senderIdUser },
       defaults: {
         name: senderName,
         notification: true,
         chatId: chatId,
+        phone: senderIdUser,
         //SocialMediumId: socialMediaId,
       },
     });
 
     // Asociar el contacto con el negocio
-    if (created && businessId) {
+    if (created && business) {
       const business = await Business.findByPk(businessId);
       if (!business)
         throw new Error(
@@ -47,7 +56,7 @@ bot.on("message", async (msg) => {
     }
 
     // Asociar el contacto con la red social
-    if (created && socialMediaId) {
+    if (created && socialMedia) {
       const socialMedia = await SocialMedia.findByPk(socialMediaId);
       if (!socialMedia)
         throw new Error(
@@ -56,26 +65,25 @@ bot.on("message", async (msg) => {
       await newContact.setSocialMedia(socialMedia);
     }
 
-    const contact = await Contacts.findOne({ where: { phone: senderPhone } });
+    const contact = await Contacts.findOne({ where: { phone: senderIdUser } });
     if (!contact) throw new Error(`Contact not found`);
 
     // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
-      name: senderName,
       chatId: chatId,
+      idUser: msg.from.id,
       text: message,
-      fromData: msg.from,
-      payload: msg,
+      name: senderName,
       timestamp: Date.now(),
+      phoneNumber: chatId,
       BusinessId: businessId,
-      //BusinessId: null,
       active: false,
       state: "No Leidos",
       received: true,
     });
 
     // Asociar el mensaje recibido con el negocio
-    if (businessId) {
+    if (business) {
       const business = await Business.findByPk(businessId);
       if (!business)
         throw new Error(
@@ -88,7 +96,7 @@ bot.on("message", async (msg) => {
     await msgReceived.setContact(contact);
 
     // Asociar el mensaje recibido con la red social
-    if (socialMediaId) {
+    if (socialMedia) {
       const socialMedia = await SocialMedia.findByPk(socialMediaId);
       if (!socialMedia)
         throw new Error(
@@ -100,12 +108,13 @@ bot.on("message", async (msg) => {
     console.log("Mensaje recibido guardado en la base de datos:", msgReceived);
 
     const msgReceivedData = {
-      name: senderName,
-      chatId: chatId,
-      text: message,
-      fromData: msg.from,
-      payload: msg,
-      timestamp: Date.now(),
+      id: msgReceived.id,
+      chatId: msgReceived.chatId,
+      idUser: msgReceived.idUser,
+      text: msgReceived.text,
+      name: msgReceived.name,
+      timestamp: msgReceived.timestamp,
+      phoneNumber: msgReceived.phoneNumber,
       BusinessId: businessId,
       Business: {
         id: Business.id,
@@ -119,7 +128,6 @@ bot.on("message", async (msg) => {
         id: contact.id,
         name: contact.name,
         phone: contact.phone,
-        notification: contact.decrementnotification
       },
       SocialMediumId: socialMediaId,
       SocialMedium: {
@@ -130,8 +138,16 @@ bot.on("message", async (msg) => {
     };
     console.log('mensaje enviado a app', msgReceivedData);
     
-    await axios.post('https://electrica-mosconi-server.onrender.com/newMessageReceived', msgReceivedData);
-    console.log("Datos del mensaje enviados a app desde TelegramBot");
+
+
+    try {
+      //await axios.post('http://localhost:3000/newMessageReceived', msgReceivedData);
+      await axios.post('https://electrica-mosconi-server.onrender.com/newMessageReceived', msgReceivedData);
+      console.log("Datos del mensaje enviados a app desde TelegramBot");
+    } catch (error) {
+      console.error("Error al enviar datos del mensaje a la app desde TelegramBot:", error.message);
+    }
+
 
   } catch (error) {
     console.error(
@@ -196,7 +212,13 @@ async function enviarRespuestaManual(chatId, mensaje, userId) {
     }
 
     console.log("Respuesta manual enviada y guardada correctamente.");
-    return { success: true, message: "Respuesta enviada correctamente" };
+
+    return { 
+      success: true, 
+      message: "Respuesta enviada correctamente",
+      msgSent
+     };
+    
   } catch (error) {
     console.error("Error al enviar y guardar la respuesta manual:", error);
     return {
