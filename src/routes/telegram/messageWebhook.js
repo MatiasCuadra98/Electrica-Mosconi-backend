@@ -24,10 +24,6 @@ module.exports = (io)=>{
       const senderName = message.from.first_name;
       const senderIdUser = message.from.id;
 
-      // const date = new Date(timestamp)
-      // const hours = date.getHours().toString()
-      // const minutes = date.getMinutes().toString()
-      // const seconds = date.getSeconds().toString()
       try {
         const business = await Business.findByPk(businessId)
         if (!business) {
@@ -37,22 +33,6 @@ module.exports = (io)=>{
         if (!socialMedia) {
           return res.status(404).send('Social Media no encontrado');
         }
-      //   if(business) {
-      //     const users = await User.findAll({where: {BusinessId: businessId}})
-      //     if(users.length) {
-      //       users.forEach((user) => {
-      //         io.to(user.socketId).emit('message', {
-      //           text:message,
-      //           from: senderIdUser,
-      //           name:senderName,
-      //           timestamp: Date.now(),
-      //           //timestamp: `${hours}:${minutes}:${seconds}`,
-      //           sent:false,
-      //           key:chatId
-      //         });
-      //       }) 
-      //     }
-      // };
       
         const [newContact, created] = await Contacts.findOrCreate({
           where: {idUser: senderIdUser },
@@ -60,7 +40,8 @@ module.exports = (io)=>{
             name: senderName,
             notification: true,
             chatId: chatId,
-            phone: senderIdUser
+            phone: senderIdUser,
+            // SocialMediumId: socialMediaId
           }
         });
         console.log('contacto creado sin asociaciones:', newContact);
@@ -73,16 +54,20 @@ module.exports = (io)=>{
           );
           await newContact.addBusiness(business);
         }
-        
         // Asociar el contacto con la red social
         if (created && socialMedia) {
-          const socialMedia = await SocialMedia.findByPk(socialMediaId);
+          // const socialMedia = await SocialMedia.findByPk(socialMediaId);
           console.log('redSocial', socialMedia );
-          if (!socialMedia)
-            throw new Error(
-                `contact-socialMedia: Social Media with id ${socialMediaId} not found`
-              );
+          // if (!socialMedia)
+          //   throw new Error(
+          //       `contact-socialMedia: Social Media with id ${socialMediaId} not found`
+          //     );
             await newContact.setSocialMedia(socialMedia);
+            const contactWithSocialMedia = await Contacts.findByPk(newContact.id, {
+              include: SocialMedia
+            });
+            console.log('Contacto con Social Media asociada:', contactWithSocialMedia);
+          
           }
 
         console.log('contacto creado con asociaciones:', newContact);
