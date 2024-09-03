@@ -9,7 +9,7 @@ module.exports = (io)=>{
     messageWebHook.post('/messageWebHook', async (req, res) =>{
       console.log('webhook alcanzado al recibir un mensaje');
       //console.log('mensaje recibido:', req.body);
-      const businessId = "5e31d0fb-87b5-4ccf-b150-e730872c7a0e"; 
+      const businessId = "1a638ee7-0577-4bb2-9833-193cddd78f3c"; 
       const socialMediaId = 1; //id de telegram
       
       const { message } = req.body
