@@ -8,7 +8,7 @@ const messageWebHook = require("./telegram/messageWebhook");
 const messageSend = require("./telegram/messageSend");
 const whatsappWebhook = require ("./whatsapp/wspMessageWebhook")
 const whatsappSendMessage = require("./whatsapp/enviarRespuestaManualWsp")
-
+const fbAuthentication = require("./authentication/facebook/login"); 
 const routes = Router();
 
 module.exports = (io) => {
@@ -21,6 +21,7 @@ module.exports = (io) => {
   routes.use("/", messageSend(io));
   routes.use("/whatsapp", whatsappWebhook);  
   routes.use("/whatsapp", whatsappSendMessage)
+  routes.use('/', fbAuthentication)
 
   return routes;
 };
