@@ -13,7 +13,7 @@ module.exports = (io)=>{
       const socialMediaId = 1; //id de telegram
       
       const { message } = req.body
-      console.log('mensaje recibido:', message)
+      //console.log('mensaje recibido:', message)
       if (!message) {
         console.error('No se recibió un msg en el body');
         return res.status(400).send('Bad Request: No msg in body');
@@ -30,6 +30,8 @@ module.exports = (io)=>{
           return res.status(404).send('Business no encontrado');
         };
         const socialMedia = await SocialMedia.findByPk(socialMediaId);
+        console.log('red social:', socialMedia);
+        
         if (!socialMedia) {
           return res.status(404).send('Social Media no encontrado');
         }
@@ -41,10 +43,10 @@ module.exports = (io)=>{
             notification: true,
             chatId: chatId,
             phone: senderIdUser,
-            // SocialMediumId: socialMediaId
+            SocialMediumId: socialMediaId
           }
         });
-        console.log('contacto creado sin asociaciones:', newContact);
+        console.log('contacto creado');
           // Asociar el contacto con el negocio
           if (created && business) {
             const business = await Business.findByPk(businessId);
@@ -70,7 +72,7 @@ module.exports = (io)=>{
           
           }
 
-        console.log('contacto creado con asociaciones:', newContact);
+        //console.log('contacto creado con asociaciones:', newContact);
 
         if(!newContact) {
         console.log('el contacto no fue creado ni encontrado', error.message);
@@ -96,7 +98,7 @@ module.exports = (io)=>{
       received: true,
     });
 
-    console.log('mensaje recibido y creado sin asociaciones:', msgReceived);
+    //console.log('mensaje recibido y creado sin asociaciones:', msgReceived);
     
   // Asociar el mensaje recibido con el negocio
   if (business) {
@@ -121,7 +123,7 @@ module.exports = (io)=>{
     await msgReceived.setSocialMedium(socialMedia);
   }
     
-    console.log("Mensaje recibido y guardado en la base de datos desde WEBHOOK:", msgReceived);
+    console.log("Mensaje recibido y guardado en la base de datos desde WEBHOOK:");
 
     const msgReceivedData = {
       id: msgReceived.id,
