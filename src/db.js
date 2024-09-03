@@ -1,7 +1,5 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
-//const { DB_USER, DB_PASSWORD, DB_HOST, DATABASE_URL, DB_PORT, DB_NAME } =
-//  process.env;
 const UserModel = require("./models/User");
 const ContactsModel = require("./models/Contacts");
 const BusinessModel = require("./models/Business");
@@ -11,8 +9,10 @@ const SocialMediaModel = require("./models/SocialMedia");
 const SocialMediaActiveModel = require("./models/SocialMediaActive");
 
 const sequelize = new Sequelize(
+
   // `postgresql://mosconiuser:DrdUSShUJXpvBUYCBtp2bpPdbYqBVhro@dpg-cql4s63qf0us73brvolg-a.oregon-postgres.render.com/mosconidb`,
   'postgresql://mosconidatabase_user:PIAzSd8C3c4JKDXkjtZOuZanSjU2gZln@dpg-crasbkij1k6c73ck5ja0-a.oregon-postgres.render.com/mosconidatabase',
+
   {
     dialectOptions: {
       ssl: {
