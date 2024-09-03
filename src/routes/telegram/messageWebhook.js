@@ -41,7 +41,7 @@ module.exports = (io)=>{
             notification: true,
             chatId: chatId,
             phone: senderIdUser,
-            // SocialMediumId: socialMediaId
+            SocialMediumId: socialMediaId
           }
         });
         console.log('contacto creado sin asociaciones:', newContact);
