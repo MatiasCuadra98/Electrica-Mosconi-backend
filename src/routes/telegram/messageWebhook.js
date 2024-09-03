@@ -9,8 +9,9 @@ module.exports = (io)=>{
     messageWebHook.post('/messageWebHook', async (req, res) =>{
       console.log('webhook alcanzado al recibir un mensaje');
       //console.log('mensaje recibido:', req.body);
-      const businessId = "1a638ee7-0577-4bb2-9833-193cddd78f3c"; 
+      const businessId = "a4a2c1fb-ae03-487e-a53d-8e94232ac20e"; 
       const socialMediaId = 1; //id de telegram
+      
       
       const { message } = req.body
       //console.log('mensaje recibido:', message)
@@ -43,17 +44,17 @@ module.exports = (io)=>{
             notification: true,
             chatId: chatId,
             phone: senderIdUser,
-            SocialMediumId: socialMediaId
+            //SocialMediumId: socialMediaId
           }
         });
         console.log('contacto creado');
           // Asociar el contacto con el negocio
           if (created && business) {
-            const business = await Business.findByPk(businessId);
-            if (!business)
-              throw new Error(
-            `contact-business: Business with id ${businessId} not found`
-          );
+          //   const business = await Business.findByPk(businessId);
+          //   if (!business)
+          //     throw new Error(
+          //   `contact-business: Business with id ${businessId} not found`
+          // );
           await newContact.addBusiness(business);
         }
         // Asociar el contacto con la red social
@@ -102,11 +103,11 @@ module.exports = (io)=>{
     
   // Asociar el mensaje recibido con el negocio
   if (business) {
-    const business = await Business.findByPk(businessId);
-    if (!business)
-      throw new Error(
-        `msgReceived-business: Business with id ${businessId} not found`
-      );
+    // const business = await Business.findByPk(businessId);
+    // if (!business)
+    //   throw new Error(
+    //     `msgReceived-business: Business with id ${businessId} not found`
+    //   );
     await msgReceived.setBusiness(business);
   }
 
@@ -115,11 +116,11 @@ module.exports = (io)=>{
 
   // Asociar el mensaje recibido con la red social
   if (socialMedia) {
-    const socialMedia = await SocialMedia.findByPk(socialMediaId);
-    if (!socialMedia)
-      throw new Error(
-        `msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`
-      );
+    // const socialMedia = await SocialMedia.findByPk(socialMediaId);
+    // if (!socialMedia)
+    //   throw new Error(
+    //     `msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`
+    //   );
     await msgReceived.setSocialMedium(socialMedia);
   }
     
