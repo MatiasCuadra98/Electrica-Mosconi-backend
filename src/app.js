@@ -6,6 +6,8 @@ const http = require("http");
 const { Server } = require("socket.io");
 const { User } = require("./db");
 const { enviarRespuestaManual } = require("./telegramBot/telegramBot");
+const passport = require('./config/passport'); 
+const session = require('express-session');
 
 require("dotenv").config();
 
@@ -35,6 +37,17 @@ server.use(
 server.use(morgan("dev"));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
+
+//inicio la sesion de express
+server.use(session({
+  secret: 'your-session-secret', // Reemplaza con tu secreto de sesión
+  resave: false,
+  saveUninitialized: false,
+}));
+
+// inicio Passport
+server.use(passport.initialize());
+server.use(passport.session());
 
 io.on("connection", async (socket) => {
   const userId = socket.handshake.query.userId;
