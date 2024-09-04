@@ -24,6 +24,8 @@ const handleMessage = async (msg) => {
     if (!socialMedia) {
       return res.status(404).send('Social Media no encontrado');
     }
+    console.log('red social desde waths:', socialMedia);
+    
     // Buscar o crear el contacto
     const [newContact, created] = await Contacts.findOrCreate({
       where: { idUser: chatId },
@@ -51,6 +53,8 @@ const handleMessage = async (msg) => {
       await newContact.setSocialMedium(socialMedia);
     }
 
+    console.log('nuevo contacto desde waths:', newContact);
+    
     // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
       chatId: chatId,
@@ -82,7 +86,7 @@ const handleMessage = async (msg) => {
       await msgReceived.setSocialMedium(socialMedia);
     }
 
-    console.log("Mensaje de WhatsApp recibido guardado en la base de datos:", msgReceived);
+    console.log("Mensaje de WhatsApp recibido guardado en la base de datos:");
    
     const msgReceivedData = {
       id: msgReceived.id,
@@ -117,7 +121,7 @@ const handleMessage = async (msg) => {
     
 
     await axios.post('https://electrica-mosconi-server.onrender.com/newMessageReceived', msgReceivedData);
-    console.log("Datos del mensaje enviados a app desde Wathsapp");
+    //console.log("Datos del mensaje enviados a app desde Wathsapp");
 
   } catch (error) {
     console.error("Error al guardar el mensaje de WhatsApp recibido en la base de datos:", error);
