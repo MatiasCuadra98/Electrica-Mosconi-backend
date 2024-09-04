@@ -116,7 +116,7 @@ SocialMediaActive.belongsToMany(SocialMedia, {
 const syncDatabase = async () => {
 
 
-  await sequelize.sync({ force: true }); // Sincronizar base de datos con el modelo alterado
+  await sequelize.sync({ alter: true }); // Sincronizar base de datos con el modelo alterado
 
   await MsgReceived.updateDefaultText();
 };
