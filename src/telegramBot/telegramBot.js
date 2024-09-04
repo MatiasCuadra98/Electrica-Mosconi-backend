@@ -41,6 +41,7 @@ bot.on("message", async (msg) => {
         notification: true,
         chatId: chatId,
         phone: senderIdUser,
+        businessId: businessId
         //SocialMediumId: socialMediaId,
       },
     });
