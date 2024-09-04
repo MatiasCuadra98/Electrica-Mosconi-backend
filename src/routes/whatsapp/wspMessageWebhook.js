@@ -21,21 +21,20 @@ wspMessageWebhook.post('/', async (req, res) => {
   const { entry } = req.body;
   //const body = JSON.stringify(req.body, null, 2)
   //console.log('WEBHOOK - Contenido completo de req.body:', body)
-  console.log('entry: ', entry);
-  if (entry && entry[0]) { 
-    console.log('changes: ', entry[0].changes);
-  }
-  
-  
-
+  // console.log('entry: ', entry);
+  // if (entry && entry[0]) { 
+  //   console.log('changes: ', entry[0].changes);
+  // }
   try {
     if (entry && entry[0] && entry[0].changes && entry[0].changes[0]) {
       const change = entry[0].changes[0];
+      console.log('WEBHOOK - change1: ', change);
+      
       if (change.field === 'messages') {
         const value = change.value;
-        if (value.messages) {
+        if (value.messages && value.messages[0]) {
           const message = value.messages[0];
-          //console.log('WEBHOOK - Procesando mensaje de WhatsApp:', message);
+          console.log('WEBHOOK - Procesando mensaje de WhatsApp:', message);
           await handleMessage(message);
         }}
         //} else if (value.statuses) {
