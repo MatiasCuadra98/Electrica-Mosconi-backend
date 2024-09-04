@@ -19,9 +19,9 @@ wspMessageWebhook.get('/', (req, res) => {
 
 wspMessageWebhook.post('/', async (req, res) => {
   const { entry } = req.body;
-  const body = JSON.stringify(req.body, null, 2)
-  console.log('WEBHOOK - Contenido completo de req.body:', body)
-  console.log('entry: ', body.entry);
+  //const body = JSON.stringify(req.body, null, 2)
+  //console.log('WEBHOOK - Contenido completo de req.body:', body)
+  console.log('entry: ', entry);
   
 
   try {
