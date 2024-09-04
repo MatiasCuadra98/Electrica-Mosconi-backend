@@ -32,6 +32,7 @@ module.exports = (io)=>{
         };
         const socialMedia = await SocialMedia.findByPk(socialMediaId);
         console.log('red social:', socialMedia);
+        const socialMediaData = socialMedia.dataValues;
         
         if (!socialMedia) {
           return res.status(404).send('Social Media no encontrado');
@@ -61,20 +62,20 @@ module.exports = (io)=>{
         // Asociar el contacto con la red social
         if (created && socialMedia) {
           // const socialMedia = await SocialMedia.findByPk(socialMediaId);
-          console.log('redSocial', socialMedia );
+          //console.log('redSocial', socialMedia);
           // if (!socialMedia)
           //   throw new Error(
           //       `contact-socialMedia: Social Media with id ${socialMediaId} not found`
           //     );
-            await newContact.setSocialMedia(socialMedia);
-            const contactWithSocialMedia = await Contacts.findByPk(newContact.id, {
-              include: SocialMedia
-            });
-            console.log('Contacto con Social Media asociada:', contactWithSocialMedia);
+            await newContact.setSocialMedia(socialMediaData);
+            // const contactWithSocialMedia = await Contacts.findByPk(newContact.id, {
+            //   include: SocialMedia
+            // });
+            //console.log('Contacto con Social Media asociada:', contactWithSocialMedia);
           
           }
 
-        //console.log('contacto creado con asociaciones:', newContact);
+        console.log('contacto creado con asociaciones:', newContact);
 
         if(!newContact) {
         console.log('el contacto no fue creado ni encontrado', error.message);
@@ -84,7 +85,7 @@ module.exports = (io)=>{
         const contact = await Contacts.findOne({ where: { phone: senderIdUser } });
         if (!contact) throw new Error(`Contact not found`);
 
-        console.log('contacto encontrado', contact);
+        //console.log('contacto encontrado', contact);
         
          // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
@@ -122,10 +123,10 @@ module.exports = (io)=>{
     //   throw new Error(
     //     `msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`
     //   );
-    await msgReceived.setSocialMedium(socialMedia);
+    await msgReceived.setSocialMedium(socialMediaData);
   }
     
-    console.log("Mensaje recibido y guardado en la base de datos desde WEBHOOK:");
+    //console.log("Mensaje recibido y guardado en la base de datos desde WEBHOOK:");
 
     const msgReceivedData = {
       id: msgReceived.id,
@@ -156,7 +157,7 @@ module.exports = (io)=>{
         icon: SocialMedia.icon
       }
     };
-    console.log('mensaje enviado a app', msgReceivedData);
+    //console.log('mensaje enviado a app', msgReceivedData);
 
     try {
       //await axios.post('http://localhost:3000/newMessageReceived', msgReceivedData);
