@@ -44,8 +44,8 @@ module.exports = (io)=>{
             notification: true,
             chatId: chatId,
             phone: senderIdUser,
-            businessId: businessId
-            //SocialMediumId: socialMediaId
+            businessId: businessId,
+            SocialMediumId: socialMediaId
           }
         });
         console.log('contacto creado');

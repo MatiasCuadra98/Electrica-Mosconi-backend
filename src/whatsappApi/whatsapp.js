@@ -32,8 +32,8 @@ const handleMessage = async (msg) => {
         notification: true,
         chatId: chatId,
         phone: senderPhoneNumber,
-        businessId: businessId
-       // SocialMediumId: socialMediaId,
+        businessId: businessId,
+        SocialMediumId: socialMediaId,
       },
     });
 

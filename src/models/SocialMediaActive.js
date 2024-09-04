@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 
+
 module.exports = (sequelize) =>{
     sequelize.define('SocialMediaActive',{
         id: {
@@ -16,6 +17,10 @@ module.exports = (sequelize) =>{
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: true,
+        },
+        socialMediaId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
         },
 
     }, {timestamps: false});
