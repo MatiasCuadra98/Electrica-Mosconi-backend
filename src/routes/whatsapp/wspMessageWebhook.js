@@ -22,7 +22,9 @@ wspMessageWebhook.post('/', async (req, res) => {
   //const body = JSON.stringify(req.body, null, 2)
   //console.log('WEBHOOK - Contenido completo de req.body:', body)
   console.log('entry: ', entry);
-  console.log('changes: ', entry.changes);
+  if (entry && entry[0]) { 
+    console.log('changes: ', entry[0].changes);
+  }
   
   
 
