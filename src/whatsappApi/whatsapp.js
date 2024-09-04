@@ -3,7 +3,7 @@ const axios = require('axios');
 require("dotenv").config();
 
 
-const businessId = "3c3518bb-9639-4055-91ee-1768f56a77d1"; 
+const businessId = "1dc868d6-70b4-4de0-91ee-495f4486d3ea"; 
 const socialMediaId = 2; // Este es el id de WhatsApp en SocialMedia
 const GRAPH_API_TOKEN = process.env.GRAPH_API_TOKEN; // Usa tu token de WhatsApp Business API
 const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID || 372206589314811;

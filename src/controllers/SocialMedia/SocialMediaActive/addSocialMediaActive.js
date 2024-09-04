@@ -6,7 +6,8 @@ const { SocialMediaActive, Business, SocialMedia} = require('../../../db');
         const [newSocialMediaActive, created] = await SocialMediaActive.findOrCreate({
             where: {
                 dataUser, 
-                active
+                active, 
+                socialMediaId
             }
         })
         const business = await Business.findByPk(businessId);
