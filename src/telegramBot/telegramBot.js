@@ -13,7 +13,7 @@ const botToken = "7109913133:AAHFaShef4kAoR48jUUdkY5mifzZ6cSO_94";
 //const bot = new TelegramBot(botToken, {polling: true});
 const bot = new TelegramBot(botToken);
 
-const businessId = "3c3518bb-9639-4055-91ee-1768f56a77d1"; 
+const businessId = "1dc868d6-70b4-4de0-91ee-495f4486d3ea"; 
 const socialMediaId = 1; //este es el id de telegram
 
 bot.on("message", async (msg) => {
@@ -41,8 +41,8 @@ bot.on("message", async (msg) => {
         notification: true,
         chatId: chatId,
         phone: senderIdUser,
-        businessId: businessId
-        //SocialMediumId: socialMediaId,
+        businessId: businessId,
+        SocialMediumId: socialMediaId,
       },
     });
 
