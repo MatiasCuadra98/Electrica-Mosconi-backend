@@ -3,18 +3,29 @@ const axios = require('axios');
 require("dotenv").config();
 
 
-const businessId = "5e31d0fb-87b5-4ccf-b150-e730872c7a0e"; 
+const businessId = "1dc868d6-70b4-4de0-91ee-495f4486d3ea"; 
 const socialMediaId = 2; // Este es el id de WhatsApp en SocialMedia
 const GRAPH_API_TOKEN = process.env.GRAPH_API_TOKEN; // Usa tu token de WhatsApp Business API
 const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID || 372206589314811;
 
 
-const handleMessage = async (msg) => {
-  console.log('Mensaje recibido:', msg);
-  const chatId = msg.from;
-  const message = msg.text.body;
-  const senderPhoneNumber = msg.entry.changes.value.metadata.display_phone_number
-  const senderName = msg.from_name ? msg.from_name.toString() : senderPhoneNumber ? senderPhoneNumber : 'Usuario';
+const handleMessage = async (messageAllData) => {
+  console.log('mensaje completo: ', messageAllData);
+  console.log('dato contacto:', messageAllData.contacts);
+  
+  const chatId = "";
+  const message = "";
+  const senderPhoneNumber = "";
+  const senderName = "Usuario"
+
+  if(messageAllData && messageAllData.messages) {
+    const msg = messageAllData.messages[0]
+    //console.log('Mensaje recibido:', msg);
+    chatId = msg.from;
+    message = msg.text.body;
+    senderPhoneNumber= msg.from;
+  }
+  
   try {
     const business = await Business.findByPk(businessId)
     if (!business) {
@@ -24,6 +35,8 @@ const handleMessage = async (msg) => {
     if (!socialMedia) {
       return res.status(404).send('Social Media no encontrado');
     }
+    console.log('red social desde waths:', socialMedia);
+    
     // Buscar o crear el contacto
     const [newContact, created] = await Contacts.findOrCreate({
       where: { idUser: chatId },
@@ -31,8 +44,9 @@ const handleMessage = async (msg) => {
         name: senderName,
         notification: true,
         chatId: chatId,
-        phone: senderPhoneNumber
-       // SocialMediumId: socialMediaId,
+        phone: senderPhoneNumber,
+        businessId: businessId,
+        SocialMediumId: socialMediaId,
       },
     });
 
@@ -50,6 +64,8 @@ const handleMessage = async (msg) => {
       await newContact.setSocialMedium(socialMedia);
     }
 
+    console.log('nuevo contacto desde waths:', newContact);
+    
     // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
       chatId: chatId,
@@ -81,7 +97,7 @@ const handleMessage = async (msg) => {
       await msgReceived.setSocialMedium(socialMedia);
     }
 
-    console.log("Mensaje de WhatsApp recibido guardado en la base de datos:", msgReceived);
+    console.log("Mensaje de WhatsApp recibido guardado en la base de datos:");
    
     const msgReceivedData = {
       id: msgReceived.id,
@@ -116,7 +132,7 @@ const handleMessage = async (msg) => {
     
 
     await axios.post('https://electrica-mosconi-server.onrender.com/newMessageReceived', msgReceivedData);
-    console.log("Datos del mensaje enviados a app desde Wathsapp");
+    //console.log("Datos del mensaje enviados a app desde Wathsapp");
 
   } catch (error) {
     console.error("Error al guardar el mensaje de WhatsApp recibido en la base de datos:", error);

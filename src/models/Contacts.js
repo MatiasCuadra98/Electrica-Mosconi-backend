@@ -39,6 +39,10 @@ module.exports = (sequelize)=>{
             type: DataTypes.STRING,
             allowNull: true,
             defaultValue: null,
+        },
+        businessId: {
+            type: DataTypes.STRING,
+            allowNull: false,
         }
     },     
     {timestamps:false})

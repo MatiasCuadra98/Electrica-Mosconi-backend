@@ -12,7 +12,10 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 
 const sequelize = new Sequelize(
-  `postgresql://mosconidatabase_user:PIAzSd8C3c4JKDXkjtZOuZanSjU2gZln@dpg-crasbkij1k6c73ck5ja0-a.oregon-postgres.render.com/mosconidatabase`,
+
+  // `postgresql://mosconiuser:DrdUSShUJXpvBUYCBtp2bpPdbYqBVhro@dpg-cql4s63qf0us73brvolg-a.oregon-postgres.render.com/mosconidb`,
+  'postgresql://mosconidatabase_user:PIAzSd8C3c4JKDXkjtZOuZanSjU2gZln@dpg-crasbkij1k6c73ck5ja0-a.oregon-postgres.render.com/mosconidatabase',
+
   {
     dialectOptions: {
       ssl: {
