@@ -92,7 +92,7 @@ const handleMessage = async (messageAllData) => {
     if (socialMedia) {
       // const socialMedia = await SocialMedia.findByPk(socialMediaId);
       // if (!socialMedia) throw new Error(`msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`);
-      await msgReceived.setSocialMedium(socialMedia);
+      await msgReceived.setSocialMedium(socialMediaId);
     }
 
     console.log("Mensaje de WhatsApp recibido guardado en la base de datos:");
