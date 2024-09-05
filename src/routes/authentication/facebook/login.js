@@ -10,10 +10,10 @@ fbAuthentication.get('/auth/facebook', passport.authenticate('facebook', {
 
 // Ruta para manejar el callback de Facebook
 fbAuthentication.get('/auth/facebook/callback', passport.authenticate('facebook',{
-    failureRedirect: '/LandingPage'
+    failureRedirect: '/'
 }), (req, res) => {
 // Redirigir al usuario al dashboard después del login exitoso
-    res.redirect('InboxUser')
+    res.redirect('/inbox')
 });
 
 module.exports = fbAuthentication
