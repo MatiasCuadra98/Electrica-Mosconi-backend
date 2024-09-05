@@ -40,9 +40,10 @@ server.use(express.urlencoded({ extended: true }));
 
 //inicio la sesion de express
 server.use(session({
-  secret: 'your-session-secret', // Reemplaza con tu secreto de sesión
+  secret: 'claves-secreta-de-sesion', // Reemplaza con tu secreto de sesión
   resave: false,
   saveUninitialized: false,
+  store: sessionStore,
 }));
 
 // inicio Passport
