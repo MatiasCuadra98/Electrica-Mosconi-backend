@@ -59,7 +59,7 @@ const handleMessage = async (messageAllData) => {
     if (created && socialMedia) {
       // const socialMedia = await SocialMedia.findByPk(socialMediaId);
       // if (!socialMedia) throw new Error(`contact-socialMedia: Social Media with id ${socialMediaId} not found`);
-      await newContact.setSocialMedium(socialMediaData.id);
+      await newContact.setSocialMedium(socialMediaId);
     }
 
     //console.log('nuevo contacto desde waths:', newContact);
