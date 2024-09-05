@@ -11,7 +11,7 @@ const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID || 372206
 
 const handleMessage = async (messageAllData) => {
   console.log('mensaje completo: ', messageAllData);
-  console.log('dato contacto:', messageAllData.contacts);
+  console.log('dato contacto:', messageAllData.contacts.profile);
   
   const chatId = "";
   const message = "";
@@ -21,7 +21,7 @@ const handleMessage = async (messageAllData) => {
   if(messageAllData && messageAllData.messages) {
     const msg = messageAllData.messages[0]
     //console.log('Mensaje recibido:', msg);
-    chatId = msg.from;
+    chatId = msg.from; // messageAllData.constacts.wa_id
     message = msg.text.body;
     senderPhoneNumber= msg.from;
   }
