@@ -13,14 +13,14 @@ const handleMessage = async (messageAllData) => {
  
     const msg = messageAllData.messages[0];
     console.log('datos mensaje: ', msg);
-    const dataContact = messageAllData.contacts[0].profile
+    const dataContact = messageAllData.contacts[0]
     console.log('datos contacto: ', dataContact);
 
       const chatId = msg.id
       const message = msg.text.body;
       const senderPhoneNumber= msg.from;
-      const senderUserId = dataContact.wa_id
-      const senderName = dataContact.name ? dataContact.name : senderPhoneNumber ? senderPhoneNumber : 'Usuario'
+      const senderUserId = dataContact.wa_id ? dataContact.wa_id : chatId 
+      const senderName = dataContact.profile ? dataContact.profile.name : senderPhoneNumber ? senderPhoneNumber : 'Usuario'
   
   try {
     const business = await Business.findByPk(businessId)
@@ -31,9 +31,9 @@ const handleMessage = async (messageAllData) => {
     if (!socialMedia) {
       return res.status(404).send('Social Media no encontrado');
     }
-    console.log('red social desde waths:', socialMedia);
-    console.log('red social desde waths-dataValues:', socialMedia.dataValues);
-    //const socialMediaData = socialMedia.dataValues;
+    // console.log('red social desde waths:', socialMedia);
+    // console.log('red social desde waths-dataValues:', socialMedia.dataValues);
+    const socialMediaData = socialMedia.dataValues;
     
     // Buscar o crear el contacto
     const [newContact, created] = await Contacts.findOrCreate({
@@ -59,7 +59,7 @@ const handleMessage = async (messageAllData) => {
     if (created && socialMedia) {
       // const socialMedia = await SocialMedia.findByPk(socialMediaId);
       // if (!socialMedia) throw new Error(`contact-socialMedia: Social Media with id ${socialMediaId} not found`);
-      await newContact.setSocialMedium(socialMedia);
+      await newContact.setSocialMedium(socialMediaData);
     }
 
     //console.log('nuevo contacto desde waths:', newContact);
