@@ -16,7 +16,7 @@ const handleMessage = async (messageAllData) => {
     const dataContact = messageAllData.contacts[0]
     console.log('datos contacto: ', dataContact);
 
-      const chatId = msg.id
+      const chatId = msg.from  //deberia se  msg.id, pero hayque cambiar el modelo contacto, ya que es un string y no un numero(bigInt)
       const message = msg.text.body;
       const senderPhoneNumber= msg.from;
       const senderUserId = dataContact.wa_id ? dataContact.wa_id : chatId 
