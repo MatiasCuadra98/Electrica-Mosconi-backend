@@ -35,7 +35,7 @@ wspMessageWebhook.post('/', async (req, res) => {
         if (value.messages && value.messages[0]) {
           const message = value.messages[0];
           console.log('WEBHOOK - Procesando mensaje de WhatsApp:', message);
-          await handleMessage(message);
+          await handleMessage(change);
         }}
         //} else if (value.statuses) {
           //console.log('WEBHOOK - Estado del mensaje de WhatsApp recibido:', value.statuses[0]);

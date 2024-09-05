@@ -9,8 +9,12 @@ const GRAPH_API_TOKEN = process.env.GRAPH_API_TOKEN; // Usa tu token de WhatsApp
 const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID || 372206589314811;
 
 
-const handleMessage = async (msg) => {
-  console.log('Mensaje recibido:', msg);
+const handleMessage = async (messageAllData) => {
+  console.log('mensaje completo: ', messageAllData);
+  if(messageAllData && messageAllData.value && messageAllData.value.messages) {
+    const msg = messageAllData.value.messages[0]
+    console.log('Mensaje recibido:', msg);
+  }
   const chatId = msg.from;
   const message = msg.text.body;
   const senderPhoneNumber = msg.entry.changes.value.metadata.display_phone_number
