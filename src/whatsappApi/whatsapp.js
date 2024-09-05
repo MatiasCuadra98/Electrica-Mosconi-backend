@@ -10,21 +10,17 @@ const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID || 372206
 
 
 const handleMessage = async (messageAllData) => {
-  //console.log('mensaje completo: ', messageAllData);
-  console.log('dato contacto:', messageAllData.contacts[0].profile);
-  
-  const chatId = "";
-  const message = "";
-  const senderPhoneNumber = "";
-  const senderName = "Usuario"
+ 
+    const msg = messageAllData.messages[0];
+    console.log('datos mensaje: ', msg);
+    const dataContact = messageAllData.contacts[0].profile
+    console.log('datos contacto: ', dataContact);
 
-  if(messageAllData && messageAllData.messages) {
-    const msg = messageAllData.messages[0]
-    //console.log('Mensaje recibido:', msg);
-    chatId = msg.from; // messageAllData.contacts[0].wa_id
-    message = msg.text.body;
-    senderPhoneNumber= msg.from;
-  }
+      const chatId = msg.id
+      const message = msg.text.body;
+      const senderPhoneNumber= msg.from;
+      const senderUserId = dataContact.wa_id
+      const senderName = dataContact.name ? dataContact.name : senderPhoneNumber ? senderPhoneNumber : 'Usuario'
   
   try {
     const business = await Business.findByPk(businessId)
@@ -36,10 +32,12 @@ const handleMessage = async (messageAllData) => {
       return res.status(404).send('Social Media no encontrado');
     }
     console.log('red social desde waths:', socialMedia);
+    console.log('red social desde waths-dataValues:', socialMedia.dataValues);
+    //const socialMediaData = socialMedia.dataValues;
     
     // Buscar o crear el contacto
     const [newContact, created] = await Contacts.findOrCreate({
-      where: { idUser: chatId },
+      where: { idUser: senderUserId },
       defaults: {
         name: senderName,
         notification: true,
@@ -64,14 +62,14 @@ const handleMessage = async (messageAllData) => {
       await newContact.setSocialMedium(socialMedia);
     }
 
-    console.log('nuevo contacto desde waths:', newContact);
+    //console.log('nuevo contacto desde waths:', newContact);
     
     // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
       chatId: chatId,
-      idUser: msg.id,
+      idUser: senderUserId,
       text: message,
-      name: senderName.toString(),
+      name: senderName,
       timestamp: Date.now(),
       phoneNumber:senderPhoneNumber,
       BusinessId: businessId,
