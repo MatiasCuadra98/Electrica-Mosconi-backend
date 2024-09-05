@@ -11,14 +11,21 @@ const BUSINESS_PHONE_NUMBER_ID  = process.env.BUSINESS_PHONE_NUMBER_ID || 372206
 
 const handleMessage = async (messageAllData) => {
   console.log('mensaje completo: ', messageAllData);
-  if(messageAllData && messageAllData.value && messageAllData.value.messages) {
-    const msg = messageAllData.value.messages[0]
-    console.log('Mensaje recibido:', msg);
+  console.log('dato contacto:', messageAllData.contacts);
+  
+  const chatId = "";
+  const message = "";
+  const senderPhoneNumber = "";
+  const senderName = "Usuario"
+
+  if(messageAllData && messageAllData.messages) {
+    const msg = messageAllData.messages[0]
+    //console.log('Mensaje recibido:', msg);
+    chatId = msg.from;
+    message = msg.text.body;
+    senderPhoneNumber= msg.from;
   }
-  const chatId = msg.from;
-  const message = msg.text.body;
-  const senderPhoneNumber = msg.entry.changes.value.metadata.display_phone_number
-  const senderName = msg.from_name ? msg.from_name.toString() : senderPhoneNumber ? senderPhoneNumber : 'Usuario';
+  
   try {
     const business = await Business.findByPk(businessId)
     if (!business) {
