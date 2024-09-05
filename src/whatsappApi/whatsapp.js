@@ -63,7 +63,7 @@ const handleMessage = async (messageAllData) => {
     }
 
     //console.log('nuevo contacto desde waths:', newContact);  
-        const contact = await Contacts.findOne({ where: { phone: senderIdUser } });
+        const contact = await Contacts.findOne({ where: { phone: senderUserId  } });
         if (!contact) throw new Error(`Contact not found`);
 
 
