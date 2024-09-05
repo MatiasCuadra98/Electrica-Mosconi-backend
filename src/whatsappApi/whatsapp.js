@@ -62,8 +62,11 @@ const handleMessage = async (messageAllData) => {
       await newContact.setSocialMedium(socialMediaId);
     }
 
-    //console.log('nuevo contacto desde waths:', newContact);
-    
+    //console.log('nuevo contacto desde waths:', newContact);  
+        const contact = await Contacts.findOne({ where: { phone: senderIdUser } });
+        if (!contact) throw new Error(`Contact not found`);
+
+
     // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
       chatId: chatId,
@@ -107,23 +110,23 @@ const handleMessage = async (messageAllData) => {
       phoneNumber: msgReceived.phoneNumber,
       BusinessId: businessId,
       Business: {
-        id: Business.id,
-        name: Business.name
+        id: business.id,
+        name: business.name
       },
       active: false,
       state: "No Leidos",
       received: true,
-      ContactId: Contacts.id,
+      ContactId: contact.id,
       Contact: {
-        id: Contacts.id,
-        name: Contacts.name,
-        phone: Contacts.phone,
+        id: contact.id,
+        name: contact.name,
+        phone: contact.phone,
       },
       SocialMediumId: socialMediaId,
       SocialMedium: {
         id: socialMediaId,
-        name: SocialMedia.name,
-        icon: SocialMedia.icon
+        name: socialMediaData.name,
+        icon: socialMediaData.icon
       }
     };
     console.log('mensaje enviado a app', msgReceivedData);
