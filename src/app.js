@@ -4,7 +4,7 @@ const cors = require("cors");
 const routes = require("./routes");
 const http = require("http");
 const { Server } = require("socket.io");
-const { User } = require("./db");
+const { User, sessionStore  } = require("./db");
 const { enviarRespuestaManual } = require("./telegramBot/telegramBot");
 const passport = require('./config/passport'); 
 const session = require('express-session');
@@ -38,16 +38,20 @@ server.use(morgan("dev"));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
-//inicio la sesion de express
+
+sessionStore.sync();  // Sincroniza el almacenamiento de sesiones con la base de datos
+
 server.use(session({
-  secret: 'your-session-secret', // Reemplaza con tu secreto de sesión
+  secret: 'claves-secreta-de-sesion', // Reemplaza con tu secreto de sesión
   resave: false,
   saveUninitialized: false,
+  store: sessionStore,  // Usa el store definido
 }));
 
-// inicio Passport
+// Inicio Passport
 server.use(passport.initialize());
 server.use(passport.session());
+
 
 io.on("connection", async (socket) => {
   const userId = socket.handshake.query.userId;

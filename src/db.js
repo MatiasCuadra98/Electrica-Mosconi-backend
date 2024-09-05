@@ -7,6 +7,9 @@ const MsgReceivedModel = require("./models/MsgReceived");
 const MsgSentModel = require("./models/MsgSent");
 const SocialMediaModel = require("./models/SocialMedia");
 const SocialMediaActiveModel = require("./models/SocialMediaActive");
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+
 
 const sequelize = new Sequelize(
 
@@ -23,11 +26,6 @@ const sequelize = new Sequelize(
     native: false,
   }
 );
-
-// const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
-//   logging: false,
-//   native: false,
-// });
 
 UserModel(sequelize);
 ContactsModel(sequelize);
@@ -121,6 +119,11 @@ const syncDatabase = async () => {
   await MsgReceived.updateDefaultText();
 };
 
+const sessionStore = new SequelizeStore({
+  db: sequelize,
+});
+
+
 module.exports = {
   User,
   Contacts,
@@ -131,4 +134,5 @@ module.exports = {
   SocialMediaActive,
   conn: sequelize,
   syncDatabase,
+  sessionStore
 };
