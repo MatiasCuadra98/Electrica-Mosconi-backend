@@ -38,6 +38,8 @@ const setTelegramWebhook = async (url, retries = 5, delay = 3000) => {
       console.error("Error al configurar el webhook de Telegram:", error.message);
     }
   };
+  //hay que sacar la s de electricas, solo dejarla ahora pq no anda
+
   
   const URL = "https://electricaS-mosconi-server.onrender.com/messageWebHook";
 setTelegramWebhook(URL);
