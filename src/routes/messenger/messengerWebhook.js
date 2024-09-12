@@ -1,5 +1,9 @@
+const { Router } = require('express');
+const messengerWebhook = Router();
+
+
 //esta ruta es para setear el webhook en meta
-app.get('/webhook/messenger', (req, res) => {
+messengerWebhook.get('/messengerWebhook', (req, res) => {
     const VERIFY_TOKEN = 'messengerWebhookToken'; //este token tiene que ser igual al colocamos en meta
   
     const mode = req.query['hub.mode'];
@@ -16,3 +20,4 @@ app.get('/webhook/messenger', (req, res) => {
     }
   });
   
+  module.exports = messengerWebhook
