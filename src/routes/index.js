@@ -10,11 +10,11 @@ const whatsappWebhook = require ("./whatsapp/wspMessageWebhook")
 const whatsappSendMessage = require("./whatsapp/enviarRespuestaManualWsp")
 const fbAuthentication = require("./authentication/facebook/login"); 
 const instagramWebhook = require("./instagram/igWebhook")
+const messengerWebhook = require("./messenger/messengerWebhook")
 const routes = Router();
 
 module.exports = (io) => {
   console.log("Cargando rutas de Instagram...");
-
   routes.use('/', instagramWebhook)
   routes.use("/business", businessRoute); //ok => llega al handler => llega al controller
   routes.use("/user", userRoute); //ok => llega al handler => llega al controller
@@ -26,6 +26,7 @@ module.exports = (io) => {
   routes.use("/whatsapp", whatsappWebhook);  
   routes.use("/whatsapp", whatsappSendMessage)
   routes.use('/', fbAuthentication)
+  routes.use('/messenger', messengerWebhook);
  
 
   return routes;
