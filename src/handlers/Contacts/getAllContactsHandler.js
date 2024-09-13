@@ -2,6 +2,8 @@ const {getAllContacts} = require("../../controllers/Contacts/getAllContacts")
 const {searchContact} = require("../../controllers/Contacts/searchContact")
 const getAllContactsHandler = async(req, res) => {
     const {name, phone, userName, Email} = req.query;
+    console.log('name: ', name, 'phone: ', phone, 'userName: ', userName, 'Email: ', Email);
+    
      try {
         const search = name || phone || userName || Email;
         console.log('search', search);
