@@ -12,7 +12,7 @@ messengerWebhook.get('/messengerWebhook', (req, res) => {
   
     if (mode && token) {
       if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-        console.log('WEBHOOK_VERIFIED'); //log para ver si se verifico correctamente el webhook
+        console.log('Webhook de Messenger OK'); //log para ver si se verifico correctamente el webhook
         res.status(200).send(challenge);
       } else {
         res.sendStatus(403);
