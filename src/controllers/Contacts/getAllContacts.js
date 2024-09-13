@@ -1,9 +1,10 @@
 const { Contacts, Business, MsgReceived, MsgSent, SocialMedia } = require('../../db');
 const getAllContacts = async () => {
     const contacts = Contacts.findAll(
-        { order: [
-            ['name'],
-        ],
+        // { order: [
+        //     ['name'],
+        // ],
+        {
             include:[
                 {
                     model: Business,

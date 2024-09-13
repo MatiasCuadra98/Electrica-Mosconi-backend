@@ -1,8 +1,6 @@
 const { Router } = require("express");
 const {getAllContactsHandler} = require("../handlers/Contacts/getAllContactsHandler")
-const {
-  getContactByIdHandler,
-} = require("../handlers/Contacts/getContactByIdHandler");
+const {getContactByIdHandler} = require("../handlers/Contacts/getContactByIdHandler");
 
 const contactRoute = Router();
 
