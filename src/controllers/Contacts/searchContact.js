@@ -10,12 +10,10 @@ const searchContact = async(search) => {
     const contactsFiltered = await  Contacts.findAll({
         where: {
             [Op.or]: [
-                {
-                  name: { [Op.iLike]: `%${search}%`},
-                  userName: {[Op.iLike]: `%${search}%`, [Op.not]: null},
-                  //phone: {[Op.iLike]: `%${search}%`, [Op.not]: null},
-                  Email: {[Op.iLike]: `%${search}%`, [Op.not]: null},
-                },
+                 { name: { [Op.iLike]: `%${search}%`}},
+                 { userName: {[Op.iLike]: `%${search}%`, [Op.not]: null}},
+                  //{phone: {[Op.iLike]: `%${search}%`, [Op.not]: null}},
+                 { Email: {[Op.iLike]: `%${search}%`, [Op.not]: null}},    
             ],
         }
     })
