@@ -12,14 +12,17 @@ const searchContact = async(search) => {
 //     return contactsFiltered;
 //  }
     console.log('search por query:', search);
+    console.log('search tipo de dato', typeof(search));
+    
 
-    const utilSearch = typeof(search) === 'string' ? search.toLowerCase() : search;
-    console.log('search condicional: ', utilsearch);
+    // const utilSearch = typeof(search) === 'string' ? search.toLowerCase() : search;
+    // console.log('search condicional: ', utilSearch);
     
     const contactsFiltered = await  Contacts.findAll({
         where: {
             name: {
-                [Op.iLike]: `%${utilSearch}%`
+                // [Op.iLike]: `%${utilSearch}%`
+                [Op.iLike]: `%${search}%`
             }
         }
     })
