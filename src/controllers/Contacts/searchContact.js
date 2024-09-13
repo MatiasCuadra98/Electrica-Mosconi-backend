@@ -1,6 +1,6 @@
 const {getAllContacts} = require("./getAllContacts")
 const {Contacts} = require("../../db");
-const {Op} = require('sequelize');
+const {Op, Sequelize} = require('sequelize');
 
 const searchContact = async(search) => {
 
