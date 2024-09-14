@@ -2,11 +2,11 @@ const {getAllContacts} = require("../../controllers/Contacts/getAllContacts")
 const {searchContact} = require("../../controllers/Contacts/searchContact")
 
 const getAllContactsHandler = async(req, res) => {
-    const {name, userName, Email} = req.query;
-    console.log('llega al handler esta data => name: ', name, 'userName: ', userName, 'Email: ', Email);
+    const {name } = req.query;
+    console.log('llega al handler esta data => name: ', name);
     
      try {
-        const search = name || userName || Email;
+        const search = name;
         console.log('search en try del handler: ', search);
         
     const allContacts = search ? await searchContact(search): await getAllContacts()
