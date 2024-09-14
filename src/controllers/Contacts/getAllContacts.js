@@ -15,6 +15,20 @@ const getAllContacts = async () => {
                 {
                     model: MsgReceived,
                     attributes: ['id', 'chatId', 'text', 'name', 'timestamp', 'phoneNumber', 'userName', 'Email' ,'active', 'state', 'received'],
+                    include: [
+                        {
+                          model: Business,
+                          attributes: ['id', 'name'],
+                        },
+                        {
+                          model: Contacts,
+                          attributes: ['id', 'name', 'phone', 'userName', 'Email'],
+                        },
+                        {
+                          model: SocialMedia,
+                          attributes: ['id', 'name', 'icon']
+                        }
+                      ],
                 },
             //     {
             //             model: MsgSent,
