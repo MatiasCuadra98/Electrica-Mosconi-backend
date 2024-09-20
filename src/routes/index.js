@@ -21,11 +21,11 @@ const routes = Router();
 module.exports = (io) => {
   console.log("Cargando rutas de Instagram...");
   routes.use("/", instagramWebhook);
-  routes.use("/business", businessRoute); //ok => llega al handler => llega al controller
-  routes.use("/user", userRoute); //ok => llega al handler => llega al controller
-  routes.use("/contact", contactRoute); //ok => llega al handler => llega al controller
-  routes.use("/socialMedia", socialMediaRoute); //ok =>llega al handler => llega al controller
-  routes.use("/message", allMessagesRoute); //ok => llega al handler => llega al controller
+  routes.use("/business", businessRoute); 
+  routes.use("/user", userRoute); 
+  routes.use("/contact", contactRoute); 
+  routes.use("/socialMedia", socialMediaRoute); 
+  routes.use("/message", allMessagesRoute); 
   routes.use("/", messageWebHook(io));
   routes.use("/", messageSend(io));
   routes.use("/whatsapp", whatsappWebhook);
@@ -34,9 +34,9 @@ module.exports = (io) => {
   routes.use("/messenger", messengerWebhook);
   routes.use("/messenger", messengerMessageReceived);
   routes.use("/messenger", sendMessengerMessage)
-  routes.use("/mercadoLibre",mercadolibreAuth)
-  routes.use("/mercadoLibre",mercadolibreCb)
-  routes.use("/mercadoLibre",mercadolibreWebhook)
+  routes.use("/",mercadolibreAuth)
+  routes.use("/",mercadolibreCb)
+  routes.use("/",mercadolibreWebhook)
 
   return routes;
 };
