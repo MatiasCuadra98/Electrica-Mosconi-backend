@@ -1,9 +1,10 @@
 const { Router } = require('express');
 const igWebhook = Router();
 const crypto = require('crypto');
+require("dotenv").config();
 
 //  clave secreta de app de Meta
-const appSecret = process.env.APP_SECRET || 'c9055ea3d6f4d713da39caeb76cb6929';
+const appSecret = process.env.APP_SECRET
 
 // Middleware para validar la firma de la solicitud
 igWebhook.post('/webhook/instagram', (req, res) => {
@@ -23,10 +24,10 @@ igWebhook.post('/webhook/instagram', (req, res) => {
   const body = req.body;
   
   if (body.object === 'instagram') {
-    // Procesamos el mensaje directo de IG
+    // Procesamos el mensaje directo(md) de IG
     body.entry.forEach(entry => {
       const messageEvent = entry.messaging[0];
-      // Log para ver si llega el mensaje, aquí iría la lógica para guardar el mensaje en la BD
+      // Log para ver si llega el mensaje, aca iría la lógica para guardar el mensaje en la BD
       console.log("Mensaje recibido: ", messageEvent);
     });
     res.status(200).send('EVENT_RECEIVED');
@@ -37,7 +38,7 @@ igWebhook.post('/webhook/instagram', (req, res) => {
 
 // Verificación del token
 igWebhook.get('/webhook/instagram', (req, res) => {
-  const VERIFY_TOKEN = 'emigverifytoken'; // Token de verificación, tiene que ser el mismo que coloquemos en Meta
+  const VERIFY_TOKEN = process.env.VERIFY_TOKEN; // Token de verificación, tiene que ser el mismo que coloquemos en Meta
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
   const challenge = req.query['hub.challenge'];
