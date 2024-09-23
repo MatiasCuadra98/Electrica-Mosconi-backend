@@ -1,11 +1,12 @@
 const {app,server } = require("./src/app.js");
 const { syncDatabase } = require("./src/db.js");
 const {bot} = require("./src/telegramBot/telegramBot.js")
+const subscribeToMeliWebhook = require("./src/services/mercadoLibreSubscriptionWebhook.js")
+
 require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
 //const PORT = 3000; 
-
 app.listen(PORT, async () => {
 //server.listen(PORT, async () => {
   try {
@@ -18,10 +19,10 @@ app.listen(PORT, async () => {
 
 const setTelegramWebhook = async (url, retries = 5, delay = 3000) => {
   try {
-    console.log("Configurando el webhook con URL:", url);
+    console.log("Configurando el webhook de telegram con URL:", url);
       const response = await bot.setWebHook(url);
       if(response) {
-        console.log("Webhook configurado correctamente:", response);
+        console.log("Webhook de telegram configurado correctamente:", response);
       } else {
         console.error("Error al configurar el webhook:", error.message);
         console.log("reintentado configuracion");
@@ -43,5 +44,6 @@ const setTelegramWebhook = async (url, retries = 5, delay = 3000) => {
   
   const URL = "https://electricaS-mosconi-server.onrender.com/messageWebHook";
 setTelegramWebhook(URL);
+subscribeToMeliWebhook();
 
 
