@@ -3,8 +3,8 @@ const qs = require('qs');
 const { Router } = require('express');
 const meliCallback = Router();
 
-const CLIENT_ID = '3149999715702183';
-const CLIENT_SECRET = '85DbUoNinNbW7P9kctBpQIsdJ2dQeZmC';
+const CLIENT_ID = '8044043273351793';
+const CLIENT_SECRET = '4cRPMCD2mAqhiuHT6gWQeKSGB0WbCfYR';
 const REDIRECT_URI = 'https://electrica-mosconi-server.onrender.com/callback';
 
 meliCallback.get('/callback', async (req, res) => {
