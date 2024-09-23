@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 async function subscribeToWebhook() {
-  const ACCESS_TOKEN = "APP_USR-3149999715702183-092016-7c6043e53856c25b46984ac65c38f5bf-232533265"; 
+  const ACCESS_TOKEN = "APP_USR-3149999715702183-092313-f86a0f86ea92c59fd4da5d3f92883663-232533265"; 
   const CALLBACK_URL = "https://electrica-mosconi-server.onrender.com/webhook/mercadolibre";
   const USER_ID = "232533265"; // ID del usuario autenticado
 
