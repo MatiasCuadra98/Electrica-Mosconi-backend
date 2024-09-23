@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 3000;
 
 
 // Configura la autenticación y suscripción a Mercado Libre
-const MELI_ACCESS_TOKEN = process.env.MELI_ACCESS_TOKEN; // Debes tener el access_token guardado
-const MELI_USER_ID = process.env.MELI_USER_ID; // El user_id del usuario autenticado
+const MELI_ACCESS_TOKEN = "APP_USR-5980219025679562-092318-cd2251e9bdd85ffcae52c42fad2948f3-232533265" // Debes tener el access_token guardado
+const MELI_USER_ID = "232533265"; // El user_id del usuario autenticado
 
 
 app.listen(PORT, async () => {

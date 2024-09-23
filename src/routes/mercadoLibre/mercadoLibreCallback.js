@@ -9,7 +9,13 @@ const clientSecret = "nVEFc9M0svU2EA8RLKQljb6UToROgIz8";
 const redirectUri = "https://electrica-mosconi-server.onrender.com/callback";
 
 meliCallback.get('/callback', async (req, res) => {
+    console.log('Callback recibido:', req.query);  // <-- Añadir este log
+
     const { code } = req.query;
+    if (!code) {
+        console.error('El parámetro "code" no fue recibido.');
+        return res.status(400).send('Falta el parámetro "code"');
+    }
 
     try {
         const response = await axios.post('https://api.mercadolibre.com/oauth/token', {
