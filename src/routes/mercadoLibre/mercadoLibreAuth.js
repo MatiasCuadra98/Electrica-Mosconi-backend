@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const meliAuth = Router();
 
-const APP_ID = '3149999715702183';
+const APP_ID = '8044043273351793';
 const REDIRECT_URI = 'https://electrica-mosconi-server.onrender.com/callback';
 
 meliAuth.get('/auth', (req, res) => {
