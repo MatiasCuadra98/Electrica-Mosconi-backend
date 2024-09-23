@@ -4,9 +4,9 @@ const meliCallback = Router();
 require('dotenv').config();
 
 
-const clientId = process.env.MELI_CLIENT_ID;
-const clientSecret = process.env.MELI_CLIENT_SECRET;
-const redirectUri = process.env.MELI_REDIRECT_URI;
+const clientId = "5980219025679562";
+const clientSecret = "nVEFc9M0svU2EA8RLKQljb6UToROgIz8";
+const redirectUri = "https://electrica-mosconi-server.onrender.com/callback";
 
 meliCallback.get('/callback', async (req, res) => {
     const { code } = req.query;
