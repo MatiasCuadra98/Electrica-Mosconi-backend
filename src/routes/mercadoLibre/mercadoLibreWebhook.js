@@ -1,13 +1,13 @@
 const { Router } = require('express');
 const meliWebhook = Router();
 
-// Ruta para recibir notificaciones de MercadoLibre
+// Ruta para recibir notificaciones de preguntas
 meliWebhook.post('/webhook/mercadolibre', (req, res) => {
     const data = req.body;
-    console.log('Notificación recibida:', data);
-    // Procesa el evento (puede ser una pregunta o un mensaje)
+    console.log('Pregunta recibida en producto:', data);
 
-    // Confirma la recepción de la notificación
+    // Aquí puedes almacenar la pregunta en tu base de datos o procesarla.
+    
     res.status(200).send('OK');
 });
 
