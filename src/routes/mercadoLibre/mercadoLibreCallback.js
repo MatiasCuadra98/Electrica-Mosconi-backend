@@ -1,30 +1,34 @@
 const axios = require('axios');
-const qs = require('qs');
 const { Router } = require('express');
 const meliCallback = Router();
+require('dotenv').config();
 
-const CLIENT_ID = '8044043273351793';
-const CLIENT_SECRET = '4cRPMCD2mAqhiuHT6gWQeKSGB0WbCfYR';
-const REDIRECT_URI = 'https://electrica-mosconi-server.onrender.com/callback';
+
+const clientId = process.env.MELI_CLIENT_ID;
+const clientSecret = process.env.MELI_CLIENT_SECRET;
+const redirectUri = process.env.MELI_REDIRECT_URI;
 
 meliCallback.get('/callback', async (req, res) => {
-    const authorizationCode = req.query.code;
-    
-    // Intercambiar el code por un access_token
-    try {
-        const response = await axios.post('https://api.mercadolibre.com/oauth/token', qs.stringify({
-            grant_type: 'authorization_code',
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET,
-            code: authorizationCode,
-            redirect_uri: REDIRECT_URI
-        }));
+    const { code } = req.query;
 
-        const { access_token, refresh_token, expires_in } = response.data;
-        // Almacenar el access_token y refresh_token en la base de datos
-        res.send({ access_token, refresh_token, expires_in });
+    try {
+        const response = await axios.post('https://api.mercadolibre.com/oauth/token', {
+            grant_type: 'authorization_code',
+            client_id: clientId,
+            client_secret: clientSecret,
+            code: code,
+            redirect_uri: redirectUri,
+        });
+
+        const { access_token, refresh_token, user_id } = response.data;
+
+        // Guarda el access_token, refresh_token, y user_id en tu base de datos o una sesión.
+        console.log('Access Token:', access_token);
+        console.log('User ID:', user_id);
+
+        res.send('Autenticación exitosa');
     } catch (error) {
-        console.error('Error al obtener access token:', error.response.data);
+        console.error('Error al obtener el access token:', error.response.data);
         res.status(500).send('Error en la autenticación');
     }
 });
