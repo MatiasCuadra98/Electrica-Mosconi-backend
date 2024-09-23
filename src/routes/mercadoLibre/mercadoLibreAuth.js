@@ -11,4 +11,4 @@ meliAuth.get('/auth', (req, res) => {
     res.redirect(authUrl);
 });
 
-module.exports = meliAuth;
+module.exports = meliAuth; 
