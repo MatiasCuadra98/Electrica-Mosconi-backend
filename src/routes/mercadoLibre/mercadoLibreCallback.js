@@ -4,9 +4,9 @@ const meliCallback = Router();
 require('dotenv').config();
 
 
-const appId = "5980219025679562";
-const clientSecret = "nVEFc9M0svU2EA8RLKQljb6UToROgIz8";
-const redirectUri = "https://electrica-mosconi-server.onrender.com/callback";
+const client_id = "5980219025679562";
+const client_secret = "nVEFc9M0svU2EA8RLKQljb6UToROgIz8";
+const redirect_uri = "https://electrica-mosconi-server.onrender.com/callback";
 
 meliCallback.get('/callback', async (req, res) => {
     console.log('Callback recibido:', req.query);  // <-- Añadir este log
@@ -20,10 +20,10 @@ meliCallback.get('/callback', async (req, res) => {
     try {
         const response = await axios.post('https://api.mercadolibre.com/oauth/token', {
             grant_type: 'authorization_code',
-            appId: appId,
-            clientSecret : clientSecret,
+            client_id: client_id,
+            client_secret : client_secret,
             code: code,
-            redirectUri: redirectUri,
+            redirect_uri: redirect_uri,
         });
 
         const { accessToken, refresh_token, userId } = response.data;
