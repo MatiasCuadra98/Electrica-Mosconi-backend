@@ -31,14 +31,14 @@ async function subscribeToMeliWebhook() {
       },
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${access_token}`,
         },
       }
     );
     console.log("Suscripción a 'messages' exitosa:", responseMessages.data);
 
   } catch (error) {
-    console.error("Error al suscribirse al webhook de Mercado Libre:", error.response?.data || error.message);
+    console.error("Error al suscribirse al webhook de Mercado Libre:", error.response?.status, error.response?.data || error.message);
   }
 }
 
