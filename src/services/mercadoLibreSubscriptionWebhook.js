@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 async function subscribeToMeliWebhook() {
-  const accessToken = 'APP_USR-5980219025679562-092408-408bf05cf25fa4f08ab83b63a873e7dd-232533265'; // Usar el nuevo token
+  const access_token = 'APP_USR-5980219025679562-092408-408bf05cf25fa4f08ab83b63a873e7dd-232533265'; // Usar el nuevo token
   const webhookUrl = 'https://electrica-mosconi-server.onrender.com/webhook/mercadolibre'; // URL del webhook en tu servidor
   const userId = '232533265'; // El User ID obtenido
   const client_id = '5980219025679562'; // Tu App ID de Mercado Libre
@@ -16,7 +16,7 @@ async function subscribeToMeliWebhook() {
       },
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${access_token}`,
         },
       }
     );

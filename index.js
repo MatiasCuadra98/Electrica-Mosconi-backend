@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 3000;
 
 
 // Configura la autenticación y suscripción a Mercado Libre
-const MELI_ACCESS_TOKEN = "APP_USR-5980219025679562-092318-cd2251e9bdd85ffcae52c42fad2948f3-232533265" // Debes tener el access_token guardado
-const MELI_USER_ID = "232533265"; // El user_id del usuario autenticado
+const access_token = "APP_USR-5980219025679562-092408-408bf05cf25fa4f08ab83b63a873e7dd-232533265" // Debes tener el access_token guardado
+const userId = "232533265"; // El user_id del usuario autenticado
 
 
 app.listen(PORT, async () => {
@@ -20,9 +20,9 @@ app.listen(PORT, async () => {
     console.log(`% listening at ${PORT}`);
 
         // Suscripción a los webhooks de Mercado Libre
-    if(MELI_ACCESS_TOKEN && MELI_USER_ID){
+    if(access_token && userId){
       console.log('Suscribiendo a los webhooks de Mercado Libre...');
-      await subscribeToWebhook(MELI_ACCESS_TOKEN, MELI_USER_ID);
+      await subscribeToWebhook(access_token, userId);
       console.log('Suscripción a Mercado Libre completada.');
     }else {
       console.warn('Faltan el access token o el user ID de Mercado Libre. No se puede realizar la suscripción.');
