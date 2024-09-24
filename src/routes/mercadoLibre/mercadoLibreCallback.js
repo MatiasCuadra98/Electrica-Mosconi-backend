@@ -31,6 +31,7 @@ meliCallback.get('/callback', async (req, res) => {
         // Guarda el access_token, refresh_token, y user_id en tu base de datos o una sesión.
         console.log('Access Token:', accessToken);
         console.log('User ID:', userId);
+        console.log('refresh token:', refresh_token)
 
         res.send('Autenticación exitosa');
     } catch (error) {
