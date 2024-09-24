@@ -1,7 +1,6 @@
 const axios = require('axios');
 const { Router } = require('express');
 const meliCallback = Router();
-require('dotenv').config();
 
 
 const client_id = "5980219025679562";
@@ -26,11 +25,11 @@ meliCallback.get('/callback', async (req, res) => {
             redirect_uri: redirect_uri,
         });
 
-        const { accessToken, refresh_token, userId } = response.data;
+        const { access_token, refresh_token, user_id } = response.data;
 
         // Guarda el access_token, refresh_token, y user_id en tu base de datos o una sesión.
-        console.log('Access Token:', accessToken);
-        console.log('User ID:', userId);
+        console.log('Access Token:', access_token);
+        console.log('User ID:', user_id);
         console.log('refresh token:', refresh_token)
 
         res.send('Autenticación exitosa');

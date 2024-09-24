@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const meliAuth = Router();
-require('dotenv').config();
 
 
 const client_id = "5980219025679562";
