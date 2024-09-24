@@ -1,11 +1,11 @@
 // archivo: services/mercadolibreMessages.js
 const axios = require('axios');
 
-async function getQuestionDetails(questionId, accessToken) {
+async function getQuestionDetails(questionId, access_token) {
     try {
         const response = await axios.get(`https://api.mercadolibre.com/questions/${questionId}`, {
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+                'Authorization': `Bearer ${access_token}`
             }
         });
         return response.data;
