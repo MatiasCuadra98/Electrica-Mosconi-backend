@@ -1,4 +1,4 @@
-const { User } = require('../../../db');
+const { User } = require('../../db');
 
 const loginAdmi = async (id) => {
     if(!id) throw new Error('Missing ID')
