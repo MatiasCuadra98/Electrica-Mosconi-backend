@@ -1,13 +1,15 @@
 const { Router } = require('express');
 const meliAuth = Router();
 
-
-const client_id = "5980219025679562";
-const redirect_uri = "https://electrica-mosconi-server.onrender.com/callback";
+//app id
+const CLIENT_ID = '3652963349232358';
+//ruta post auth
+const REDIRECT_URI = 'https://electrica-mosconi-server.onrender.com/meliCallback'; // aca va la misma que usamos en mercadoLibreAuth.js 
+//url de meli para la auth. Si pasamos la auth, la url nos da un code para obtener el access token
+const ML_AUTH_URL = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}`;
 
 meliAuth.get('/auth', (req, res) => {
-    const authUrl = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`;
-    res.redirect(authUrl);
+    res.redirect(ML_AUTH_URL);
 });
 
 module.exports = meliAuth; 

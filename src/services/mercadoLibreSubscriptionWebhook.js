@@ -1,45 +1,31 @@
-const axios = require("axios");
+const axios = require('axios');
 
-async function subscribeToMeliWebhook() {
-  const access_token = 'APP_USR-5980219025679562-092408-408bf05cf25fa4f08ab83b63a873e7dd-232533265'; // Usar el nuevo token
-  const webhookUrl = 'https://electrica-mosconi-server.onrender.com/webhook/mercadolibre'; // URL del webhook en tu servidor
-  const userId = '232533265'; // El User ID obtenido
-  const client_id = '5980219025679562'; // Tu App ID de Mercado Libre
+const CLIENT_ID = '3652963349232358';
+const USER_ID = "232533265";
+const ACCESS_TOKEN = "ACCESS_TOKEN";
+const REDIRECT_URI = 'https://electrica-mosconi-server.onrender.com/meliCallback'; // aca va la misma que usamos en mercadoLibreAuth.js 
 
-  try {
-    // Suscripción para 'questions'
-    const responseQuestions = await axios.post(
-      `https://api.mercadolibre.com/users/${userId}/applications/${client_id}/notifications`, 
-      {
-        topic: 'questions', // Suscripción a preguntas
-        callback_url: webhookUrl,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    );
-    console.log("Suscripción a 'questions' exitosa:", responseQuestions.data);
+// Función para suscribirse al webhook de Mercado Libre
+async function suscribirMeliWebhook() {
+    try {
+        const response = await axios.post(
+            `https://api.mercadolibre.com/applications/${CLIENT_ID}/subscriptions`,
+            {
+                user_id: USER_ID, // ID del usuario de Mercado Libre
+                topic: 'questions',    // O 'messages', dependiendo del evento
+                callback_url: REDIRECT_URI // URL de tu webhook
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${ACCESS_TOKEN}` // Token de acceso de tu cliente
+                }
+            }
+        );
 
-    // Suscripción para 'messages'
-    const responseMessages = await axios.post(
-      `https://api.mercadolibre.com/users/${userId}/applications/${client_id}/notifications`, 
-      {
-        topic: 'messages', // Suscripción a mensajes
-        callback_url: webhookUrl,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    );
-    console.log("Suscripción a 'messages' exitosa:", responseMessages.data);
-
-  } catch (error) {
-    console.error("Error al suscribirse al webhook de Mercado Libre:", error.response?.status, error.response?.data || error.message);
-  }
+        console.log('Suscripción exitosa:', response.data);
+    } catch (error) {
+        console.error('Error al suscribirse al webhook:', error);
+    }
 }
 
-module.exports = subscribeToMeliWebhook;
+suscribirMeliWebhook();
