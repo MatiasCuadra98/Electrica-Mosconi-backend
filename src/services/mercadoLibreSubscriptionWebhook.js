@@ -1,0 +1,45 @@
+const axios = require("axios");
+
+async function subscribeToMeliWebhook() {
+  const access_token = 'APP_USR-5980219025679562-092408-408bf05cf25fa4f08ab83b63a873e7dd-232533265'; // Usar el nuevo token
+  const webhookUrl = 'https://electrica-mosconi-server.onrender.com/webhook/mercadolibre'; // URL del webhook en tu servidor
+  const userId = '232533265'; // El User ID obtenido
+  const client_id = '5980219025679562'; // Tu App ID de Mercado Libre
+
+  try {
+    // Suscripción para 'questions'
+    const responseQuestions = await axios.post(
+      `https://api.mercadolibre.com/users/${userId}/applications/${client_id}/notifications`, 
+      {
+        topic: 'questions', // Suscripción a preguntas
+        callback_url: webhookUrl,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    console.log("Suscripción a 'questions' exitosa:", responseQuestions.data);
+
+    // Suscripción para 'messages'
+    const responseMessages = await axios.post(
+      `https://api.mercadolibre.com/users/${userId}/applications/${client_id}/notifications`, 
+      {
+        topic: 'messages', // Suscripción a mensajes
+        callback_url: webhookUrl,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    console.log("Suscripción a 'messages' exitosa:", responseMessages.data);
+
+  } catch (error) {
+    console.error("Error al suscribirse al webhook de Mercado Libre:", error.response?.status, error.response?.data || error.message);
+  }
+}
+
+module.exports = subscribeToMeliWebhook;

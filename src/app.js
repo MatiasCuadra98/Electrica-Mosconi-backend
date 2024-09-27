@@ -121,16 +121,3 @@ server.post("/messageSend", async (req, res) => {
 server.use("/", routes(io));
 
 module.exports = {app, server};
-//ESTABA JUSTO ARRIBA DE SERVER.USE, ROUTES(IO)
-// server.post('/newMessageSent', async (req, res) => {
-//   const msgSentData = req.body;    
-//   try {
-//   // Emitir el evento desde app con los datos recibidos
-//   io.emit('ADD_NEW_MESSAGE_SENT', msgSentData);
-//   console.log(`Evento 'ADD_NEW_MESSAGE_SENT' emitido con datos:`, messageData);
-//   res.status(200).send("Evento emitido con éxito");
-// } catch (error) {
-//   console.error("Error al emitir el evento desde app:", error);
-//   res.status(500).send("Error al emitir el evento");
-// }
-// })
