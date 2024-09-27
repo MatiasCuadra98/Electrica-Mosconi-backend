@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const CLIENT_ID = '3652963349232358';
-const USER_ID = "USER_ID";
+const USER_ID = "232533265";
 const ACCESS_TOKEN = "ACCESS_TOKEN";
 const REDIRECT_URI = 'https://electrica-mosconi-server.onrender.com/meliWebhook'; // aca va la misma que usamos en mercadoLibreAuth.js 
 
