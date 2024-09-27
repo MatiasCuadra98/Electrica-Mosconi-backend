@@ -1,4 +1,4 @@
-const { User } = require('../../../db');
+const { User } = require('../../db');
 
 const logoutAdmi = async (id) => {
     if(!id) throw new Error('Missing ID')
