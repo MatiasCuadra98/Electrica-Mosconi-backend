@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 
 // Configura la autenticación y suscripción a Mercado Libre
-const ACCESS_TOKEN = "APP_USR-5980219025679562-092408-408bf05cf25fa4f08ab83b63a873e7dd-232533265" // Debes tener el access_token guardado
+const ACCESS_TOKEN = "APP_USR-3652963349232358-092715-d2716ee7b0f7384ba4762bf5180ef3f5-232533265" // Debes tener el access_token guardado
 const USER_ID = "232533265"; // El user_id del usuario autenticado
 
 
