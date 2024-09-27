@@ -3,40 +3,37 @@ const { Router } = require('express');
 const meliCallback = Router();
 
 
-const client_id = "5980219025679562";
-const client_secret = "nVEFc9M0svU2EA8RLKQljb6UToROgIz8";
-const redirect_uri = "https://electrica-mosconi-server.onrender.com/callback";
+const CLIENT_ID = '3652963349232358';
+const CLIENT_SECRET = 'UFZ5Nxl5zI83xdovdn8X3tUSdYK9h080';
+const REDIRECT_URI = 'https://electrica-mosconi-server.onrender.com/meliCallback'; // aca va la misma que usamos en mercadoLibreAuth.js 
 
 meliCallback.get('/callback', async (req, res) => {
-    console.log('Callback recibido:', req.query);  // <-- Añadir este log
-
     const { code } = req.query;
-    if (!code) {
-        console.error('El parámetro "code" no fue recibido.');
-        return res.status(400).send('Falta el parámetro "code"');
-    }
-
+  
     try {
-        const response = await axios.post('https://api.mercadolibre.com/oauth/token', {
-            grant_type: 'authorization_code',
-            client_id: client_id,
-            client_secret : client_secret,
-            code: code,
-            redirect_uri: redirect_uri,
-        });
-
-        const { access_token, refresh_token, user_id } = response.data;
-
-        // Guarda el access_token, refresh_token, y user_id en tu base de datos o una sesión.
-        console.log('Access Token:', access_token);
-        console.log('User ID:', user_id);
-        console.log('refresh token:', refresh_token)
-
-        res.send('Autenticación exitosa');
+      // aca hacemos una peticion a la api para obtener el CODE que se intercabia x el access token
+      const response = await axios.post('https://api.mercadolibre.com/oauth/token', null, {
+        params: {
+          grant_type: 'authorization_code',
+          client_id: CLIENT_ID,
+          client_secret: CLIENT_SECRET,
+          code,
+          redirect_uri: REDIRECT_URI,
+        },
+      });
+  
+      const { access_token, refresh_token, expires_in } = response.data;
+  
+      // aca hay q guardar los tokens en la bd(el refresh token hace que se actualice solo cuando expira)
+      // mientras tanto lo guardo en la sesion
+      req.session.access_token = access_token;
+      req.session.refresh_token = refresh_token;
+  
+      res.send('Autenticación exitosa. Ahora puedes recibir preguntas y mensajes de meli.');
     } catch (error) {
-        console.error('Error al obtener el access token:', error.response.data);
-        res.status(500).send('Error en la autenticación');
+      console.error('Error obteniendo el token de Mercado Libre:', error);
+      res.status(500).send('Error autenticando con Mercado Libre');
     }
-});
+  });
 
 module.exports = meliCallback;
