@@ -96,7 +96,7 @@ io.on("connection", async (socket) => {
   });
 });
 
-server.post("/telegram/sendMessage", async (req, res) => {
+server.post("/messageSend", async (req, res) => {
   //console.log('body:',  req.body);
   const { chatId, message, UserId } = req.body;
   //console.log('en app', UserId);
