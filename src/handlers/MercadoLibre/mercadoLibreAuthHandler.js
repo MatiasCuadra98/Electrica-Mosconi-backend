@@ -3,8 +3,15 @@ const { mercadoLibreAuthController } = require('../../controllers/mercadoLibre/m
 // Handler para iniciar la autenticación con Mercado Libre
 const mercadoLibreAuthHandler = async (req, res) => {
     try {
-        // Si no hay "code", redirige al usuario a la página de autenticación de Mercado Libre
-        if (!req.query.code) {
+        // Si hay "code", se procesa para obtener el access token
+        if (req.query.code) {
+            const accessToken = await mercadoLibreAuthController.getAccessToken(req.query.code);
+            console.log("Token de acceso recibido:", accessToken);
+            // Aquí puedes guardar el token en la sesión o base de datos si es necesario
+            // Redirigir al frontend o enviar el token en la respuesta
+            return res.json({ accessToken });
+        } else {
+            // Redirige a la URL de autenticación si no hay código
             const authUrl = mercadoLibreAuthController.getAuthUrl();
             return res.redirect(authUrl);
         }
