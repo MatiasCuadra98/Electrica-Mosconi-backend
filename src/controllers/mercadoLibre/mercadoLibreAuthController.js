@@ -31,9 +31,16 @@ const mercadoLibreAuthController = {
             console.log('Respuesta de Mercado Libre:', response.data);
             return response.data.access_token;
         } catch (error) {
-            console.error('Error al obtener el token de acceso:', error.response ? error.response.data : error.message);
+            console.error('Error al obtener el token de acceso:');
+            if (error.response) {
+              console.error('Data:', error.response.data);
+              console.error('Status:', error.response.status);
+              console.error('Headers:', error.response.headers);
+            } else {
+              console.error('Mensaje de error:', error.message);
+            }
             throw error;
-        }
+          }
     }
 };
 
