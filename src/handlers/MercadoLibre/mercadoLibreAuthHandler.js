@@ -23,12 +23,14 @@ const mercadoLibreCallbackHandler = async (req, res) => {
             return res.status(400).json({ message: 'No se proporcionó el código de autorización.' });
         }
 
+        console.log('Código de autorización recibido:', code);
+
         // Obtener el token de acceso usando el código de autorización
         const accessToken = await mercadoLibreAuthController.getAccessToken(code);
         
         console.log("Token de acceso recibido:", accessToken);
 
-        // Puedes redirigir al frontend con el token, o simplemente devolverlo como respuesta JSON
+        // Puedes redirigir al frontend con el token o simplemente devolverlo como respuesta JSON
         return res.json({ accessToken });
     } catch (error) {
         console.error("Error al obtener el token de acceso:", error.response ? error.response.data : error.message);
