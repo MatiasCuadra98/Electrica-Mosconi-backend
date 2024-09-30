@@ -18,7 +18,7 @@ const mercadoLibreRoutes = require("../routes/mercadoLibre/mercadoLibreRoutes")
 const routes = Router();
 
 module.exports = (io) => {
-  console.log("Cargando rutas de Instagram...");
+  console.log("Cargando las rutas de Instagram...");
   routes.use("/", instagramWebhook);
   routes.use("/business", businessRoute); 
   routes.use("/user", userRoute); 

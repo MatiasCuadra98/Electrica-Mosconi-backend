@@ -1,17 +1,15 @@
 const { mercadoLibreAuthController } = require('../../controllers/mercadoLibre/mercadoLibreAuthController');
 
-// Handler para iniciar la autenticación con Mercado Libre
 const mercadoLibreAuthHandler = async (req, res) => {
     try {
-        // Si hay "code", se procesa para obtener el access token
         if (req.query.code) {
             const accessToken = await mercadoLibreAuthController.getAccessToken(req.query.code);
             console.log("Token de acceso recibido:", accessToken);
-            // Aquí puedes guardar el token en la sesión o base de datos si es necesario
-            // Redirigir al frontend o enviar el token en la respuesta
+            
+            // Guarda el token en la sesión o base de datos
+            req.session.accessToken = accessToken; // Ejemplo de guardado en sesión
             return res.json({ accessToken });
         } else {
-            // Redirige a la URL de autenticación si no hay código
             const authUrl = mercadoLibreAuthController.getAuthUrl();
             return res.redirect(authUrl);
         }
@@ -21,7 +19,6 @@ const mercadoLibreAuthHandler = async (req, res) => {
     }
 };
 
-// Handler para manejar el callback de Mercado Libre y obtener el token de acceso
 const mercadoLibreCallbackHandler = async (req, res) => {
     try {
         const { code } = req.query;
@@ -31,13 +28,10 @@ const mercadoLibreCallbackHandler = async (req, res) => {
         }
 
         console.log('Código de autorización recibido:', code);
-
-        // Obtener el token de acceso usando el código de autorización
         const accessToken = await mercadoLibreAuthController.getAccessToken(code);
         
         console.log("Token de acceso recibido:", accessToken);
-
-        // Puedes redirigir al frontend con el token o simplemente devolverlo como respuesta JSON
+        req.session.accessToken = accessToken; // Guardar el token en sesión o base de datos
         return res.json({ accessToken });
     } catch (error) {
         console.error("Error al obtener el token de acceso:", error.response ? error.response.data : error.message);
