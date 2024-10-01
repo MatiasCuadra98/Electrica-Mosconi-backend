@@ -10,6 +10,8 @@ const mercadoLibreQuestionHandler = async (req, res) => {
         }
         const accessToken = authHeader.split(' ')[1];
         const questions = await mercadoLibreQuestionController.getQuestions(accessToken, itemId);
+            console.log('Preguntas recibidas de Mercado Libre:', questions);
+
         return res.json(questions);
     } catch (error) {
         console.error('Error al obtener preguntas de Mercado Libre:', error);
