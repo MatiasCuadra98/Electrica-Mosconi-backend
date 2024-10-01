@@ -3,12 +3,12 @@ const { mercadoLibreQuestionController } = require('../../controllers/mercadoLib
 const mercadoLibreQuestionHandler = async (req, res) => {
     try {
         const { itemId } = req.query;
-        const accessToken = req.headers.authorization; // O de donde estés obteniendo el token
+        const authHeader  = req.headers.authorization; // O de donde estés obteniendo el token
 
-        if (!accessToken) {
+        if (!authHeader ) {
             return res.status(401).json({ message: 'No autorizado' });
         }
-
+        const accessToken = authHeader.split(' ')[1];
         const questions = await mercadoLibreQuestionController.getQuestions(accessToken, itemId);
         return res.json(questions);
     } catch (error) {
