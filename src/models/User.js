@@ -46,10 +46,10 @@ module.exports = (sequelize) =>{
             type: DataTypes.STRING,
             allowNull: true 
         },
-        login: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
-          }
+        // login: {
+        //     type: DataTypes.BOOLEAN,
+        //     allowNull: false,
+        //     defaultValue: false
+        //   }
         }, {timestamps: false});
     }
