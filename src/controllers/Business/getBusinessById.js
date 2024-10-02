@@ -11,11 +11,11 @@ const getBusinessById = async (id) => {
             },
             {
             model: SocialMediaActive,
-            attributes: ['id', 'dataUser'],
+            attributes: ['id', 'dataUser', 'accessToken', 'refreshToken', 'authorizationCode' ],
             include: [
                 {
                     model: SocialMedia,
-                    attributes: ['id', 'name', 'icon']
+                    attributes: ['id', 'name']
                 }
             ]
             },

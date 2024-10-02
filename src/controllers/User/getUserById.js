@@ -1,4 +1,4 @@
-const {Business, User, MsgSent, Contact} = require('../../db')
+const {Business, User, MsgSent } = require('../../db')
 
 const getUserById = async (id) => {
 

@@ -78,7 +78,7 @@ bot.on("message", async (msg) => {
       timestamp: Date.now(),
       phoneNumber: chatId,
       BusinessId: businessId,
-      active: false,
+      // active: false,
       state: "No Leidos",
       received: true,
     });
@@ -121,7 +121,7 @@ bot.on("message", async (msg) => {
         id: Business.id,
         name: Business.name
       },
-      active: false,
+      // active: false,
       state: "No Leidos",
       received: true,
       ContactId: contact.id,

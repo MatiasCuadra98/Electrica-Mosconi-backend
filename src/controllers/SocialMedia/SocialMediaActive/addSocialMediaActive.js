@@ -1,13 +1,15 @@
 const { SocialMediaActive, Business, SocialMedia} = require('../../../db');
 
-    const addSocialMediaActive = async (dataUser, active, socialMediaId, businessId ) => {
-        // const addSocialMediaActive = async (dataUser, active, socialMediaId ) => {
-
+    const addSocialMediaActive = async (dataUser, active, socialMediaId, accessToken, refreshToken, authorizationCode, businessId ) => {    
+//const addSocialMediaActive = async (dataUser, active, socialMediaId, businessId ) => {
         const [newSocialMediaActive, created] = await SocialMediaActive.findOrCreate({
             where: {
                 dataUser, 
                 active, 
-                socialMediaId
+                socialMediaId,
+                accessToken,
+                refreshToken,
+                authorizationCode
             }
         })
         const business = await Business.findByPk(businessId);

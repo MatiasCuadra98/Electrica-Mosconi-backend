@@ -10,7 +10,7 @@ const getAllSocialMediaActive = async () => {
     },
     {
         model: SocialMedia,
-        attributes: ['id', 'name', 'icon']
+        attributes: ['id', 'name']
     }
   ] 
 }

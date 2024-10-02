@@ -1,7 +1,8 @@
 const {createUser} = require('../../controllers/User/createUser')
 
 const createUserHandler = async (req, res) => {
-    const{name, email, password, phone, privilege, socketId, image, login, businessId} = req.body;
+    //const{name, email, password, phone, privilege, socketId, image, login, businessId} = req.body;
+    const{name, email, password, phone, privilege, socketId, image, businessId} = req.body;
     try {
         if(!name || !email || !password || !phone || !privilege || !businessId) throw new Error('Missing Data');
 
@@ -13,7 +14,7 @@ const createUserHandler = async (req, res) => {
             privilege,
             socketId ? socketId : null,
             image ? image : null,
-            login,
+            // login,
             businessId,
 
         );

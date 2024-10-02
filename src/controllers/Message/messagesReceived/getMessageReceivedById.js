@@ -13,7 +13,7 @@ const getMessageReceivedById = async (id) => {
         },
         {
           model: SocialMedia,
-          attributes: ['id', 'name', 'icon']
+          attributes: ['id', 'name']
         }
       ],
     });

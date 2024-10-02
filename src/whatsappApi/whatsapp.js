@@ -77,8 +77,8 @@ const handleMessage = async (messageAllData) => {
       phoneNumber:senderPhoneNumber,
       BusinessId: businessId,
       // active: false,
-      // state: "No Leidos",
-      // received: true,
+      state: "No Leidos",
+      received: true,
     });
 
     // Asociar el mensaje recibido con el negocio
@@ -113,7 +113,7 @@ const handleMessage = async (messageAllData) => {
         id: business.id,
         name: business.name
       },
-      active: false,
+      // active: false,
       state: "No Leidos",
       received: true,
       ContactId: contact.id,

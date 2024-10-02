@@ -51,12 +51,12 @@ module.exports = (sequelize) => {
           type: DataTypes.UUID,
           allowNull: true,
         },
-        //ESTO ES NUEVO
-        active: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false,
-          defaultValue: false
-        },
+        // //ESTO ES NUEVO
+        // active: {
+        //   type: DataTypes.BOOLEAN,
+        //   allowNull: false,
+        //   defaultValue: false
+        // },
         state: {
           type: DataTypes.ENUM,
           //hay que cambiar el front para usar los values en Ingles

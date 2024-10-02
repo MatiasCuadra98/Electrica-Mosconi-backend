@@ -17,9 +17,9 @@ module.exports = (sequelize) =>{
                 },
               }
         },
-        icon:{
-            type: DataTypes.STRING,
-            allowNull: false,
-        },   
+        // icon:{
+        //     type: DataTypes.STRING,
+        //     allowNull: false,
+        // },   
     }, {timestamps: false});
 }
