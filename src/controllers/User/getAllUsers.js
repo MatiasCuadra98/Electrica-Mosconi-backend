@@ -1,4 +1,4 @@
-const { User, Business, Contact, MsgSent } = require('../../db');
+const { User, Business,  MsgSent } = require('../../db');
 
 const getAllUsers = async () => {
   const users = await User.findAll(

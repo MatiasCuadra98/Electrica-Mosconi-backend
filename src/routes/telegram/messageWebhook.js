@@ -96,7 +96,7 @@ module.exports = (io)=>{
       timestamp: Date.now(),
       phoneNumber: chatId,
       BusinessId: businessId,
-      active: false,
+      // active: false,
       state: "No Leidos",
       received: true,
     });
@@ -141,7 +141,7 @@ module.exports = (io)=>{
         id: Business.id,
         name: Business.name
       },
-      active: false,
+      // active: false,
       state: "No Leidos",
       received: true,
       ContactId: contact.id,
