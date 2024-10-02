@@ -13,13 +13,12 @@ const instagramWebhook = require("./instagram/igWebhook");
 const messengerWebhook = require("./messenger/messengerWebhook");
 const messengerMessageReceived = require("./messenger/messengerMessageReceived");
 const sendMessengerMessage = require ("./messenger/messengerMessageSent")
-const mercadolibreAuth  = require ("./mercadoLibre/mercadoLibreAuth")
-const mercadolibreCb  = require ("./mercadoLibre/mercadoLibreCallback")
-const mercadolibreWebhook  = require ("./mercadoLibre/mercadoLibreWebhook")
+const mercadoLibreRoutes = require("../routes/mercadoLibre/mercadoLibreRoutes")
+
 const routes = Router();
 
 module.exports = (io) => {
-  console.log("Cargando rutas de Instagram...");
+  console.log("Cargando las rutas de Instagram...");
   routes.use("/", instagramWebhook);
   routes.use("/business", businessRoute); 
   routes.use("/user", userRoute); 
@@ -34,9 +33,8 @@ module.exports = (io) => {
   routes.use("/messenger", messengerWebhook);
   routes.use("/messenger", messengerMessageReceived);
   routes.use("/messenger", sendMessengerMessage)
-  routes.use("/",mercadolibreAuth)
-  routes.use("/",mercadolibreCb)
-  routes.use("/",mercadolibreWebhook)
+  routes.use('/mercadolibre', mercadoLibreRoutes);
+
 
   return routes;
 };
