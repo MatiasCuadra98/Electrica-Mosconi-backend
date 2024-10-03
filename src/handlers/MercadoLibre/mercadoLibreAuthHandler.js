@@ -6,24 +6,24 @@ const { SocialMediaActive } = require("../../models/SocialMediaActive");
 const mercadoLibreAuthHandler = async (req, res) => {
   try {
     if (req.query.code) {
-      //const accessToken = await mercadoLibreAuthController.getAccessToken(req.query.code);
-      //console.log("Token de acceso recibido:", accessToken);
       const { accessToken, refreshToken, authorizationCode } =
         await mercadoLibreAuthController.getAccessToken(req.query.code);
-      console.log("Tokens de meli recibidos:", {
+
+      console.log("Tokens de Mercado Libre recibidos:", {
         accessToken,
         refreshToken,
         authorizationCode,
       });
-      // Guardamos tokens en la bd
+
       await SocialMediaActive.create({
-        dataUser: "+54 9 3487 34-7843", // Asegúrate de reemplazarlo por la data correcta
-        active: true, // Puedes modificar según tu lógica
-        socialMediaId: 5, // Reemplaza por el valor correcto de la red social
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-        authorizationCode: authorizationCode,
+        dataUser: "+54 9 3487 34-7843", 
+        active: true,
+        socialMediaId: 5, 
+        accessToken,
+        refreshToken,
+        authorizationCode,
       });
+
       return res.json({
         message: "Tokens guardados correctamente en la base de datos",
       });
@@ -49,25 +49,22 @@ const mercadoLibreCallbackHandler = async (req, res) => {
         .json({ message: "No se proporcionó el código de autorización." });
     }
 
-    console.log("Código de autorización recibido:", code);
-    //const accessToken = await mercadoLibreAuthController.getAccessToken(code);
     const { accessToken, refreshToken, authorizationCode } =
       await mercadoLibreAuthController.getAccessToken(code);
 
-    //console.log("Token de acceso recibido:", accessToken);
     console.log("Tokens recibidos:", {
       accessToken,
       refreshToken,
       authorizationCode,
     });
-    // Guardar los tokens en la base de datos
+
     await SocialMediaActive.create({
-      dataUser: "+54 9 3487 34-7843", // Asegúrate de reemplazarlo por la data correcta
-      active: true, // Puedes modificar según tu lógica
-      socialMediaId: 5, // Reemplaza por el valor correcto de la red social
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-      authorizationCode: authorizationCode,
+      dataUser: "+54 9 3487 34-7843", 
+      active: true,
+      socialMediaId: 5, 
+      accessToken,
+      refreshToken,
+      authorizationCode,
     });
 
     return res.json({
