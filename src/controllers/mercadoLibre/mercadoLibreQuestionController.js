@@ -1,6 +1,6 @@
 const axios = require("axios");
-const { MsgReceived } = require("../../models/MsgReceived");
-const { SocialMediaActive } = require("../../models/SocialMediaActive");
+const { MsgReceived } = require("../../db");
+const { SocialMediaActive } = require("../../db");
 const { mercadoLibreAuthController } = require("./mercadoLibreAuthController");
 
 const mercadoLibreQuestionController = {

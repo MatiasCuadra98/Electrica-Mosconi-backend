@@ -1,7 +1,7 @@
 const {
   mercadoLibreAuthController,
 } = require("../../controllers/mercadoLibre/mercadoLibreAuthController");
-const { SocialMediaActive } = require("../../models/SocialMediaActive");
+const { SocialMediaActive } = require("../../db");
 
 const mercadoLibreAuthHandler = async (req, res) => {
   try {
@@ -16,9 +16,9 @@ const mercadoLibreAuthHandler = async (req, res) => {
       });
 
       await SocialMediaActive.create({
-        dataUser: "+54 9 3487 34-7843", 
+        dataUser: "+54 9 3487 34-7843",
         active: true,
-        socialMediaId: 5, 
+        socialMediaId: 5,
         accessToken,
         refreshToken,
         authorizationCode,
@@ -59,9 +59,9 @@ const mercadoLibreCallbackHandler = async (req, res) => {
     });
 
     await SocialMediaActive.create({
-      dataUser: "+54 9 3487 34-7843", 
+      dataUser: "+54 9 3487 34-7843",
       active: true,
-      socialMediaId: 5, 
+      socialMediaId: 5,
       accessToken,
       refreshToken,
       authorizationCode,
