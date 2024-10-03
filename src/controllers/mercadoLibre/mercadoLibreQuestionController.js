@@ -1,45 +1,64 @@
 const axios = require("axios");
 const { MsgReceived } = require("../../models/MsgReceived");
+const { SocialMediaActive } = require("../../models/SocialMediaActive");
+const { mercadoLibreAuthController } = require("./mercadoLibreAuthController");
 
 const mercadoLibreQuestionController = {
-  getQuestions: async (accessToken, itemId, BusinessId) => {
-    try {
-      const response = await axios.get(
-        "https://api.mercadolibre.com/questions/search",
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          params: { item: itemId, 
-                    BusinessId: "53c2e647-ce26-41f7-915e-aac13b11c92a"
-           },
-        }
-      );
-      //agrego variable que guarde las preguntas
-      const questions = response.data.questions;
+    getQuestions: async (accessToken, itemId, BusinessId) => {
+        try {
+            const response = await axios.get(
+                "https://api.mercadolibre.com/questions/search",
+                {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                    params: { item: itemId }
+                }
+            );
 
-      //Guardamos las preguntas en la base de datos, iteramos sobre la variable creada antes y guardamos la data
-      for (const question of questions) {
-        await MsgReceived.create({
-            id: question.id, // Usamos el id de la pregunta como id en el modelo
-            chatId: question.from.id, // El id del usuario que hace la pregunta
-            idUser: question.from.id, // Id del usuario que hizo la pregunta
-            text: question.text, // Texto de la pregunta
-            name: question.from.nickname, // Nombre del usuario
-            timestamp: new Date(question.date_created).getTime(), // Convertir la fecha a timestamp
-            phoneNumber: null, // Mercado Libre no proporciona el teléfono directamente asi q lo podemos sacar a esta linea
-            userName: question.from.nickname, // Nombre del usuario
-            Email: null, // Email también no está disponible directamente la podemos sacar a esta linea
-            BusinessId: BusinessId, // El BusinessId que envías desde el handler
-            active: true, // Estado activo del mensaje
-            state: 'No Leidos', // Por defecto "No Leidos"
-            received: true // Indicador de que es un mensaje recibido
-        });
+            const questions = response.data.questions;
+
+            for (const question of questions) {
+                await MsgReceived.create({
+                    id: question.id,
+                    chatId: question.from.id,
+                    idUser: question.from.id,
+                    text: question.text,
+                    name: question.from.nickname,
+                    timestamp: new Date(question.date_created).getTime(),
+                    phoneNumber: null,
+                    userName: question.from.nickname,
+                    Email: null,
+                    BusinessId: BusinessId,
+                    active: true,
+                    state: 'No Leidos',
+                    received: true
+                });
+            }
+
+            return questions;
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                console.log("Token de acceso expirado. Renovando...");
+                // Buscamos el refresh token en la base de datos
+                const socialMediaData = await SocialMediaActive.findOne({ where: { socialMediaId: 5 } });
+                const { refreshToken } = socialMediaData;
+
+                // Renovamos el access token
+                const { accessToken: newAccessToken, newRefreshToken } = await mercadoLibreAuthController.refreshAccessToken(refreshToken);
+
+                // Actualizamos el token en la base de datos
+                await SocialMediaActive.update(
+                    { accessToken: newAccessToken, refreshToken: newRefreshToken },
+                    { where: { socialMediaId: 5 } }
+                );
+
+                // Reintentamos la solicitud con el nuevo token
+                return await mercadoLibreQuestionController.getQuestions(newAccessToken, itemId, BusinessId);
+            }
+
+            console.error("Error al obtener las preguntas:", error);
+            throw error;
+        }
     }
-      return response.data;
-    } catch (error) {
-      console.error("Error al obtener las preguntas:", error);
-      throw error;
-    }
-  },
 };
 
 module.exports = { mercadoLibreQuestionController };
