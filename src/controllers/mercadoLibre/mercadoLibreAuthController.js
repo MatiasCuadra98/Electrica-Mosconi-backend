@@ -29,7 +29,13 @@ const mercadoLibreAuthController = {
             });
 
             console.log('Respuesta de Mercado Libre:', response.data);
-            return response.data.access_token;
+            //return response.data.access_token;
+            //agrego lo siguiente
+            return {
+                accessToken: access_token,
+                refreshToken: refresh_token,
+                authorizationCode: authorizationCode
+            };
         } catch (error) {
             console.error('Error al obtener el token de acceso:');
             if (error.response) {
