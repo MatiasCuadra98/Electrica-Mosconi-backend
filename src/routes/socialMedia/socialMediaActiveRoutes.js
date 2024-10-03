@@ -2,7 +2,7 @@ const {Router} = require('express');
 const {getAllSocialMediaActiveHandler} = require('../../handlers/SocialMedia/SocialMediaActive/getAllSocialMediaActiveHandler');
 // const {getSocialMediaActiveByIdHandler} = require('../../handlers/socialMedia/socialMediaActive/getSocialMediaActiveByIdHandler');
 const {addSocialMediaActiveHandler} = require('../../handlers/SocialMedia/SocialMediaActive/addSocialMediaActiveHandler');
-const {updateSocialMediaActiveHandler} = require('../../handlers/socialMedia/socialMediaActive/updateSocialMediaActiveHandler');
+const {updateSocialMediaActiveHandler} = require('../../handlers/SocialMedia/SocialMediaActive/updateSocialMediaActiveHandler');
 // const {deleteSocialMediaActiveHandler} = require('../../handlers/socialMedia/socialMediaActive/deleteSocialMediaActiveHandler');
 
 const socialMediaActiveRoute = Router();
