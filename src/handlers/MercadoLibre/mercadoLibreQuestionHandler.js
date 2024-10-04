@@ -29,11 +29,13 @@ const mercadoLibreQuestionHandler = async (req, res) => {
         }
         console.log('Business encontrado:', business);
 
+        // Verificar que el negocio tenga SocialMediumId
         if (!business.SocialMediumId) {
             return res.status(400).json({ message: `SocialMediumId no encontrado para el Business ID ${businessId}` });
         }
+
         // Obtener la red social correspondiente
-        const socialMedia = await SocialMedia.findOne({ where: { id: business.SocialMediumId } });
+        const socialMedia = await SocialMedia.findByPk(business.SocialMediumId);
         if (!socialMedia) {
             return res.status(404).json({ message: `Social Media no encontrado para Business ID ${businessId}` });
         }
