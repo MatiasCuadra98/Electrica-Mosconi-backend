@@ -1,11 +1,9 @@
 const { mercadoLibreQuestionController } = require('../../controllers/mercadoLibre/mercadoLibreQuestionController');
 const { SocialMedia, Business } = require('../../db'); 
 
-const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a"; 
-const socialMediaId = 5; 
 const mercadoLibreQuestionHandler = async (req, res) => {
     try {
-        const { item, businessId } = req.query; 
+        const { item } = req.query; // Obtenemos solo el parámetro item
         console.log('Received query:', req.query);
 
         const authHeader = req.headers.authorization;
@@ -16,13 +14,12 @@ const mercadoLibreQuestionHandler = async (req, res) => {
 
         const accessToken = authHeader.split(' ')[1];
 
-        // Validación de parámetros item y BusinessId
+        // Validación de parámetros
         if (!item) {
             return res.status(400).json({ message: 'El parámetro item es requerido' });
         }
-        if (!businessId) {
-            return res.status(400).json({ message: 'El parámetro BusinessId es requerido' });
-        }
+
+        const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a"; // Este ID debe provenir de algún lugar más dinámico, posiblemente de la autenticación del usuario.
 
         // Obtener el business a partir del BusinessId
         const business = await Business.findByPk(businessId);

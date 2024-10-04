@@ -3,36 +3,30 @@ const { MsgReceived, Contacts, Business, SocialMedia, SocialMediaActive } = requ
 const { mercadoLibreAuthController } = require("./mercadoLibreAuthController");
 const { v4: uuidv4 } = require("uuid");
 
-const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a"; 
-const socialMediaId = 5; 
-
 const mercadoLibreQuestionController = {
   getQuestions: async (accessToken, itemId, businessId, socialMediaId) => {
     try {
       if (!itemId) {
-        throw new Error("El parámetro itemId en meli es requerido");
+        throw new Error("El parámetro itemId en Mercado Libre es requerido");
       }
 
       // Obtener el negocio (Business) por ID
       const business = await Business.findByPk(businessId);
       if (!business) {
-        throw new Error(`Business con ID en meli ${businessId} no encontrado`);
+        throw new Error(`Business con ID ${businessId} no encontrado`);
       }
 
       // Obtener la red social (SocialMedia) por ID
       const socialMedia = await SocialMedia.findByPk(socialMediaId);
       if (!socialMedia) {
-        throw new Error(`Social Media en meli con ID ${socialMediaId} no encontrada`);
+        throw new Error(`Social Media con ID ${socialMediaId} no encontrada`);
       }
 
       // Llamada a la API de Mercado Libre para obtener las preguntas
-      const response = await axios.get(
-        "https://api.mercadolibre.com/questions/search",
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          params: { item: itemId },
-        }
-      );
+      const response = await axios.get("https://api.mercadolibre.com/questions/search", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: { item: itemId },
+      });
 
       const questions = response.data.questions;
 
@@ -61,7 +55,7 @@ const mercadoLibreQuestionController = {
           await newContact.setSocialMedium(socialMedia);
         }
 
-        // Crear el mensaje recibido y asociar con el negocio, contacto y red social
+        // Crear el mensaje recibido y asociarlo con el negocio, contacto y red social
         const msgReceived = await MsgReceived.create({
           id: uuidv4(),
           chatId: chatId,
@@ -79,14 +73,14 @@ const mercadoLibreQuestionController = {
         await msgReceived.setContact(newContact);
         await msgReceived.setSocialMedium(socialMedia);
 
-        console.log("Mensaje recibido de meli guardado en la base de datos:", msgReceived);
+        console.log("Mensaje recibido de Mercado Libre guardado en la base de datos:", msgReceived);
       }
 
-      return questions;
+      return questions; // Devolvemos las preguntas obtenidas
     } catch (error) {
       // Manejo del error por token expirado
       if (error.response && error.response.status === 401) {
-        console.log("Token de acceso de meli expirado. Renovando...");
+        console.log("Token de acceso de Mercado Libre expirado. Renovando...");
 
         const socialMediaData = await SocialMediaActive.findOne({ where: { socialMediaId: 5 } });
         const { refreshToken } = socialMediaData;
@@ -101,7 +95,7 @@ const mercadoLibreQuestionController = {
         return await mercadoLibreQuestionController.getQuestions(newAccessToken, itemId, businessId, socialMediaId);
       }
 
-      console.error("Error al obtener las preguntas de meli:", error);
+      console.error("Error al obtener las preguntas de Mercado Libre:", error);
       throw error;
     }
   },
