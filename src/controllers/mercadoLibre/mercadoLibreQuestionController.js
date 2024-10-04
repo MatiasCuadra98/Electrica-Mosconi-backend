@@ -54,7 +54,7 @@ const mercadoLibreQuestionController = {
         }
 
         // Asociar el contacto con la red social
-        await newContact.setSocialMedia(socialMedia);
+        await newContact.setSocialMedium(socialMedia);
 
         // Crear el mensaje recibido y asociarlo con el negocio y la red social
         const msgReceived = await MsgReceived.create({
