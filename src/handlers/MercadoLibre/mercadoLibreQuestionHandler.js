@@ -1,12 +1,9 @@
 const { mercadoLibreQuestionController } = require('../../controllers/mercadoLibre/mercadoLibreQuestionController');
 const { SocialMedia, Business } = require('../../db'); 
 
-const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a"; //id del business
-const socialMediaId = 5; //este es el id de meli
-
 const mercadoLibreQuestionHandler = async (req, res) => {
     try {
-        const { item, businessId } = req.query;
+        const { item, businessId } = req.query; 
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {
@@ -24,18 +21,18 @@ const mercadoLibreQuestionHandler = async (req, res) => {
         }
 
         // Obtener el business a partir del BusinessId
-        const business = await Business.findByPk(businessId); // Asegúrate de que esto está correcto
+        const business = await Business.findByPk(businessId);
         if (!business) {
             return res.status(404).json({ message: `Business con ID ${businessId} no encontrado` });
         }
 
-        // Aquí asumimos que la relación entre Business y SocialMedia está definida correctamente
-        const socialMedia = await SocialMedia.findOne({ where: { id: business.SocialMediumId } }); // O lo que corresponda a tu lógica
+        // Obtener la red social correspondiente
+        const socialMedia = await SocialMedia.findOne({ where: { id: business.SocialMediumId } });
         if (!socialMedia) {
             return res.status(404).json({ message: `Social Media no encontrado para Business ID ${businessId}` });
         }
 
-        const socialMediaId = socialMedia.id; // Asegúrate de obtener el ID correcto
+        const socialMediaId = socialMedia.id;
 
         // Llamada al controlador de preguntas de Mercado Libre
         const questions = await mercadoLibreQuestionController.getQuestions(accessToken, item, businessId, socialMediaId);
