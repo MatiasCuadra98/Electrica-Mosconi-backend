@@ -10,6 +10,13 @@ const mercadoLibreQuestionHandler = async (req, res) => {
         }
 
         const accessToken = authHeader.split(' ')[1];
+         // Validación de parámetros item y BusinessId
+         if (!item) {
+            return res.status(400).json({ message: 'El parámetro item es requerido' });
+        }
+        if (!BusinessId) {
+            return res.status(400).json({ message: 'El parámetro BusinessId es requerido' });
+        }
 
         const questions = await mercadoLibreQuestionController.getQuestions(accessToken, itemId, BusinessId);
         console.log('Preguntas recibidas de Mercado Libre:', JSON.stringify(questions, null, 2));
