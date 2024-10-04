@@ -21,8 +21,6 @@ const mercadoLibreQuestionController = {
       if (!socialMedia) {
         throw new Error(`Social Media en meli con ID ${socialMediaId} no encontrada`);
       }
-      
-      const socialMediaData = socialMedia.dataValues;
 
       // Llamada a la API de Mercado Libre para obtener las preguntas
       const response = await axios.get(
@@ -54,20 +52,10 @@ const mercadoLibreQuestionController = {
           },
         });
 
-        // Asociar el contacto con el negocio si es creado
+        // Si el contacto fue creado, asociarlo con el negocio y la red social
         if (created) {
           await newContact.addBusiness(business);
-        }
-
-        // Asociar el contacto con la red social si es creado
-        if (created && socialMedia) {
-          await newContact.setSocialMedia(socialMediaData);
-        }
-
-        // Verificar si el contacto fue encontrado o creado
-        const contact = await Contacts.findOne({ where: { phone: senderIdUser } });
-        if (!contact) {
-          throw new Error(`Contact no encontrado para el ID de usuario en meli ${senderIdUser}`);
+          await newContact.setSocialMedium(socialMedia);
         }
 
         // Crear el mensaje recibido y asociar con el negocio, contacto y red social
@@ -80,18 +68,13 @@ const mercadoLibreQuestionController = {
           timestamp: new Date(question.date_created).getTime(),
           phoneNumber: null, // No hay número de teléfono disponible en las preguntas de Mercado Libre
           BusinessId: businessId,
-          state: "No Leidos",
+          state: "No Leídos",
           received: true,
         });
 
-        // Asociar el mensaje recibido con el negocio
-        await msgReceived.setBusiness(business);
-
-        // Asociar el mensaje recibido con el contacto
-        await msgReceived.setContact(contact);
-
-        // Asociar el mensaje recibido con la red social
-        await msgReceived.setSocialMedium(socialMediaData);
+        // Asociar el mensaje recibido con el contacto y la red social
+        await msgReceived.setContact(newContact);
+        await msgReceived.setSocialMedium(socialMedia);
 
         console.log("Mensaje recibido de meli guardado en la base de datos:", msgReceived);
       }
@@ -102,20 +85,16 @@ const mercadoLibreQuestionController = {
       if (error.response && error.response.status === 401) {
         console.log("Token de acceso de meli expirado. Renovando...");
 
-        // Buscar el refresh token en la base de datos
         const socialMediaData = await SocialMediaActive.findOne({ where: { socialMediaId: 5 } });
         const { refreshToken } = socialMediaData;
 
-        // Renovar el access token
         const { accessToken: newAccessToken, newRefreshToken } = await mercadoLibreAuthController.refreshAccessToken(refreshToken);
 
-        // Actualizar el token en la base de datos
         await SocialMediaActive.update(
           { accessToken: newAccessToken, refreshToken: newRefreshToken },
           { where: { socialMediaId: 5 } }
         );
 
-        // Reintentar la solicitud con el nuevo token
         return await mercadoLibreQuestionController.getQuestions(newAccessToken, itemId, businessId, socialMediaId);
       }
 
