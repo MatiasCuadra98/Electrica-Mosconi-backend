@@ -2,7 +2,7 @@ const { mercadoLibreQuestionController } = require('../../controllers/mercadoLib
 
 const mercadoLibreQuestionHandler = async (req, res) => {
     try {
-        const { itemId, BusinessId } = req.query;
+        const { item, BusinessId } = req.query;
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {
@@ -18,7 +18,7 @@ const mercadoLibreQuestionHandler = async (req, res) => {
             return res.status(400).json({ message: 'El parámetro BusinessId es requerido' });
         }
 
-        const questions = await mercadoLibreQuestionController.getQuestions(accessToken, itemId, BusinessId);
+        const questions = await mercadoLibreQuestionController.getQuestions(accessToken, item, BusinessId);
         console.log('Preguntas recibidas de Mercado Libre:', JSON.stringify(questions, null, 2));
 
         return res.json(questions);
