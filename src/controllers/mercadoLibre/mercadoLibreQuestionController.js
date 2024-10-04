@@ -3,6 +3,9 @@ const { MsgReceived, Contacts, Business, SocialMedia, SocialMediaActive } = requ
 const { mercadoLibreAuthController } = require("./mercadoLibreAuthController");
 const { v4: uuidv4 } = require("uuid");
 
+const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a"; 
+const socialMediaId = 5; 
+
 const mercadoLibreQuestionController = {
   getQuestions: async (accessToken, itemId, businessId, socialMediaId) => {
     try {

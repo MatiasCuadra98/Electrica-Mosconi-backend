@@ -1,6 +1,8 @@
 const { mercadoLibreQuestionController } = require('../../controllers/mercadoLibre/mercadoLibreQuestionController');
 const { SocialMedia, Business } = require('../../db'); 
 
+const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a"; 
+const socialMediaId = 5; 
 const mercadoLibreQuestionHandler = async (req, res) => {
     try {
         const { item, businessId } = req.query; 
