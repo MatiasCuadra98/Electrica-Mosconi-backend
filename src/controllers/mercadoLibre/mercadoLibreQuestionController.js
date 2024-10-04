@@ -13,7 +13,7 @@ const mercadoLibreQuestionController = {
       // Obtener el negocio (Business) por ID
       const business = await Business.findByPk(businessId);
       if (!business) {
-        throw new Error(`Business con ID en meli${businessId} no encontrado`);
+        throw new Error(`Business con ID en meli ${businessId} no encontrado`);
       }
 
       // Obtener la red social (SocialMedia) por ID
