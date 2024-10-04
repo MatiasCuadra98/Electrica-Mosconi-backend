@@ -4,6 +4,8 @@ const { SocialMedia, Business } = require('../../db');
 const mercadoLibreQuestionHandler = async (req, res) => {
     try {
         const { item, businessId } = req.query; 
+        console.log('Received query:', req.query);
+
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {
@@ -25,7 +27,11 @@ const mercadoLibreQuestionHandler = async (req, res) => {
         if (!business) {
             return res.status(404).json({ message: `Business con ID ${businessId} no encontrado` });
         }
+        console.log('Business encontrado:', business);
 
+        if (!business.SocialMediumId) {
+            return res.status(400).json({ message: `SocialMediumId no encontrado para el Business ID ${businessId}` });
+        }
         // Obtener la red social correspondiente
         const socialMedia = await SocialMedia.findOne({ where: { id: business.SocialMediumId } });
         if (!socialMedia) {
