@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { MsgReceived, Contacts, Business, SocialMedia, SocialMediaActive } = require("../../db");
+const { MsgReceived, Contacts, Business, SocialMedia } = require("../../db");
 const { mercadoLibreAuthController } = require("./mercadoLibreAuthController");
 const { v4: uuidv4 } = require("uuid");
 
@@ -30,11 +30,10 @@ const mercadoLibreQuestionController = {
 
       const questions = response.data.questions;
 
-      // Procesar cada pregunta recibida
       for (const question of questions) {
         const senderIdUser = question.from.id;
         const senderName = question.from.nickname || "Nombre desconocido";
-        const chatId = senderIdUser; // Utilizando el ID del usuario como chatId
+        const chatId = senderIdUser;
 
         // Buscar o crear el contacto relacionado a la pregunta
         const [newContact, created] = await Contacts.findOrCreate({
@@ -49,13 +48,15 @@ const mercadoLibreQuestionController = {
           },
         });
 
-        // Si el contacto fue creado, asociarlo con el negocio y la red social
+        // Asociar el contacto con el negocio
         if (created) {
           await newContact.addBusiness(business);
-          await newContact.setSocialMedium(socialMedia);
         }
 
-        // Crear el mensaje recibido y asociarlo con el negocio, contacto y red social
+        // Asociar el contacto con la red social
+        await newContact.setSocialMedia(socialMedia);
+
+        // Crear el mensaje recibido y asociarlo con el negocio y la red social
         const msgReceived = await MsgReceived.create({
           id: uuidv4(),
           chatId: chatId,
@@ -63,13 +64,13 @@ const mercadoLibreQuestionController = {
           text: question.text,
           name: senderName,
           timestamp: new Date(question.date_created).getTime(),
-          phoneNumber: null, // No hay número de teléfono disponible en las preguntas de Mercado Libre
+          phoneNumber: null,
           BusinessId: businessId,
           state: "No Leídos",
           received: true,
         });
 
-        // Asociar el mensaje recibido con el contacto y la red social
+        // Asociar el mensaje con el contacto y la red social
         await msgReceived.setContact(newContact);
         await msgReceived.setSocialMedium(socialMedia);
 
@@ -78,19 +79,11 @@ const mercadoLibreQuestionController = {
 
       return questions; // Devolvemos las preguntas obtenidas
     } catch (error) {
-      // Manejo del error por token expirado
       if (error.response && error.response.status === 401) {
         console.log("Token de acceso de Mercado Libre expirado. Renovando...");
 
-        const socialMediaData = await SocialMediaActive.findOne({ where: { socialMediaId: 5 } });
-        const { refreshToken } = socialMediaData;
-
-        const { accessToken: newAccessToken, newRefreshToken } = await mercadoLibreAuthController.refreshAccessToken(refreshToken);
-
-        await SocialMediaActive.update(
-          { accessToken: newAccessToken, refreshToken: newRefreshToken },
-          { where: { socialMediaId: 5 } }
-        );
+        const { refreshToken } = await mercadoLibreAuthController.refreshAccessToken();
+        const newAccessToken = refreshToken.accessToken;
 
         return await mercadoLibreQuestionController.getQuestions(newAccessToken, itemId, businessId, socialMediaId);
       }

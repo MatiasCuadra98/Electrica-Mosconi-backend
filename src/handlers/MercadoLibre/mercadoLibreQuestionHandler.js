@@ -2,13 +2,11 @@ const { mercadoLibreQuestionController } = require('../../controllers/mercadoLib
 const { SocialMedia, Business } = require('../../db'); 
 
 const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a";
-const socialMediaId = 5;
+const socialMediaId = 5; // Id de Mercado Libre
 
 const mercadoLibreQuestionHandler = async (req, res) => {
     try {
-        const { item } = req.query; // Obtenemos solo el parámetro item
-        console.log('Received query:', req.query);
-
+        const { item } = req.query; 
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {
@@ -22,27 +20,20 @@ const mercadoLibreQuestionHandler = async (req, res) => {
             return res.status(400).json({ message: 'El parámetro item es requerido' });
         }
 
-        // Obtener el business a partir del BusinessId
+        // Obtener el negocio por su ID
         const business = await Business.findByPk(businessId);
         if (!business) {
             return res.status(404).json({ message: `Business con ID ${businessId} no encontrado` });
         }
-        console.log('Business encontrado:', business);
 
-        // Verificar que el negocio tenga SocialMediumId
-        if (!business.SocialMediumId) {
-            return res.status(400).json({ message: `SocialMediumId no encontrado para el Business ID ${businessId}` });
-        }
-
-        // Obtener la red social correspondiente
-        const socialMedia = await SocialMedia.findByPk(business.SocialMediumId);
+        // Obtener la red social por su ID
+        const socialMedia = await SocialMedia.findByPk(socialMediaId);
         if (!socialMedia) {
-            return res.status(404).json({ message: `Social Media no encontrado para Business ID ${businessId}` });
+            return res.status(404).json({ message: `Social Media con ID ${socialMediaId} no encontrada` });
         }
 
         // Llamada al controlador de preguntas de Mercado Libre
         const questions = await mercadoLibreQuestionController.getQuestions(accessToken, item, businessId, socialMediaId);
-        console.log('Preguntas recibidas de Mercado Libre:', JSON.stringify(questions, null, 2));
 
         return res.json(questions);
     } catch (error) {
