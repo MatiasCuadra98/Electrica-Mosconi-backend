@@ -6,6 +6,9 @@ const { mercadoLibreAuthController } = require("./mercadoLibreAuthController");
 const mercadoLibreQuestionController = {
     getQuestions: async (accessToken, itemId, BusinessId) => {
         try {
+            if (!itemId) {
+                throw new Error("El parámetro itemId es requerido");
+            }
             const response = await axios.get(
                 "https://api.mercadolibre.com/questions/search",
                 {
