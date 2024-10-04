@@ -22,7 +22,6 @@ const mercadoLibreQuestionHandler = async (req, res) => {
             return res.status(400).json({ message: 'El parámetro item es requerido' });
         }
 
-
         // Obtener el business a partir del BusinessId
         const business = await Business.findByPk(businessId);
         if (!business) {
@@ -40,7 +39,6 @@ const mercadoLibreQuestionHandler = async (req, res) => {
         if (!socialMedia) {
             return res.status(404).json({ message: `Social Media no encontrado para Business ID ${businessId}` });
         }
-
 
         // Llamada al controlador de preguntas de Mercado Libre
         const questions = await mercadoLibreQuestionController.getQuestions(accessToken, item, businessId, socialMediaId);
