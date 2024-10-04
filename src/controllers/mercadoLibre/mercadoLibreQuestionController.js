@@ -66,7 +66,7 @@ const mercadoLibreQuestionController = {
           timestamp: new Date(question.date_created).getTime(),
           phoneNumber: null,
           BusinessId: businessId,
-          state: "No Leídos",
+          state: "No Leidos",
           received: true,
         });
 
