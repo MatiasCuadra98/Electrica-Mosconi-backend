@@ -1,6 +1,9 @@
 const { mercadoLibreQuestionController } = require('../../controllers/mercadoLibre/mercadoLibreQuestionController');
 const { SocialMedia, Business } = require('../../db'); 
 
+const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a";
+const socialMediaId = 5;
+
 const mercadoLibreQuestionHandler = async (req, res) => {
     try {
         const { item } = req.query; // Obtenemos solo el parámetro item
@@ -19,7 +22,6 @@ const mercadoLibreQuestionHandler = async (req, res) => {
             return res.status(400).json({ message: 'El parámetro item es requerido' });
         }
 
-        const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a"; // Este ID debe provenir de algún lugar más dinámico, posiblemente de la autenticación del usuario.
 
         // Obtener el business a partir del BusinessId
         const business = await Business.findByPk(businessId);
@@ -39,7 +41,6 @@ const mercadoLibreQuestionHandler = async (req, res) => {
             return res.status(404).json({ message: `Social Media no encontrado para Business ID ${businessId}` });
         }
 
-        const socialMediaId = socialMedia.id;
 
         // Llamada al controlador de preguntas de Mercado Libre
         const questions = await mercadoLibreQuestionController.getQuestions(accessToken, item, businessId, socialMediaId);
