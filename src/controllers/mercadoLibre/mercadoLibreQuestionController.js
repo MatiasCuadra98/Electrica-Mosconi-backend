@@ -1,68 +1,128 @@
 const axios = require("axios");
-const { MsgReceived } = require("../../db");
-const { SocialMediaActive } = require("../../db");
+const { MsgReceived, Contacts, Business, SocialMedia, SocialMediaActive } = require("../../db");
 const { mercadoLibreAuthController } = require("./mercadoLibreAuthController");
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 
 const mercadoLibreQuestionController = {
-    getQuestions: async (accessToken, itemId, BusinessId) => {
-        try {
-            if (!itemId) {
-                throw new Error("El parámetro itemId es requerido");
-            }
-            const response = await axios.get(
-                "https://api.mercadolibre.com/questions/search",
-                {
-                    headers: { Authorization: `Bearer ${accessToken}` },
-                    params: { item: itemId }
-                }
-            );
+  getQuestions: async (accessToken, itemId, businessId, socialMediaId) => {
+    try {
+      if (!itemId) {
+        throw new Error("El parámetro itemId en meli es requerido");
+      }
 
-            const questions = response.data.questions;
+      // Obtener el negocio (Business) por ID
+      const business = await Business.findByPk(businessId);
+      if (!business) {
+        throw new Error(`Business con ID en meli${businessId} no encontrado`);
+      }
 
-            for (const question of questions) {
-                await MsgReceived.create({
-                    id: uuidv4(), //genero un uudi ya q en el modelo lo requiere
-                    chatId: question.from.id,
-                    idUser: question.from.id,
-                    text: question.text,
-                    name: question.from.nickname || "name desconocido",
-                    timestamp: new Date(question.date_created).getTime(),
-                    phoneNumber: null,
-                    userName: question.from.nickname || "userName desconocido",
-                    Email: null,
-                    BusinessId: "53c2e647-ce26-41f7-915e-aac13b11c92a",
-                    active: true,
-                    state: 'No Leidos',
-                    received: true
-                });
-            }
+      // Obtener la red social (SocialMedia) por ID
+      const socialMedia = await SocialMedia.findByPk(socialMediaId);
+      if (!socialMedia) {
+        throw new Error(`Social Media en melicon ID ${socialMediaId} no encontrada`);
+      }
+      
+      const socialMediaData = socialMedia.dataValues;
 
-            return questions;
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                console.log("Token de acceso expirado. Renovando...");
-                // Buscamos el refresh token en la base de datos
-                const socialMediaData = await SocialMediaActive.findOne({ where: { socialMediaId: 5 } });
-                const { refreshToken } = socialMediaData;
-
-                // Renovamos el access token
-                const { accessToken: newAccessToken, newRefreshToken } = await mercadoLibreAuthController.refreshAccessToken(refreshToken);
-
-                // Actualizamos el token en la base de datos
-                await SocialMediaActive.update(
-                    { accessToken: newAccessToken, refreshToken: newRefreshToken },
-                    { where: { socialMediaId: 5 } }
-                );
-
-                // Reintentamos la solicitud con el nuevo token
-                return await mercadoLibreQuestionController.getQuestions(newAccessToken, itemId, BusinessId);
-            }
-
-            console.error("Error al obtener las preguntas:", error);
-            throw error;
+      // Llamada a la API de Mercado Libre para obtener las preguntas
+      const response = await axios.get(
+        "https://api.mercadolibre.com/questions/search",
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          params: { item: itemId },
         }
+      );
+
+      const questions = response.data.questions;
+
+      // Procesar cada pregunta recibida
+      for (const question of questions) {
+        const senderIdUser = question.from.id;
+        const senderName = question.from.nickname || "Nombre desconocido";
+        const chatId = senderIdUser; // Utilizando el ID del usuario como chatId
+
+        // Buscar o crear el contacto relacionado a la pregunta
+        const [newContact, created] = await Contacts.findOrCreate({
+          where: { idUser: senderIdUser },
+          defaults: {
+            name: senderName,
+            notification: true,
+            chatId: chatId,
+            phone: senderIdUser,
+            businessId: businessId,
+            SocialMediumId: socialMediaId,
+          },
+        });
+
+        // Asociar el contacto con el negocio si es creado
+        if (created) {
+          await newContact.addBusiness(business);
+        }
+
+        // Asociar el contacto con la red social si es creado
+        if (created && socialMedia) {
+          await newContact.setSocialMedia(socialMediaData);
+        }
+
+        // Verificar si el contacto fue encontrado o creado
+        const contact = await Contacts.findOne({ where: { phone: senderIdUser } });
+        if (!contact) {
+          throw new Error(`Contact no encontrado para el ID de usuario en meli ${senderIdUser}`);
+        }
+
+        // Crear el mensaje recibido y asociar con el negocio, contacto y red social
+        const msgReceived = await MsgReceived.create({
+          id: uuidv4(),
+          chatId: chatId,
+          idUser: senderIdUser,
+          text: question.text,
+          name: senderName,
+          timestamp: new Date(question.date_created).getTime(),
+          phoneNumber: null, // No hay número de teléfono disponible en las preguntas de Mercado Libre
+          BusinessId: businessId,
+          state: "No Leidos",
+          received: true,
+        });
+
+        // Asociar el mensaje recibido con el negocio
+        await msgReceived.setBusiness(business);
+
+        // Asociar el mensaje recibido con el contacto
+        await msgReceived.setContact(contact);
+
+        // Asociar el mensaje recibido con la red social
+        await msgReceived.setSocialMedium(socialMediaData);
+
+        console.log("Mensaje recibido de meli guardado en la base de datos:", msgReceived);
+      }
+
+      return questions;
+    } catch (error) {
+      // Manejo del error por token expirado
+      if (error.response && error.response.status === 401) {
+        console.log("Token de acceso de meli expirado. Renovando...");
+
+        // Buscar el refresh token en la base de datos
+        const socialMediaData = await SocialMediaActive.findOne({ where: { socialMediaId: 5 } });
+        const { refreshToken } = socialMediaData;
+
+        // Renovar el access token
+        const { accessToken: newAccessToken, newRefreshToken } = await mercadoLibreAuthController.refreshAccessToken(refreshToken);
+
+        // Actualizar el token en la base de datos
+        await SocialMediaActive.update(
+          { accessToken: newAccessToken, refreshToken: newRefreshToken },
+          { where: { socialMediaId: 5 } }
+        );
+
+        // Reintentar la solicitud con el nuevo token
+        return await mercadoLibreQuestionController.getQuestions(newAccessToken, itemId, businessId, socialMediaId);
+      }
+
+      console.error("Error al obtener las preguntas de meli:", error);
+      throw error;
     }
+  },
 };
 
 module.exports = { mercadoLibreQuestionController };
