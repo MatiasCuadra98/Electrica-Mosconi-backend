@@ -2,6 +2,7 @@ const axios = require("axios");
 const { MsgReceived } = require("../../db");
 const { SocialMediaActive } = require("../../db");
 const { mercadoLibreAuthController } = require("./mercadoLibreAuthController");
+const { v4: uuidv4 } = require('uuid');
 
 const mercadoLibreQuestionController = {
     getQuestions: async (accessToken, itemId, BusinessId) => {
@@ -21,7 +22,7 @@ const mercadoLibreQuestionController = {
 
             for (const question of questions) {
                 await MsgReceived.create({
-                    id: question.id,
+                    id: uuidv4(), //genero un uudi ya q en el modelo lo requiere
                     chatId: question.from.id,
                     idUser: question.from.id,
                     text: question.text,
@@ -30,7 +31,7 @@ const mercadoLibreQuestionController = {
                     phoneNumber: null,
                     userName: question.from.nickname || "userName desconocido",
                     Email: null,
-                    BusinessId: BusinessId,
+                    BusinessId: "53c2e647-ce26-41f7-915e-aac13b11c92a",
                     active: true,
                     state: 'No Leidos',
                     received: true
