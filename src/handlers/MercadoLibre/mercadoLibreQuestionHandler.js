@@ -1,4 +1,5 @@
 const { mercadoLibreQuestionController } = require('../../controllers/mercadoLibre/mercadoLibreQuestionController');
+const { SocialMedia } = require('../../db'); 
 
 const mercadoLibreQuestionHandler = async (req, res) => {
     try {
@@ -10,15 +11,29 @@ const mercadoLibreQuestionHandler = async (req, res) => {
         }
 
         const accessToken = authHeader.split(' ')[1];
-         // Validación de parámetros item y BusinessId
-         if (!item) {
+        // Validación de parámetros item y BusinessId
+        if (!item) {
             return res.status(400).json({ message: 'El parámetro item es requerido' });
         }
         if (!BusinessId) {
             return res.status(400).json({ message: 'El parámetro BusinessId es requerido' });
         }
 
-        const questions = await mercadoLibreQuestionController.getQuestions(accessToken, item, BusinessId);
+        // Obtener el socialMediaId a partir del BusinessId
+        const business = await Business.findByPk(BusinessId);
+        if (!business) {
+            return res.status(404).json({ message: `Business con ID ${BusinessId} no encontrado` });
+        }
+        
+        // Aquí asumimos que la relación entre Business y SocialMedia está definida correctamente
+        const socialMedia = await SocialMedia.findOne({ where: { id: business.SocialMediumId } }); // O lo que corresponda a tu lógica
+        if (!socialMedia) {
+            return res.status(404).json({ message: `Social Media no encontrado para Business ID ${BusinessId}` });
+        }
+
+        const socialMediaId = socialMedia.id; // Asegúrate de obtener el ID correcto
+
+        const questions = await mercadoLibreQuestionController.getQuestions(accessToken, item, BusinessId, socialMediaId);
         console.log('Preguntas recibidas de Mercado Libre:', JSON.stringify(questions, null, 2));
 
         return res.json(questions);

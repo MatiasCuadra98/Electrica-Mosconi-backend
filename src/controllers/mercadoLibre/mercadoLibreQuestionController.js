@@ -19,7 +19,7 @@ const mercadoLibreQuestionController = {
       // Obtener la red social (SocialMedia) por ID
       const socialMedia = await SocialMedia.findByPk(socialMediaId);
       if (!socialMedia) {
-        throw new Error(`Social Media en melicon ID ${socialMediaId} no encontrada`);
+        throw new Error(`Social Media en meli con ID ${socialMediaId} no encontrada`);
       }
       
       const socialMediaData = socialMedia.dataValues;
