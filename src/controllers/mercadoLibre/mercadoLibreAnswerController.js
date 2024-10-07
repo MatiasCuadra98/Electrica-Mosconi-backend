@@ -33,7 +33,7 @@ const mercadoLibreAnswerController = {
           name: "Mercado Libre",
           toData: { app: "Mercado Libre", value: questionId },
           message: answerText,
-          chatId: questionId, // Usar questionId como chatId si es apropiado
+          chatId: msgReceived.chatId, // Usar questionId como chatId si es apropiado
           timestamp: Date.now(),
           received: false,
         });
