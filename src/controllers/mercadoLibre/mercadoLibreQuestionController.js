@@ -27,6 +27,7 @@ const mercadoLibreQuestionController = {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: { item: itemId },
       });
+      console.log("Respuesta de Mercado Libre:", response.data);
 
       const questions = response.data.questions;
 
