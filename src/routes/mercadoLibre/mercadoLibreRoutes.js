@@ -15,5 +15,5 @@ mercadoLibreRoutes.get('/auth/callback', mercadoLibreCallbackHandler );
 mercadoLibreRoutes.get('/questions', mercadoLibreQuestionHandler);
 
 // Ruta para responder las preguntas de productos
-//mercadoLibreRoutes.post('/answer', mercadoLibreAnswerHandler);
+mercadoLibreRoutes.post('/answer', mercadoLibreAnswerHandler);
 module.exports = mercadoLibreRoutes;;
