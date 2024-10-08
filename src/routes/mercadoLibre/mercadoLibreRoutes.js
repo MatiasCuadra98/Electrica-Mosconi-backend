@@ -2,6 +2,7 @@ const {Router} = require('express');
 const { mercadoLibreAuthHandler, mercadoLibreCallbackHandler  } = require('../../handlers/MercadoLibre/mercadoLibreAuthHandler');
 const { mercadoLibreQuestionHandler } = require('../../handlers/MercadoLibre/mercadoLibreQuestionHandler');
 const {mercadoLibreAnswerHandler} = require('../../handlers/MercadoLibre/mercadoLibreAnswerHandler')
+const {mercadoLibreWebhookHandler} = require('../../handlers/MercadoLibre/mercadoLibreWebhookHandler');
 
 const mercadoLibreRoutes = Router();
 
@@ -16,4 +17,7 @@ mercadoLibreRoutes.get('/questions', mercadoLibreQuestionHandler);
 
 // Ruta para responder las preguntas de productos
 mercadoLibreRoutes.post('/answer', mercadoLibreAnswerHandler);
+
+//Ruta para del webhook 
+mercadoLibreRoutes.post('/webhook', mercadoLibreWebhookHandler);
 module.exports = mercadoLibreRoutes;;
