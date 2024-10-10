@@ -1,4 +1,4 @@
-const { MsgReceived, Business, Contacts, SocialMedia } = require('../../../db');
+const { MsgReceived, Business, Contacts, SocialMedia, MsgSent, User } = require('../../../db');
 
 const getAllMessagesReceived = async () => {
     const messages = await MsgReceived.findAll({
@@ -11,6 +11,22 @@ const getAllMessagesReceived = async () => {
         {
           model: Contacts,
           attributes: ['id', 'name', 'phone', 'userName', 'Email'],
+          include:[
+          {
+              model: MsgReceived,
+              attributes: ['id', 'timestamp', 'received'],
+          },
+          {
+              model: MsgSent,
+              attribute: ['id', 'timestamp', 'received'],
+              include: [ 
+                {
+                      model: User,
+                      attributes: ['id', 'name']
+                    }, 
+                  ],
+                }
+             ]
         },
         {
           model: SocialMedia,
