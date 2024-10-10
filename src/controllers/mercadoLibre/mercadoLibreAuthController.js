@@ -41,6 +41,7 @@ const mercadoLibreAuthController = {
     refreshAccessToken: async (refreshToken) => {
         const clientId = process.env.ML_CLIENT_ID;
         const clientSecret = process.env.ML_CLIENT_SECRET;
+        const refreshToken = "TG-67081519af81650001344c85-232533265"
 
         try {
             console.log('Renovando token de acceso...');
