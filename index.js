@@ -46,7 +46,7 @@ const setTelegramWebhook = async (url, retries = 5, delay = 3000) => {
   //hay que sacar la s de electricas, solo dejarla ahora pq no anda
 
   
-  const URL = "https://electricaS-mosconi-server.onrender.com/messageWebHook";
+  const URL = "https://electrica-mosconi-server.onrender.com/messageWebHook";
 setTelegramWebhook(URL);
 
 
