@@ -26,7 +26,7 @@ const mercadoLibreQuestionController = {
         throw new Error("Token de acceso de Mercado Libre no disponible");
       }
       // Llamada a la API de Mercado Libre para obtener las preguntas
-      const response = await axios.get(
+      const response = await axios.post(
         "https://api.mercadolibre.com/questions/search",
         {
           headers: {
