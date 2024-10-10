@@ -10,6 +10,9 @@ const mercadoLibreAuthController = {
     },
 
     getAccessToken: async (authorizationCode) => {
+        if (!authorizationCode) {
+            throw new Error('El código de autorización es requerido.');
+        }
         const clientId = process.env.ML_CLIENT_ID;
         const clientSecret = process.env.ML_CLIENT_SECRET;
         const redirectUri = process.env.ML_REDIRECT_URI;
@@ -30,8 +33,8 @@ const mercadoLibreAuthController = {
             console.log('Tokens obtenidos:', response.data);
             return { accessToken: access_token, refreshToken: refresh_token, authorizationCode };
         } catch (error) {
-            console.error('Error al obtener el token de acceso:', error.message);
-            throw error;
+            console.error('Error al obtener el token de acceso:', error.response?.data || error.message);
+            throw new Error('No se pudo obtener el token de acceso. Verifica el código de autorización y otros parámetros.');
         }
     },
 
