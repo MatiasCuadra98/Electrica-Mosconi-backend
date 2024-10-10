@@ -50,6 +50,9 @@ const mercadoLibreWebhookHandler = async (req, res) => {
       const newTokens = await mercadoLibreAuthController.refreshAccessToken(businessId);
       accessToken = newTokens.accessToken;
 
+      if (!accessToken) {
+        return res.status(400).json({ message: 'Error al renovar el token de acceso' });
+      }
     }
 
     const itemId = resource; // El `resource` debería ser el ID del producto para obtener las preguntas
