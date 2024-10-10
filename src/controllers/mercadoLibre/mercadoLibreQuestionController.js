@@ -21,12 +21,22 @@ const mercadoLibreQuestionController = {
       if (!socialMedia) {
         throw new Error(`Social Media con ID ${socialMediaId} no encontrada`);
       }
-
+      // Asegurarse de que el accessToken esté presente
+      if (!accessToken) {
+        throw new Error("Token de acceso de Mercado Libre no disponible");
+      }
       // Llamada a la API de Mercado Libre para obtener las preguntas
-      const response = await axios.get("https://api.mercadolibre.com/questions/search", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        params: { item: itemId },
-      });
+      const response = await axios.get(
+        "https://api.mercadolibre.com/questions/search",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json", // Añadido para evitar errores 400
+          },
+
+          params: { item: itemId },
+        }
+      );
       console.log("Respuesta de Mercado Libre:", response.data);
 
       const questions = response.data.questions;
@@ -75,7 +85,10 @@ const mercadoLibreQuestionController = {
         await msgReceived.setContact(newContact);
         await msgReceived.setSocialMedium(socialMedia);
 
-        console.log("Mensaje recibido de Mercado Libre guardado en la base de datos:", msgReceived);
+        console.log(
+          "Mensaje recibido de Mercado Libre guardado en la base de datos:",
+          msgReceived
+        );
       }
 
       return questions; // Devolvemos las preguntas obtenidas
@@ -83,10 +96,16 @@ const mercadoLibreQuestionController = {
       if (error.response && error.response.status === 401) {
         console.log("Token de acceso de Mercado Libre expirado. Renovando...");
 
-        const { refreshToken } = await mercadoLibreAuthController.refreshAccessToken();
+        const { refreshToken } =
+          await mercadoLibreAuthController.refreshAccessToken();
         const newAccessToken = refreshToken.accessToken;
 
-        return await mercadoLibreQuestionController.getQuestions(newAccessToken, itemId, businessId, socialMediaId);
+        return await mercadoLibreQuestionController.getQuestions(
+          newAccessToken,
+          itemId,
+          businessId,
+          socialMediaId
+        );
       }
 
       console.error("Error al obtener las preguntas de Mercado Libre:", error);
