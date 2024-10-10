@@ -13,7 +13,7 @@ mercadoLibreRoutes.get('/auth', mercadoLibreAuthHandler);
 mercadoLibreRoutes.get('/auth/callback', mercadoLibreCallbackHandler );
 
 // Ruta para obtener las preguntas de productos
-mercadoLibreRoutes.get('/questions', mercadoLibreQuestionHandler);
+mercadoLibreRoutes.post('/questions', mercadoLibreQuestionHandler);
 
 // Ruta para responder las preguntas de productos
 mercadoLibreRoutes.post('/answer', mercadoLibreAnswerHandler);
