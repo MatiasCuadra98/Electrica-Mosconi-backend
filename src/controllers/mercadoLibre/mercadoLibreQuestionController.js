@@ -27,6 +27,7 @@ const mercadoLibreQuestionController = {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: { item: itemId },
       });
+      console.log("Respuesta de Mercado Libre:", response.data);
 
       const questions = response.data.questions;
 
@@ -60,7 +61,7 @@ const mercadoLibreQuestionController = {
         const msgReceived = await MsgReceived.create({
           id: uuidv4(),
           chatId: chatId,
-          idUser: senderIdUser,
+          idUser: question.id,
           text: question.text,
           name: senderName,
           timestamp: new Date(question.date_created).getTime(),
