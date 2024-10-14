@@ -1,70 +1,49 @@
-// const { mercadoLibreQuestionController } = require('../../controllers/mercadoLibre/mercadoLibreQuestionController');
-// const { mercadoLibreAuthController } = require('../../controllers/mercadoLibre/mercadoLibreAuthController');
-// const { SocialMediaActive, Business, SocialMedia } = require('../../db');
+const { mercadoLibreWebhookController } = require('../../controllers/mercadoLibre/mercadoLibreWebhookController');
+const { Business, SocialMedia } = require('../../db'); 
 
-// const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a";
-// const socialMediaId = 5; // Id de Mercado Libre
+const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a";//id del business 
+const socialMediaId = 5; // ID de Mercado Libre
 
-// const mercadoLibreWebhookHandler = async (req, res) => {
-//   try {
-//     // Obtener el cuerpo del webhook enviado por Mercado Libre
-//     const { resource, user_id } = req.body;
+const mercadoLibreWebhookHandler = async (req, res) => {
+    try {
+        const webhookData = req.body;
+        const authHeader = req.headers.authorization;
 
-//     if (!resource || !user_id) {
-//       return res.status(400).json({ message: 'Datos incompletos' });
-//     }
+        if (!authHeader) {
+            return res.status(401).json({ message: 'No autorizado' });
+        }
 
-//     // Buscar el negocio por su ID
-//     const business = await Business.findByPk(businessId);
-//     if (!business) {
-//       return res.status(404).json({ message: `Business con ID ${businessId} no encontrado` });
-//     }
+        const accessToken = authHeader.split(' ')[1];
 
-//     // Buscar la red social por su ID
-//     const socialMedia = await SocialMedia.findByPk(socialMediaId);
-//     if (!socialMedia) {
-//       return res.status(404).json({ message: `Social Media con ID ${socialMediaId} no encontrada` });
-//     }
+        // Validación de datos del webhook
+        if (!webhookData || !webhookData.id) {
+            return res.status(400).json({ message: 'Datos del webhook incompletos' });
+        }
 
-//     // Obtener el token de acceso desde el modelo SocialMediaActive
-//     const socialMediaActive = await SocialMediaActive.findOne({
-//       where: {
-//         socialMediaId: socialMediaId,
-//         active: true,  // Asegurarnos de obtener la red social activa
-//       },
-//     });
+        // Obtener el negocio por su ID
+        const business = await Business.findByPk(businessId);
+        if (!business) {
+            return res.status(404).json({ message: `Business con ID ${businessId} no encontrado` });
+        }
 
-//     if (!socialMediaActive) {
-//         return res.status(400).json({ message: 'No se encontró la red social activa' });
-//       }
+        // Obtener la red social por su ID
+        const socialMedia = await SocialMedia.findByPk(socialMediaId);
+        if (!socialMedia) {
+            return res.status(404).json({ message: `Social Media con ID ${socialMediaId} no encontrada` });
+        }
 
-//     if (!socialMediaActive || !socialMediaActive.accessToken) {
-//       return res.status(400).json({ message: 'Token de acceso de Mercado Libre no disponible o inactivo' });
-//     }
+        // Llamada al controlador del webhook para procesar y guardar la pregunta
+        const savedQuestion = await mercadoLibreWebhookController.processQuestionWebhook(
+            webhookData,
+            businessId,
+            socialMediaId
+        );
 
-//     let accessToken = socialMediaActive.accessToken;
+        return res.json(savedQuestion); // Devolvemos la pregunta guardada
+    } catch (error) {
+        console.error('Error al procesar el webhook de Mercado Libre:', error);
+        res.status(500).json({ message: 'Error al procesar el webhook de Mercado Libre' });
+    }
+};
 
-//     // Verificar si el token debe ser renovado y obtener un nuevo token si es necesario
-//     if (!accessToken) {
-//       console.log("Token de acceso no disponible. Renovando...");
-//       const newTokens = await mercadoLibreAuthController.refreshAccessToken(businessId);
-//       accessToken = newTokens.accessToken;
-
-//       if (!accessToken) {
-//         return res.status(400).json({ message: 'Error al renovar el token de acceso' });
-//       }
-//     }
-
-//     const itemId = resource; // El `resource` debería ser el ID del producto para obtener las preguntas
-
-//     // Llamar al controlador para obtener las preguntas del producto
-//     const questions = await mercadoLibreQuestionController.getQuestions(accessToken, itemId, businessId, socialMediaId);
-
-//     return res.json(questions);
-//   } catch (error) {
-//     console.error('Error al recibir webhook de Mercado Libre:', error);
-//     return res.status(500).json({ message: 'Error al procesar el webhook de Mercado Libre' });
-//   }
-// };
-
-// module.exports = { mercadoLibreWebhookHandler };
+module.exports = { mercadoLibreWebhookHandler };
