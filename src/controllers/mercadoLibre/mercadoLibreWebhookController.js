@@ -21,19 +21,20 @@ const mercadoLibreQuestionController = {
       if (!socialMedia) {
         throw new Error(`Social Media con ID ${socialMediaId} no encontrada`);
       }
+
       // Asegurarse de que el accessToken esté presente
       if (!accessToken) {
         throw new Error("Token de acceso de Mercado Libre no disponible");
       }
+
       // Llamada a la API de Mercado Libre para obtener las preguntas
       const response = await axios.get(
         "https://api.mercadolibre.com/questions/search",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json", // Añadido para evitar errores 400
+            "Content-Type": "application/json",
           },
-
           params: { item: itemId },
         }
       );
@@ -54,20 +55,20 @@ const mercadoLibreQuestionController = {
             notification: true,
             chatId: chatId,
             phone: senderIdUser,
-            businessId: businessId,
-            SocialMediumId: socialMediaId,
+            businessId: businessId, // Asociación con el negocio
+            SocialMediumId: socialMediaId, // Asociación con la red social
           },
         });
 
-        // Asociar el contacto con el negocio
+        // Asociar el contacto con el negocio (si es recién creado)
         if (created) {
-          await newContact.addBusiness(business);
+          await newContact.setBusiness(business);
         }
 
         // Asociar el contacto con la red social
         await newContact.setSocialMedium(socialMedia);
 
-        // Crear el mensaje recibido y asociarlo con el negocio y la red social
+        // Crear el mensaje recibido y asociarlo con el negocio, el contacto y la red social
         const msgReceived = await MsgReceived.create({
           id: uuidv4(),
           chatId: chatId,
@@ -76,7 +77,7 @@ const mercadoLibreQuestionController = {
           name: senderName,
           timestamp: new Date(question.date_created).getTime(),
           phoneNumber: null,
-          BusinessId: businessId,
+          BusinessId: businessId, // Asociación con el negocio
           state: "No Leidos",
           received: true,
         });
@@ -84,6 +85,7 @@ const mercadoLibreQuestionController = {
         // Asociar el mensaje con el contacto y la red social
         await msgReceived.setContact(newContact);
         await msgReceived.setSocialMedium(socialMedia);
+        await msgReceived.setBusiness(business); // Aseguramos la asociación con el negocio
 
         console.log(
           "Mensaje recibido de Mercado Libre guardado en la base de datos:",
