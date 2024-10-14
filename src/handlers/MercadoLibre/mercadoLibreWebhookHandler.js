@@ -1,7 +1,7 @@
 const { mercadoLibreWebhookController } = require('../../controllers/mercadoLibre/mercadoLibreWebhookController');
 const { Business, SocialMedia } = require('../../db'); 
 
-const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a";
+const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a";//id del business 
 const socialMediaId = 5; // ID de Mercado Libre
 
 const mercadoLibreWebhookHandler = async (req, res) => {
