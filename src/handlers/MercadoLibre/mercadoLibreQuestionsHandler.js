@@ -29,7 +29,11 @@ const mercadoLibreWebhookHandler = async (req, res) => {
 const mercadoLibreRegisterWebhookHandler = async (req, res) => {
     try {
         const { accessToken, userId, applicationId } = req.body;
+        console.log('Parametros recibidos:', { accessToken, userId, applicationId });
+
         if (!accessToken || !userId || !applicationId) {
+            console.error('Parametros faltantes');
+
             return res.status(400).json({ message: 'Token de acceso, userId y applicationId son requeridos.' });
         }
         await mercadoLibreQuestionController.registerWebhook(accessToken, userId, applicationId);
