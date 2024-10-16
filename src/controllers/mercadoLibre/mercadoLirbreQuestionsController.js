@@ -14,6 +14,19 @@ const mercadoLibreQuestionController = {
             throw new Error('No se pudieron obtener las preguntas.');
         }
     },
+    getQuestionDetails: async (questionId, accessToken) => {
+        try {
+            const response = await axios.get(`https://api.mercadolibre.com/questions/${questionId}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error(`Error al obtener los detalles de la pregunta ${questionId}:`, error.response?.data || error.message);
+            throw new Error('No se pudieron obtener los detalles de la pregunta.');
+        }
+    },
     registerWebhook: async (accessToken, userId, applicationId) => {
         try {
             const response = await axios.post(`https://api.mercadolibre.com/users/${userId}/applications/${applicationId}/notifications`, {
