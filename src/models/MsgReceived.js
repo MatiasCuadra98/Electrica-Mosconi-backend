@@ -12,12 +12,12 @@ module.exports = (sequelize) => {
         defaultValue: DataTypes.UUIDV4,
       },
       chatId: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       //chequear con Insta, face y Meli como registran el contacto
       idUser: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.STRING,
         allowNull: false
       },
       text: {
