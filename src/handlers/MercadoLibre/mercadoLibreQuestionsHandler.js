@@ -36,7 +36,7 @@ const mercadoLibreWebhookHandler = async (req, res) => {
         const buyerId = questionDetails.from.id;
         const buyerName = questionDetails.from.nickname || `Usuario_${buyerId}`;
         const questionText = questionDetails.text;
-       // const productId = questionDetails.item_id;
+        const productId = questionDetails.item_id;
         const productTitle = questionDetails.item_title;
         const timestamp = questionDetails.date_created;
 
@@ -46,7 +46,7 @@ const mercadoLibreWebhookHandler = async (req, res) => {
             defaults: {
                 name: buyerName,
                 notification: true,
-                //chatId: productId, // Usar el ID del producto como chatId
+                chatId: productId, // Usar el ID del producto como chatId
                 phone: null, // Mercado Libre no proporciona número de teléfono
                 businessId: businessId,
                 SocialMediumId: socialMediaId,
@@ -69,7 +69,7 @@ const mercadoLibreWebhookHandler = async (req, res) => {
 
         // Paso 4: Crear el mensaje recibido
         const msgReceived = await MsgReceived.create({
-            //chatId: productId,
+            chatId: productId,
             idUser: buyerId,
             text: questionText,
             name: buyerName,
