@@ -7,14 +7,12 @@ const MsgReceivedModel = require("./models/MsgReceived");
 const MsgSentModel = require("./models/MsgSent");
 const SocialMediaModel = require("./models/SocialMedia");
 const SocialMediaActiveModel = require("./models/SocialMediaActive");
-const session = require('express-session');
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
-
+const session = require("express-session");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 const sequelize = new Sequelize(
-
   // `postgresql://mosconiuser:DrdUSShUJXpvBUYCBtp2bpPdbYqBVhro@dpg-cql4s63qf0us73brvolg-a.oregon-postgres.render.com/mosconidb`,
-  'postgresql://dbmosconiuser:fFjCV5hrtxo1dBi9Tz4I7sU1WEts2v6A@dpg-crulrd0gph6c73aktrjg-a.oregon-postgres.render.com/dbmosconi',
+  "postgresql://dbmosconiuser:fFjCV5hrtxo1dBi9Tz4I7sU1WEts2v6A@dpg-crulrd0gph6c73aktrjg-a.oregon-postgres.render.com/dbmosconi",
 
   {
     dialectOptions: {
@@ -112,8 +110,6 @@ SocialMediaActive.belongsToMany(SocialMedia, {
 });
 
 const syncDatabase = async () => {
-
-
   await sequelize.sync({ alter: true }); // Sincronizar base de datos con el modelo alterado
 
   await MsgReceived.updateDefaultText();
@@ -122,7 +118,6 @@ const syncDatabase = async () => {
 const sessionStore = new SequelizeStore({
   db: sequelize,
 });
-
 
 module.exports = {
   User,
@@ -134,5 +129,5 @@ module.exports = {
   SocialMediaActive,
   conn: sequelize,
   syncDatabase,
-  sessionStore
+  sessionStore,
 };

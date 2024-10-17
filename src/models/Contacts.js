@@ -43,7 +43,12 @@ module.exports = (sequelize)=>{
         businessId: {
             type: DataTypes.STRING,
             allowNull: false,
-        }
+        },
+        active: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true,
+            defaultValue: true,
+          }
     },     
     {timestamps:false})
 }
