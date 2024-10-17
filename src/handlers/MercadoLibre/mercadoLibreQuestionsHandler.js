@@ -20,7 +20,7 @@ const mercadoLibreWebhookHandler = async (req, res) => {
         console.log('Pregunta recibida:', question);
         const resource = question.resource;
         const questionId = resource.split('/').pop(); // Obtiene el ID de la pregunta desde el resource
-        const accessToken = 'APP_USR-1309613645970920-101612-30745a3de8089ff50e568110d36030a4-232533265';
+        const accessToken = 'APP_USR-1309613645970920-101710-3fb2d77642793417720c5cd3a6f0bc51-232533265';
 
         const questionDetails = await mercadoLibreQuestionController.getQuestionDetails(questionId, accessToken);
         console.log('Detalles de la pregunta:', questionDetails);
