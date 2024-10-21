@@ -88,6 +88,7 @@ const mercadoLibreWebhookHandler = async (req, res) => {
             BusinessId: businessId,
             state: "No Leidos",
             received: true,
+            userName: questionId,
         });
 
         // Paso 5: Asociar el mensaje recibido con el negocio, contacto, y red social
