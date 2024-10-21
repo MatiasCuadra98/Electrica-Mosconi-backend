@@ -90,7 +90,7 @@ module.exports = (io) => {
       // Asociar el mensaje con la red social
       if (socialMedia) {
         // Asociar el mensaje con la red social
-        await msgReceived.setSocialMedium(socialMediaData); // <-- Aquí estaba el posible problema
+        await msgReceived.setSocialMedium(socialMedia); // <-- Aquí estaba el posible problema
       } else {
         console.error('Error: no se pudo encontrar la red social para asociar al mensaje.');
       }
