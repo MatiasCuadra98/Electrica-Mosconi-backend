@@ -90,7 +90,7 @@ module.exports = (io)=>{
          // Crear el mensaje recibido
     const msgReceived = await MsgReceived.create({
       chatId: chatId,
-      idUser: senderIdUser,
+      idUser: senderIdUser.toString(),
       text: messageReceived,
       name: senderName,
       timestamp: Date.now(),
@@ -131,7 +131,7 @@ module.exports = (io)=>{
     const msgReceivedData = {
       id: msgReceived.id,
       chatId: msgReceived.chatId,
-      idUser: msgReceived.idUser.toString(),
+      idUser: msgReceived.idUser,
       text: msgReceived.text,
       name: msgReceived.name,
       timestamp: msgReceived.timestamp,
