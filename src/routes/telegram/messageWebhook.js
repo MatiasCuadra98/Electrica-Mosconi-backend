@@ -1,179 +1,139 @@
-const { Router } = require('express')
-const {Business,User,MsgReceived, Contacts, SocialMedia} = require('../../db')
-const axios = require('axios')
+const { Router } = require('express');
+const { Business, User, MsgReceived, Contacts, SocialMedia } = require('../../db');
+const axios = require('axios');
 
- const messageWebHook = Router()
+const messageWebHook = Router();
 
-module.exports = (io)=>{
-    //ruta para recibir mensajes
-    messageWebHook.post('/messageWebHook', async (req, res) =>{
-      console.log('webhook alcanzado al recibir un mensaje');
-      //console.log('mensaje recibido:', req.body);
-      const businessId = "9231c626-a37b-4d89-ae16-fec670c9245b"; 
-      const socialMediaId = 1; //id de telegram
-      
-      
-      const { message } = req.body
-      //console.log('mensaje recibido:', message)
-      if (!message) {
-        console.error('No se recibió un msg en el body');
-        return res.status(400).send('Bad Request: No msg in body');
-      }
-
-      const chatId = message.chat.id;
-      const messageReceived = message.text;
-      const senderName = message.from.first_name;
-      const senderIdUser = message.from.id.toString();
-
-      try {
-        const business = await Business.findByPk(businessId)
-        if (!business) {
-          return res.status(404).send('Business no encontrado');
-        };
-        const socialMedia = await SocialMedia.findByPk(socialMediaId);
-        console.log('red social:', socialMedia);
-        const socialMediaData = socialMedia.dataValues;
-        
-        if (!socialMedia) {
-          return res.status(404).send('Social Media no encontrado');
-        }
-      
-        const [newContact, created] = await Contacts.findOrCreate({
-          where: {idUser: senderIdUser },
-          defaults: {
-            name: senderName,
-            notification: true,
-            chatId: chatId,
-            phone: senderIdUser,
-            businessId: businessId,
-            SocialMediumId: socialMediaId
-          }
-        });
-        console.log('contacto creado');
-          // Asociar el contacto con el negocio
-          if (created && business) {
-          //   const business = await Business.findByPk(businessId);
-          //   if (!business)
-          //     throw new Error(
-          //   `contact-business: Business with id ${businessId} not found`
-          // );
-          await newContact.addBusiness(business);
-        }
-        // Asociar el contacto con la red social
-        if (created && socialMedia) {
-          // const socialMedia = await SocialMedia.findByPk(socialMediaId);
-          //console.log('redSocial', socialMedia);
-          // if (!socialMedia)
-          //   throw new Error(
-          //       `contact-socialMedia: Social Media with id ${socialMediaId} not found`
-          //     );
-            await newContact.setSocialMedia(socialMediaData);
-            // const contactWithSocialMedia = await Contacts.findByPk(newContact.id, {
-            //   include: SocialMedia
-            // });
-            //console.log('Contacto con Social Media asociada:', contactWithSocialMedia);
-          
-          }
-
-        console.log('contacto creado con asociaciones:', newContact);
-
-        if(!newContact) {
-        console.log('el contacto no fue creado ni encontrado', error.message);
-        
-      }
-        
-        const contact = await Contacts.findOne({ where: { phone: senderIdUser } });
-        if (!contact) throw new Error(`Contact not found`);
-
-        //console.log('contacto encontrado', contact);
-        
-         // Crear el mensaje recibido
-    const msgReceived = await MsgReceived.create({
-      chatId: chatId,
-      idUser: senderIdUser,
-      text: messageReceived,
-      name: senderName,
-      timestamp: Date.now(),
-      phoneNumber: chatId,
-      BusinessId: businessId,
-      // active: false,
-      state: "No Leidos",
-      received: true,
-    });
-
-    //console.log('mensaje recibido y creado sin asociaciones:', msgReceived);
+module.exports = (io) => {
+  // Ruta para recibir mensajes
+  messageWebHook.post('/messageWebHook', async (req, res) => {
+    console.log('Webhook alcanzado al recibir un mensaje');
     
-  // Asociar el mensaje recibido con el negocio
-  if (business) {
-    // const business = await Business.findByPk(businessId);
-    // if (!business)
-    //   throw new Error(
-    //     `msgReceived-business: Business with id ${businessId} not found`
-    //   );
-    await msgReceived.setBusiness(business);
-  }
-
-  // Asociar el mensaje recibido con el contacto
-  await msgReceived.setContact(contact);
-
-  // Asociar el mensaje recibido con la red social
-  if (socialMedia) {
-    // const socialMedia = await SocialMedia.findByPk(socialMediaId);
-    // if (!socialMedia)
-    //   throw new Error(
-    //     `msgReceived-socialMedia: Social Media with id ${socialMediaId} not found`
-    //   );
-    await msgReceived.setSocialMedium(socialMediaData);
-  }
+    const businessId = "9231c626-a37b-4d89-ae16-fec670c9245b"; 
+    const socialMediaId = 1; // ID de Telegram
     
-    //console.log("Mensaje recibido y guardado en la base de datos desde WEBHOOK:");
-
-    const msgReceivedData = {
-      id: msgReceived.id,
-      chatId: msgReceived.chatId,
-      idUser: msgReceived.idUser,
-      text: msgReceived.text,
-      name: msgReceived.name,
-      timestamp: msgReceived.timestamp,
-      phoneNumber: msgReceived.phoneNumber,
-      BusinessId: businessId,
-      Business: {
-        id: Business.id,
-        name: Business.name
-      },
-      // active: false,
-      state: "No Leidos",
-      received: true,
-      ContactId: contact.id,
-      Contact: {
-        id: contact.id,
-        name: contact.name,
-        phone: contact.phone,
-      },
-      SocialMediumId: socialMediaId,
-      SocialMedium: {
-        id: socialMediaId,
-        name: SocialMedia.name,
-        icon: SocialMedia.icon
-      }
-    };
-    //console.log('mensaje enviado a app', msgReceivedData);
-
-    try {
-      //await axios.post('http://localhost:3000/newMessageReceived', msgReceivedData);
-      await axios.post('https://electrica-mosconi-server.onrender.com/newMessageReceived', msgReceivedData);
-      console.log("Datos del mensaje enviados a app desde Webhook");
-    } catch (error) {
-      console.error("Error al enviar datos del mensaje a la app desde Webhook:", error.message);
+    const { message } = req.body;
+    if (!message) {
+      console.error('No se recibió un mensaje en el body');
+      return res.status(400).send('Bad Request: No hay mensaje en el body');
     }
 
-    res.status(200).end();
-  } catch (error) {
-    console.error('Error al procesar el mensaje en webhook:', error);
-    res.status(500).send('Error interno del servidor');
-  }
-});
+    const chatId = message.chat.id;
+    const messageReceived = message.text;
+    const senderName = message.from.first_name;
+    const senderIdUser = message.from.id.toString();
 
-return messageWebHook;
-}
- 
+    try {
+      // Verificar la existencia del negocio
+      const business = await Business.findByPk(businessId);
+      if (!business) {
+        return res.status(404).send('Negocio no encontrado');
+      }
+
+      // Verificar la existencia de la red social
+      const socialMedia = await SocialMedia.findByPk(socialMediaId);
+      if (!socialMedia) {
+        return res.status(404).send('Red Social no encontrada');
+      }
+      const socialMediaData = socialMedia.dataValues;
+
+      // Crear o encontrar el contacto
+      const [newContact, created] = await Contacts.findOrCreate({
+        where: { idUser: senderIdUser },
+        defaults: {
+          name: senderName,
+          notification: true,
+          chatId: chatId,
+          phone: senderIdUser,
+          businessId: businessId,
+          SocialMediumId: socialMediaId
+        }
+      });
+      console.log('Contacto creado o encontrado:', newContact.dataValues);
+
+      // Asociar el contacto con el negocio (si fue creado recientemente)
+      if (created && business) {
+        await newContact.addBusiness(business);
+      }
+
+      // Asociar el contacto con la red social (si fue creado recientemente)
+      if (created && socialMedia) {
+        await newContact.setSocialMedia(socialMediaData);
+      }
+
+      // Verificar que el contacto haya sido creado o encontrado
+      if (!newContact) {
+        console.log('El contacto no fue creado ni encontrado');
+        return res.status(500).send('Error interno del servidor');
+      }
+
+      // Crear el mensaje recibido
+      const msgReceived = await MsgReceived.create({
+        chatId: chatId,
+        idUser: senderIdUser,
+        text: messageReceived,
+        name: senderName,
+        timestamp: Date.now(),
+        phoneNumber: chatId,
+        BusinessId: businessId,
+        state: "No Leídos",
+        received: true
+      });
+      console.log('Mensaje recibido creado:', msgReceived.dataValues);
+
+      // Asociar el mensaje con el negocio
+      await msgReceived.setBusiness(business);
+
+      // Asociar el mensaje con el contacto
+      await msgReceived.setContact(newContact);
+
+      // Asociar el mensaje con la red social
+      await msgReceived.setSocialMedium(socialMediaData);
+
+      // Formatear los datos del mensaje para enviarlo a la app
+      const msgReceivedData = {
+        id: msgReceived.id,
+        chatId: msgReceived.chatId,
+        idUser: msgReceived.idUser,
+        text: msgReceived.text,
+        name: msgReceived.name,
+        timestamp: msgReceived.timestamp,
+        phoneNumber: msgReceived.phoneNumber,
+        BusinessId: businessId,
+        Business: {
+          id: business.id,
+          name: business.name
+        },
+        state: msgReceived.state,
+        received: msgReceived.received,
+        ContactId: newContact.id,
+        Contact: {
+          id: newContact.id,
+          name: newContact.name,
+          phone: newContact.phone
+        },
+        SocialMediumId: socialMediaId,
+        SocialMedium: {
+          id: socialMediaId,
+          name: socialMedia.name,
+          icon: socialMedia.icon
+        }
+      };
+
+      // Enviar el mensaje a la app
+      try {
+        await axios.post('https://electrica-mosconi-server.onrender.com/newMessageReceived', msgReceivedData);
+        console.log("Datos del mensaje enviados a la app desde Webhook");
+      } catch (error) {
+        console.error("Error al enviar los datos del mensaje a la app:", error.message);
+      }
+
+      res.status(200).end();
+    } catch (error) {
+      console.error('Error al procesar el mensaje en el webhook:', error);
+      res.status(500).send('Error interno del servidor');
+    }
+  });
+
+  return messageWebHook;
+};
