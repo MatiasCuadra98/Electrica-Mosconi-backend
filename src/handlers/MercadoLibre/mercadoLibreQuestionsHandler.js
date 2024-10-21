@@ -24,21 +24,31 @@ const mercadoLibreQuestionHandler = async (req, res) => {
 const mercadoLibreWebhookHandler = async (req, res) => {
     try {
         const question = req.body;
-        console.log('Pregunta de meli recibida:', question);
+        console.log('Pregunta de meli recibida:', JSON.stringify(question, null, 2)); // Log detallado de la pregunta
 
         const resource = question.resource;
         const questionId = resource.split('/').pop(); // Obtiene el ID de la pregunta desde el resource
 
         // Obtener los detalles de la pregunta
         const questionDetails = await mercadoLibreQuestionController.getQuestionDetails(questionId, accessToken);
-        console.log('Detalles de la pregunta de meli:', questionDetails);
+        console.log('Detalles de la pregunta de meli:', JSON.stringify(questionDetails, null, 2)); // Log detallado de los detalles de la pregunta
 
         const buyerId = questionDetails.from.id;
         const buyerName = questionDetails.from.nickname || `Usuario_${buyerId}`;
         const questionText = questionDetails.text;
         const productId = questionDetails.item_id;
         const productTitle = questionDetails.item_title;
-        const timestamp = questionDetails.date_created;
+        const timestamp = new Date(questionDetails.date_created).getTime(); // Asegúrate de que este valor sea un BIGINT
+
+         // Log de los valores que se van a insertar en la bd
+         console.log('Valores a insertar:', {
+            buyerId,
+            buyerName,
+            questionText,
+            productId,
+            timestamp,
+        });
+
 
         // Paso 1: Buscar o crear el contacto
         const [newContact, created] = await Contacts.findOrCreate({
