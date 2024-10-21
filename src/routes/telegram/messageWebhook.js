@@ -76,7 +76,7 @@ module.exports = (io) => {
         timestamp: Date.now(),
         phoneNumber: chatId,
         BusinessId: businessId,
-        state: "No Leídos",
+        state: "No Leidos",
         received: true
       });
       console.log('Mensaje recibido creado:', msgReceived.dataValues);
