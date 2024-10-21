@@ -23,7 +23,7 @@ const mercadoLibreAnswerController = {
       );
 
       // Actualiza el estado del mensaje en la base de datos solo si la respuesta es exitosa
-      const msgReceived = await MsgReceived.findOne({ where: { idUser: questionId } });
+      const msgReceived = await MsgReceived.findOne({ where: { chatId: questionId } });
       if (msgReceived) {
         msgReceived.state = "Respondidos"; // Cambia el estado a "Respondidos"
         await msgReceived.save();
