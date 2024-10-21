@@ -26,7 +26,7 @@ module.exports = (sequelize)=>{
             allowNull: false,
           },
         phone: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.STRING,
             allowNull: true,
             defaultValue: null
         },

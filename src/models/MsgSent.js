@@ -34,7 +34,7 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     chatId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING,
       allowNull: false
     },
     timestamp: {
