@@ -131,7 +131,7 @@ module.exports = (io)=>{
     const msgReceivedData = {
       id: msgReceived.id,
       chatId: msgReceived.chatId,
-      idUser: msgReceived.idUser,
+      idUser: msgReceived.idUser.toString(),
       text: msgReceived.text,
       name: msgReceived.name,
       timestamp: msgReceived.timestamp,
