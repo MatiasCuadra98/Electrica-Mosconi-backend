@@ -1,7 +1,7 @@
 const { MsgReceived, Contacts, Business, SocialMedia } = require("../../db");
 const { mercadoLibreQuestionController } = require("../../controllers/mercadoLibre/mercadoLirbreQuestionsController");
 
-const businessId = "53c2e647-ce26-41f7-915e-aac13b11c92a"; // ID de tu negocio
+const businessId = "9231c626-a37b-4d89-ae16-fec670c9245b"; // ID de tu negocio
 const socialMediaId = 5; // ID de Mercado Libre en SocialMedia
 const accessToken = 'APP_USR-1309613645970920-102111-89405896dba0f3ed91602b777a4ed691-232533265'; // Token para la API de Mercado Libre
 
