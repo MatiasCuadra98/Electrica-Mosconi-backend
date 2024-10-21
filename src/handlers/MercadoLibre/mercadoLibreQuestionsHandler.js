@@ -33,7 +33,7 @@ const mercadoLibreWebhookHandler = async (req, res) => {
         const questionDetails = await mercadoLibreQuestionController.getQuestionDetails(questionId, accessToken);
         console.log('Detalles de la pregunta de meli:', JSON.stringify(questionDetails, null, 2)); // Log detallado de los detalles de la pregunta
 
-        const buyerId = questionDetails.from.id;
+        const buyerId = questionDetails.from.id.toString();
         const buyerName = questionDetails.from.nickname || `Usuario_${buyerId}`;
         const questionText = questionDetails.text;
         const productId = questionDetails.item_id;
