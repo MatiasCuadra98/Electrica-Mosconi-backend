@@ -14,7 +14,7 @@ module.exports = (sequelize)=>{
             allowNull:false
         },
         idUser:{
-            type: DataTypes.BIGINT,
+            type: DataTypes.STRING,
             allowNull: false
         }, 
         notification:{
@@ -22,7 +22,7 @@ module.exports = (sequelize)=>{
             defaultValue: false
         },
         chatId: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.STRING,
             allowNull: false,
           },
         phone: {
