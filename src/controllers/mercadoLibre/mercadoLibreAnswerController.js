@@ -31,9 +31,9 @@ const mercadoLibreAnswerController = {
       );
 
       // Busca el mensaje recibido en la base de datos usando el `chatId` (questionId)
-      const msgReceived = await MsgReceived.findOne({ where: { chatId: questionId } });
+      const msgReceived = await MsgReceived.findOne({ where: { userName: questionId } });
       if (!msgReceived) {
-        console.error('Mensaje recibido no encontrado para chatId:', questionId);
+        console.error('Mensaje recibido no encontrado para userName:', questionId);
         return res.status(404).json({ message: "Mensaje recibido no encontrado." });
       }
 
