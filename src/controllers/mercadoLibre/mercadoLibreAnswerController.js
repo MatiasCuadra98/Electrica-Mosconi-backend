@@ -7,7 +7,7 @@ const mercadoLibreAnswerController = {
 
     try {
       // Validación de datos requeridos
-      if (!questionId || !answerText || !accessToken || !businessId || !contactId) {
+      if (!questionId || !answerText || !accessToken || !businessId ) {
         return res.status(400).json({
           message: "El ID de la pregunta, el texto de la respuesta, el ID del negocio, el contacto y el token de acceso son requeridos.",
         });
