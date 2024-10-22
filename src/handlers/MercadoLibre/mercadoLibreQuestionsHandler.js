@@ -3,7 +3,7 @@ const { mercadoLibreQuestionController } = require("../../controllers/mercadoLib
 
 const businessId = "9231c626-a37b-4d89-ae16-fec670c9245b"; // ID de tu negocio
 const socialMediaId = 5; // ID de Mercado Libre en SocialMedia
-const accessToken = 'APP_USR-1309613645970920-102118-5fa6db0fe904769e44f7f05e2d8615de-232533265'; // Token para la API de Mercado Libre
+const accessToken = 'APP_USR-1309613645970920-102211-68cc93295c9e9136e5a93920820e3593-232533265'; // Token para la API de Mercado Libre
 
 // Handler para obtener preguntas
 const mercadoLibreQuestionHandler = async (req, res) => {
