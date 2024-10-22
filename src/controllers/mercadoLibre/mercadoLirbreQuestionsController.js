@@ -15,6 +15,10 @@ const mercadoLibreQuestionController = {
         }
     },
     getQuestionDetails: async (questionId, accessToken) => {
+        if (!questionId) {
+            console.error('El questionId es inválido o no está presente.');
+            throw new Error('El questionId es inválido.');
+        }
         try {
             const response = await axios.get(`https://api.mercadolibre.com/questions/${questionId}`, {
                 headers: {
