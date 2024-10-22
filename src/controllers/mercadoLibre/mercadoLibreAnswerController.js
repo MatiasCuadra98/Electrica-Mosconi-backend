@@ -3,7 +3,8 @@ const { MsgReceived, MsgSent, Business, Contacts } = require("../../db");
 
 const mercadoLibreAnswerController = {
   answerQuestion: async (req, res) => {
-    const { questionId, answerText, accessToken, businessId, contactId, userId } = req.body;
+    const { questionId, answerText, accessToken, businessId, ContactId, userId } = req.body;
+    console.log("Cuerpo de la solicitud:", req.body); // Log de depuración para el cuerpo de la solicitud
 
     try {
       // Validación de datos requeridos
@@ -13,7 +14,7 @@ const mercadoLibreAnswerController = {
           answerText,
           accessToken,
           businessId,
-          contactId,
+          ContactId,
           userId,
         });
         return res.status(400).json({
@@ -45,10 +46,16 @@ const mercadoLibreAnswerController = {
       }
 
       // Busca el contacto por su ID o crea uno si no existe
-      const contact = await Contacts.findByPk(contactId);
-      if (!contact) {
-        console.error('Contacto no encontrado para contactId:', contactId);
-        return res.status(404).json({ message: "Contacto no encontrado." });
+      // Verifica si contactId es válido
+      if (ContactId) {
+        console.log('Verificando contacto con contactId:', ContactId); // Log de verificación de contactId
+        const contact = await Contacts.findByPk(ContactId);
+        if (!contact) {
+          console.error('Contacto no encontrado para contactId:', ContactId);
+          return res.status(404).json({ message: "Contacto no encontrado." });
+        }
+      } else {
+        console.log('contactId no proporcionado, se omitirá la asociación con el contacto.');
       }
 
       // Guarda el mensaje enviado en la base de datos
@@ -65,8 +72,9 @@ const mercadoLibreAnswerController = {
 
       // Asocia el mensaje enviado con el negocio, contacto y el mensaje recibido
       await msgSent.setBusiness(business);
-      await msgSent.setContacts(contact);
-      await msgSent.addMsgReceived(msgReceived);
+      if (ContactId) {
+        await msgSent.setContacts(contact);
+      }      await msgSent.addMsgReceived(msgReceived);
 
       // Asociar con el usuario si `userId` fue pasado
       if (userId) {
