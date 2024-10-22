@@ -7,9 +7,17 @@ const mercadoLibreAnswerController = {
 
     try {
       // Validación de datos requeridos
-      if (!questionId || !answerText || !accessToken || !businessId ) {
+      if (!questionId || !answerText || !accessToken || !businessId) {
+        console.error('Datos requeridos faltantes:', {
+          questionId,
+          answerText,
+          accessToken,
+          businessId,
+          contactId,
+          userId,
+        });
         return res.status(400).json({
-          message: "El ID de la pregunta, el texto de la respuesta, el ID del negocio, el contacto y el token de acceso son requeridos.",
+          message: "El ID de la pregunta, el texto de la respuesta, el ID del negocio y el token de acceso son requeridos.",
         });
       }
 
@@ -25,18 +33,21 @@ const mercadoLibreAnswerController = {
       // Busca el mensaje recibido en la base de datos usando el `chatId` (questionId)
       const msgReceived = await MsgReceived.findOne({ where: { chatId: questionId } });
       if (!msgReceived) {
+        console.error('Mensaje recibido no encontrado para chatId:', questionId);
         return res.status(404).json({ message: "Mensaje recibido no encontrado." });
       }
 
       // Busca el negocio por su ID
       const business = await Business.findByPk(businessId);
       if (!business) {
+        console.error('Negocio no encontrado para businessId:', businessId);
         return res.status(404).json({ message: "Negocio no encontrado." });
       }
 
       // Busca el contacto por su ID o crea uno si no existe
       const contact = await Contacts.findByPk(contactId);
       if (!contact) {
+        console.error('Contacto no encontrado para contactId:', contactId);
         return res.status(404).json({ message: "Contacto no encontrado." });
       }
 
@@ -46,9 +57,11 @@ const mercadoLibreAnswerController = {
         toData: { app: "Mercado Libre", value: questionId }, // Usando questionId como value
         message: answerText,
         chatId: questionId, // Usar questionId como chatId
-        timestamp: Date.now(),
+        timestamp: new Date(), // Usar un objeto Date
         received: false,
       });
+      
+      console.log('MsgSent creado exitosamente:', msgSent.id);
 
       // Asocia el mensaje enviado con el negocio, contacto y el mensaje recibido
       await msgSent.setBusiness(business);
@@ -63,9 +76,6 @@ const mercadoLibreAnswerController = {
       // Actualiza el estado del mensaje recibido a "Respondidos"
       msgReceived.state = "Respondidos";
       await msgReceived.save();
-
-      // Emitir el evento de mensaje (si estás usando WebSockets)
-      // io.emit("message", { ... });
 
       // Respuesta exitosa
       return res.status(200).json({

@@ -4,7 +4,7 @@ const mercadoLibreAnswerHandler = async (req, res) => {
   try {
     await mercadoLibreAnswerController.answerQuestion(req, res);
   } catch (error) {
-    console.error('Error en el handler de respuesta de Mercado Libre:', error);
+    console.error('Error en el handler de respuesta de Mercado Libre:', error.message);
     res.status(500).json({ message: 'Error en el servidor' });
   }
 };
