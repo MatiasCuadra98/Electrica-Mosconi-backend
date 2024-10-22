@@ -42,7 +42,7 @@ const mercadoLibreAnswerController = {
       const business = await Business.findByPk(businessId);
       if (!business) {
         console.error('Negocio no encontrado para businessId:', businessId);
-        return res.status(404).json({ message: "Negocio no encontrado." });
+        return res.status(404).json({ message: "Negocio no encontrado!." });
       }
 
       // Busca el contacto por su ID o crea uno si no existe
