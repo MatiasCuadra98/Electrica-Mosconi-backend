@@ -6,13 +6,17 @@ const { SocialMediaActive } = require("../../db");
 const mercadoLibreAuthHandler = async (req, res) => {
   try {
     if (req.query.code) {
-      const { accessToken, refreshToken, authorizationCode } =
+      const { accessToken, refreshToken, authorizationCode, expires_in  } =
         await mercadoLibreAuthController.getAccessToken(req.query.code);
+
+        const expirationDate = new Date(Date.now() + expires_in * 1000);
+
 
       console.log("Tokens de Mercado Libre recibidos:", {
         accessToken,
         refreshToken,
         authorizationCode,
+      
       });
 
       await SocialMediaActive.create({
@@ -22,6 +26,8 @@ const mercadoLibreAuthHandler = async (req, res) => {
         accessToken,
         refreshToken,
         authorizationCode,
+        expirationDate, // Guarda la fecha de expiración
+
       });
 
       return res.json({
