@@ -28,12 +28,12 @@ const mercadoLibreAnswerController = {
         msgReceived.state = "Respondidos"; // Cambia el estado a "Respondidos"
         await msgReceived.save();
 
-        // Guarda el mensaje enviado en la base de datos
-        const msgSent = await MsgSent.create({
+         // Guarda el mensaje enviado en la base de datos
+         const msgSent = await MsgSent.create({
           name: "Mercado Libre",
-          toData: { app: "Mercado Libre", value: questionId },
+          toData: { app: "Mercado Libre", value: questionId }, // Usando questionId como value
           message: answerText,
-          chatId: msgReceived.chatId, // Usar questionId como chatId si es apropiado
+          chatId: questionId, // Usar questionId como chatId si es apropiado
           timestamp: Date.now(),
           received: false,
         });
