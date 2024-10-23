@@ -11,9 +11,9 @@ const mercadoLibreAnswerController = {
       ContactId,
       userId,
     } = req.body;
-    console.log("Cuerpo de la solicitud:", req.body); // Log de depuración para el cuerpo de la solicitud
-    console.log("ContactId recibido:", ContactId); // Depurar ContactId
-    console.log("userId recibido:", userId); // Depurar userId
+    console.log("Cuerpo de la solicitud:", req.body); // Log de depuración para el body de la solicitud
+    console.log("ContactId recibido:", ContactId); // Depuro ContactId
+    console.log("userId recibido:", userId); // Depuro userId
     try {
       // Validación de datos requeridos
       if (!questionId || !answerText || !accessToken || !businessId) {
@@ -40,7 +40,7 @@ const mercadoLibreAnswerController = {
         }
       );
 
-      // Busca el mensaje recibido en la base de datos usando el `chatId` (questionId)
+      // Busca el mensaje recibido en la base de datos usando el userName (questionId)
       const msgReceived = await MsgReceived.findOne({
         where: { userName: questionId },
       });
@@ -55,7 +55,7 @@ const mercadoLibreAnswerController = {
       }
       console.log("msgReceived encontrado:", msgReceived.id); // Verificar que el mensaje recibido fue encontrado
 
-      // Busca el negocio por su ID
+      // Busca el business por su ID
       const business = await Business.findByPk(businessId);
       if (!business) {
         console.error("Negocio no encontrado para businessId:", businessId);
@@ -63,7 +63,7 @@ const mercadoLibreAnswerController = {
       }
       console.log("Negocio encontrado:", business.id); // Verificar que el negocio fue encontrado
 
-     // Busca el contacto por su ID si `ContactId` fue proporcionado
+     // Busca el contacto por su ID 
      let contact;
      if (ContactId) {
        contact = await Contacts.findByPk(ContactId);
@@ -78,10 +78,10 @@ const mercadoLibreAnswerController = {
       // Guarda el mensaje enviado en la base de datos
       const msgSent = await MsgSent.create({
         name: "Mercado Libre",
-        toData: { app: "Mercado Libre", value: questionId }, // Usando questionId como value
+        toData: { app: "Mercado Libre", value: questionId },
         message: answerText,
-        chatId: questionId, // Usar questionId como chatId
-        timestamp: new Date(), // Usar un objeto Date
+        chatId: questionId, //  questionId como chatId
+        timestamp: new Date(), 
         received: false,
       });
 
