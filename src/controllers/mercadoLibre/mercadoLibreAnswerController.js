@@ -60,19 +60,12 @@ const mercadoLibreAnswerController = {
         return res.status(404).json({ message: "Negocio no encontrado!." });
       }
 
-      // Busca el contacto por su ID o crea uno si no existe
-      // Verifica si contactId es válido
+      let contact;
       if (ContactId) {
-        console.log("Verificando contacto con contactId:", ContactId); // Log de verificación de contactId
-        const contact = await Contacts.findByPk(ContactId);
+        contact = await Contacts.findByPk(ContactId);
         if (!contact) {
-          console.error("Contacto no encontrado para contactId:", ContactId);
           return res.status(404).json({ message: "Contacto no encontrado." });
         }
-      } else {
-        console.log(
-          "contactId no proporcionado, se omitirá la asociación con el contacto."
-        );
       }
 
       // Guarda el mensaje enviado en la base de datos
@@ -89,14 +82,18 @@ const mercadoLibreAnswerController = {
 
       // Asocia el mensaje enviado con el negocio, contacto y el mensaje recibido
       await msgSent.setBusiness(business);
-      if (ContactId) {
-        await msgSent.setContacts(ContactId);
+      if (contact) {
+        await msgSent.setContact(contact); // Solo asociamos si `ContactId` está presente
       }
       await msgSent.addMsgReceived(msgReceived);
 
       // Asociar con el usuario si `userId` fue pasado
       if (userId) {
-        await msgSent.setUser(userId);
+        const user = await user.findByPk(userId);
+        if (!user) {
+          return res.status(404).json({ message: `Usuario con id ${userId} no encontrado.` });
+        }
+        await msgSent.setUser(user);
       }
 
       // Actualiza el estado del mensaje recibido a "Respondidos"
