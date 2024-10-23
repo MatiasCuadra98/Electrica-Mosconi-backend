@@ -12,7 +12,8 @@ const mercadoLibreAnswerController = {
       userId,
     } = req.body;
     console.log("Cuerpo de la solicitud:", req.body); // Log de depuración para el cuerpo de la solicitud
-
+    console.log("ContactId recibido:", ContactId); // Depurar ContactId
+    console.log("userId recibido:", userId); // Depurar userId
     try {
       // Validación de datos requeridos
       if (!questionId || !answerText || !accessToken || !businessId) {
@@ -52,6 +53,7 @@ const mercadoLibreAnswerController = {
           .status(404)
           .json({ message: "Mensaje recibido no encontrado." });
       }
+      console.log("msgReceived encontrado:", msgReceived.id); // Verificar que el mensaje recibido fue encontrado
 
       // Busca el negocio por su ID
       const business = await Business.findByPk(businessId);
@@ -59,14 +61,19 @@ const mercadoLibreAnswerController = {
         console.error("Negocio no encontrado para businessId:", businessId);
         return res.status(404).json({ message: "Negocio no encontrado!." });
       }
+      console.log("Negocio encontrado:", business.id); // Verificar que el negocio fue encontrado
 
-      let contact;
-      if (ContactId) {
-        contact = await Contacts.findByPk(ContactId);
-        if (!contact) {
-          return res.status(404).json({ message: "Contacto no encontrado." });
-        }
-      }
+     // Busca el contacto por su ID si `ContactId` fue proporcionado
+     let contact;
+     if (ContactId) {
+       contact = await Contacts.findByPk(ContactId);
+       if (!contact) {
+         return res.status(404).json({ message: "Contacto no encontrado." });
+       }
+       console.log("Contacto encontrado:", contact.id); // Verificar que el contacto fue encontrado
+     } else {
+       console.log("ContactId no proporcionado"); // Si no hay ContactId en el request
+     }
 
       // Guarda el mensaje enviado en la base de datos
       const msgSent = await MsgSent.create({
@@ -82,23 +89,32 @@ const mercadoLibreAnswerController = {
 
       // Asocia el mensaje enviado con el negocio, contacto y el mensaje recibido
       await msgSent.setBusiness(business);
+      console.log("Asociado con el negocio:", business.id); // Confirmar que se asoció con el negocio
+
       if (contact) {
         await msgSent.setContact(contact); // Solo asociamos si `ContactId` está presente
+        console.log("Asociado con el contacto:", contact.id); // Confirmar que se asoció con el contacto
+
       }
       await msgSent.addMsgReceived(msgReceived);
+      console.log("Asociado con el mensaje recibido:", msgReceived.id); // Confirmar que se asoció con el mensaje recibido
 
       // Asociar con el usuario si `userId` fue pasado
       if (userId) {
-        const user = await user.findByPk(userId);
+        const user = await User.findByPk(userId);
         if (!user) {
           return res.status(404).json({ message: `Usuario con id ${userId} no encontrado.` });
         }
         await msgSent.setUser(user);
+        console.log("Asociado con el usuario:", user.id); // Confirmar que se asoció con el usuario
+      } else {
+        console.log("userId no proporcionado"); // Si no hay userId en el request
       }
 
       // Actualiza el estado del mensaje recibido a "Respondidos"
       msgReceived.state = "Respondidos";
       await msgReceived.save();
+      console.log("Estado del mensaje recibido actualizado a 'Respondidos'"); // Confirmar que el estado fue actualizado
 
       // Respuesta exitosa
       return res.status(200).json({
