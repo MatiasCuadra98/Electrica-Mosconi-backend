@@ -106,7 +106,7 @@ const mercadoLibreWebhookHandler = async (req, res) => {
 
         // Paso 6: Crear el mensaje recibido
         const msgReceived = await MsgReceived.create({
-            chatId: productId,
+            chatId: questionId,
             idUser: buyerId,
             text: questionText,
             name: buyerName,
@@ -115,7 +115,7 @@ const mercadoLibreWebhookHandler = async (req, res) => {
             BusinessId: businessId,
             state: "No Leidos",
             received: true,
-            userName: questionId,
+            userName: productId,
         });
 
         // Paso 7: Asociar el mensaje recibido con el negocio, contacto, y red social

@@ -37,6 +37,7 @@ module.exports = (sequelize) => {
           allowNull: true,
           defaultValue: null
       },
+      //userName se tiene que llamar productId
       userName: {
           type: DataTypes.STRING,
           allowNull: true,
