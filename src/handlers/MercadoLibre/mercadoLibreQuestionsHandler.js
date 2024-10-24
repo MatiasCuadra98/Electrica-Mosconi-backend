@@ -20,6 +20,21 @@ const mercadoLibreQuestionHandler = async (req, res) => {
     }
 };
 
+// Helper para manejar múltiples intentos de una operación
+const retryOperation = async (operation, maxRetries = 3, delay = 1000) => {
+    let attempt = 0;
+    while (attempt < maxRetries) {
+        try {
+            return await operation();
+        } catch (error) {
+            attempt++;
+            if (attempt >= maxRetries) throw error;
+            console.log(`Intento ${attempt} fallido, reintentando en ${delay}ms...`);
+            await new Promise(res => setTimeout(res, delay));
+        }
+    }
+};
+
 // Handler para procesar preguntas recibidas vía webhook
 const mercadoLibreWebhookHandler = async (req, res) => {
     try {
@@ -29,8 +44,21 @@ const mercadoLibreWebhookHandler = async (req, res) => {
         const resource = question.resource;
         const questionId = resource.split('/').pop(); // Obtiene el ID de la pregunta desde el resource
 
-        // Obtener los detalles de la pregunta
-        const questionDetails = await mercadoLibreQuestionController.getQuestionDetails(questionId, accessToken);
+        // Paso 1: Verificación de duplicados
+        const existingMessage = await MsgReceived.findOne({
+            where: { userName: questionId }
+        });
+
+        if (existingMessage) {
+            console.log(`Pregunta ${questionId} ya ha sido procesada previamente.`);
+            return res.status(200).send('Pregunta duplicada, no se procesará.');
+        }
+
+        // Paso 2: Obtener los detalles de la pregunta con múltiples intentos
+        const questionDetails = await retryOperation(async () => {
+            return await mercadoLibreQuestionController.getQuestionDetails(questionId, accessToken);
+        });
+
         console.log('Detalles de la pregunta de meli:', JSON.stringify(questionDetails, null, 2)); // Log detallado de los detalles de la pregunta
 
         const buyerId = questionDetails.from.id.toString();
@@ -40,8 +68,8 @@ const mercadoLibreWebhookHandler = async (req, res) => {
         const productTitle = questionDetails.item_title;
         const timestamp = new Date(questionDetails.date_created).getTime(); // Asegúrate de que este valor sea un BIGINT
 
-         // Log de los valores que se van a insertar en la bd
-         console.log('Valores a insertar:', {
+        // Log de los valores que se van a insertar en la bd
+        console.log('Valores a insertar:', {
             buyerId,
             buyerName,
             questionText,
@@ -49,8 +77,7 @@ const mercadoLibreWebhookHandler = async (req, res) => {
             timestamp,
         });
 
-
-        // Paso 1: Buscar o crear el contacto
+        // Paso 3: Buscar o crear el contacto
         const [newContact, created] = await Contacts.findOrCreate({
             where: { idUser: buyerId },
             defaults: {
@@ -63,21 +90,21 @@ const mercadoLibreWebhookHandler = async (req, res) => {
             },
         });
 
-        // Paso 2: Asociar el contacto con el negocio
+        // Paso 4: Asociar el contacto con el negocio
         const business = await Business.findByPk(businessId);
         if (!business) {
             return res.status(404).send('Business no encontrado');
         }
         await newContact.addBusiness(business);
 
-        // Paso 3: Asociar el contacto con la red social
+        // Paso 5: Asociar el contacto con la red social
         const socialMedia = await SocialMedia.findByPk(socialMediaId);
         if (!socialMedia) {
             return res.status(404).send('Social Media no encontrado');
         }
         await newContact.setSocialMedium(socialMediaId);
 
-        // Paso 4: Crear el mensaje recibido
+        // Paso 6: Crear el mensaje recibido
         const msgReceived = await MsgReceived.create({
             chatId: productId,
             idUser: buyerId,
@@ -91,7 +118,7 @@ const mercadoLibreWebhookHandler = async (req, res) => {
             userName: questionId,
         });
 
-        // Paso 5: Asociar el mensaje recibido con el negocio, contacto, y red social
+        // Paso 7: Asociar el mensaje recibido con el negocio, contacto, y red social
         await msgReceived.setBusiness(business);
         await msgReceived.setContact(newContact);
         await msgReceived.setSocialMedium(socialMediaId);
@@ -114,7 +141,6 @@ const mercadoLibreRegisterWebhookHandler = async (req, res) => {
 
         if (!accessToken || !userId || !applicationId) {
             console.error('Parametros de meli faltantes');
-            
             return res.status(400).json({ message: 'Token de acceso, userId y applicationId de meli son requeridos.' });
         }
 
