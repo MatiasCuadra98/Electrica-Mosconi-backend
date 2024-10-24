@@ -46,7 +46,7 @@ const mercadoLibreWebhookHandler = async (req, res) => {
 
         // Paso 1: Verificación de duplicados
         const existingMessage = await MsgReceived.findOne({
-            where: { userName: questionId }
+            where: { chatId: questionId }
         });
 
         if (existingMessage) {
